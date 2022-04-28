@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+
+
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<!-- If further character entities are required then they should be added to the DOCTYPE above.
+     Use of an external entity file is not recommended. -->
+
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="std"
+  consensus="true"
+  docName="draft-mahesh-lsvr-bgp-ls-yang-latest"
+  ipr="trust200902"
+  obsoletes=""
+  submissionType="IETF"
+  updates=""
+  xml:lang="en"
+  version="3">
+
+  <front>
+    <title abbrev="BGP LS, LS-VPN, LS-SPF YANG Model">A YANG Model for BGP-LS, BGP-LS-VPN, and BGP-LS-SPF</title>
+    <seriesInfo name="Internet-Draft" value="draft-mahesh-lsvr-bgp-ls-yang-latest"/>
+   
+    <author fullname="Mahesh Jethanandani" initials="M." role="editor" surname="Jethanandani">
+      <organization>Arrcus, Inc</organization>
+      <address>
+        <postal>
+          <street/>
+          <city/>
+          <region/>
+          <code/>
+          <country/>
+        </postal>        
+        <phone/>
+        <email>mjethanandani@gmail.com</email>  
+        <uri/>
+      </address>
+    </author>
+    <author fullname="Keyur Patel" initials="K." surname="Patel">
+      <organization>Arrcus, Inc</organization>
+      <address>
+        <postal>
+          <street/>
+          <city/>
+          <region/>
+          <code/>
+          <country/>
+        </postal>        
+        <phone/>
+        <email>keyur@arrcus.com</email>
+        <uri/>
+      </address>
+    </author>
+   
+    <date/>
+    <area>Routing</area>
+    <workgroup>Spring</workgroup>
+    <keyword>srv6</keyword>
+    <keyword>yang</keyword>
+
+    <abstract>
+      <t>This document defines a YANG data model for configuration
+      and management of SRv6 for the mobile network.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+      <t>In mobile networks, mobility systems provide connectivity
+      over a wireless link to stationary and non-stationary nodes.
+      The user-plane establishes a tunnel between the mobile node
+      and its anchor node over IP-based backhaul and core networks.
+      </t>
+
+      <t>When SRv6 is applied to mobile networks, it enables a
+      source routing architecture, where operators get to explicitly
+      specify a route for the packets to traverse both to and from a
+      mobile node. The SRv6 Endpoint nodes serve as mobile user-plane
+      anchors.</t>
+
+      <t>For example, in an Enhanced mode topology, the intermediate
+      waypoints, SIDs, can be used for Traffic Engineering. For more
+      details, see <xref
+      target="I-D.ietf-dmm-srv6-mobile-uplane">Segment Routing IPv6
+      for Mobile User Plane</xref>, Section 5.2. The gNB and UPF are
+      SR-aware, and there are two service segments, one for traffic
+      engineering to support a low latency path, and the other for
+      service programming. In such a topology the operator routes the
+      traffic through these SRv6 nodes, so they can perform their
+      Endpoint functionality and forward the packet. Further, in the
+      uplink direction, when the gNB receives a packet from a UE, it
+      adds the segments of the SR policy to route the traffic through
+      those two segments, while doing something similar in the
+      downlink direction.</t>
+      
+      <t>This document describes a <xref target="RFC7950">YANG 1.1
+      </xref> data model for the Segment Routing IPv6 (SRv6) user
+      plane of mobile networks.</t>
+      
+      <t>The model conforms to the <xref target="RFC8342">NMDA</xref>
+      architecture.</t>
+
+      <section>
+	<name>Requirements Language</name>
+	<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+	RECOMMENDED", "MAY", and "OPTIONAL" in this document are to 
+	be interpreted as described in BCP 14 <xref 
+	target="RFC2119"/> <xref target="RFC8174"/> when, and 
+	only when, they appear in all capitals, as shown here.</t>
+      </section>
+    </section>
+
+    <section>
+      <name>Terminology</name>
+      <t>
+	This document references terms defined in other documents.  In
+	particular, it imports definitions for the following terms
+	from <xref target="RFC8402">Segment Routing
+	Architecture</xref>, and <xref target="RFC8754">IPv6 Segment
+	Routing Header (SRH)</xref>.
+      </t>
+
+      <ul>
+	<li>Active Segment</li>
+	<li>BGP-Prefix Segment</li>
+	<li>Prefix SID</li>
+	<li>Segment</li>
+	<li>SID</li>
+	<li>SRH</li>
+        <li>SRv6</li>
+	<li>SRv6 Endpoint nodes</li>
+	<li>SRv6 SID</li>
+	<li>Segment Routing domain (SR domain)</li>
+	<li>SR Global Block (SRGB)</li>
+	<li>SR Local Block (SRLB)</li>
+      </ul>
+	
+      <section>
+	<name>Acronyms</name>
+	<t>This document uses a few acronyms. Some of them are defined
+	here for reference.</t>
+	<table>
+	  <name>Acronyms</name>
+          <thead>
+            <!-- [REPLACE/DELETE] a table header is optional -->
+            <tr><th>Acronym</th><th>Definition</th></tr>
+          </thead>
+          <tbody>
+	    <tr><td>gNB</td><td>gNodeB, a 5G Base Station using New
+	    Radio technology</td></tr>
+            <tr><td>MUP</td><td>Mobile User Plane</td></tr>
+            <tr><td>SR</td><td>Segment Routing</td></tr>
+            <tr><td>SRv6</td><td>Segment Routing over v6</td></tr>
+            <tr><td>UE</td><td>User Equipment</td></tr>
+            <tr><td>UPF</td><td>User Plane Function</td></tr>
+          </tbody>
+	</table>
+      </section>
+    </section>
+
+    <section>
+      <name>Tree Diagram</name>
+      <t>An abridged version of the tree diagram is shown here.
+      Annotations used in the diagram are defined in <xref
+      target="RFC8340">YANG Tree Diagrams </xref>.</t>
+      <figure>
+	<name>Tree Diagram for SRv6 YANG Model</name>
+        <artwork><![CDATA[
+INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
+
+]]></artwork>
+      </figure>
+
+    </section>
+    <section>
+      <name>YANG Model</name>
+      <t>The YANG model is divided into two parts. The first part of
+      the model augments the BGP model in <xref
+      target="I-D.ietf-idr-bgp-model"> BGP Model for Service Provider
+      Network</xref> for the BGP configuration, while the second part
+      augments the BGP Routing Policy model in <xref
+      target="I-D.ietf-idr-bgp-model">BGP Model for Service Provider
+      Network</xref>.</t>
+
+      <t>The BGP model is augmented both at a global level to add SRv6
+      configuration, and at the route selection option. The BGP policy
+      model is augemented to add a defined set, a set of match
+      options, and a set of actions.</t>
+      
+      <t>The model imports <xref target="RFC6991">Common YANG Data
+      Types </xref>, <xref target="RFC8349">A YANG Data Model for
+      Routing Management(NMDA Version)</xref>, <xref
+      target="RFC9067">A YANG Data Model for Routing Policy</xref>,
+      <xref target="RFC9020">YANG Data Model for Segment
+      Routing</xref>, <xref target="I-D.ietf-spring-srv6-yang">YANG
+      Data Model for SRv6 Base and Static</xref>, and <xref
+      target="I-D.ietf-idr-bgp-model">BGP Model for Service Provider
+      Network</xref>.</t>
+      
+      <figure>
+        <name>SRv6 YANG Model for Mobile User Plane</name>
+          <artwork><![CDATA[
+<CODE BEGINS> file "ietf-bgp-ls@YYYY-MM-DD.yang"
+INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
+<CODE ENDS>
+
+]]></artwork>
+        <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
+      </figure>
+    </section>   
+    
+    <section anchor="IANA">
+      <name>IANA Considerations</name>
+
+      <t>This memo registers the following namespace URIs in the IETF
+      XML in the "IETF XML Registry" <xref target="RFC3688"
+      format="default" sectionFormat="of"
+      derivedContent="RFC3688"/>:</t>
+
+      <dl newline="false" spacing="compact" indent="3">
+        <dt>URI:</dt>
+        <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-ls</dd>
+        <dt>Registrant Contact:</dt>
+        <dd>The IESG.</dd>
+        <dt>XML:</dt>
+        <dd>N/A; the requested URI is an XML namespace.</dd>
+      </dl>
+
+      <t indent="0">This document registers the following YANG modules
+      in the "YANG Module Names" registry <xref target="RFC6020"
+      format="default" sectionFormat="of"
+      derivedContent="RFC6020"/>:</t>
+
+      <dl newline="false" spacing="compact" indent="3">
+        <dt>Name:</dt>
+        <dd>ietf-bgp-ls</dd>
+        <dt>Namespace:</dt>
+        <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-ls</dd>
+        <dt>Prefix:</dt>
+        <dd>srv6-mob</dd>
+        <dt>Reference:</dt>
+        <dd>RFC XXXX</dd>
+      </dl>
+    </section>
+    
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+      <t>The YANG module specified in this document defines a schema
+      for data that is designed to be accessed via network management
+      protocols such as <xref target="RFC6241">NETCONF</xref> or <xref
+      target="RFC8040">RESTCONF</xref>. The lowest NETCONF layer is
+      the secure transport layer, and the mandatory-to-implement
+      secure transport is <xref target="RFC6242">Secure Shell
+      (SSH)</xref>. The lowest RESTCONF layer is HTTPS, and the
+      mandatory-to-implement secure transport is <xref
+      target="RFC8446">TLS</xref>.</t>
+
+      <t>The <xref target="RFC8341">Network Configuration Access
+      Control Model (NACM)</xref> provides the means to restrict
+      access for particular NETCONF or RESTCONF users to a
+      preconfigured subset of all available NETCONF or RESTCONF
+      protocol operations and content.</t>
+
+      <t>There are a number of data nodes defined in this YANG module
+      that are writable/creatable/deletable (i.e., config true, which
+      is the default). These data nodes may be considered sensitive or
+      vulnerable in some network environments. Write operations (e.g.,
+      edit-config) to these data nodes without proper protection can
+      have a negative effect on network operations. These are the
+      subtrees and data nodes and their sensitivity/vulnerability:</t>
+
+      <t>Some of the readable data nodes in this YANG module may be
+      considered sensitive or vulnerable in some network
+      environments. It is thus important to control read access (e.g.,
+      via get, get-config, or notification) to these data nodes. These
+      are the subtrees and data nodes and their
+      sensitivity/vulnerability:</t>
+
+      <t>Some of the RPC operations in this YANG module may be
+      considered sensitive or vulnerable in some network
+      environments. It is thus important to control access to these
+      operations. These are the operations and their
+      sensitivity/vulnerability:</t>
+
+    </section>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3688.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6020.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6241.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6242.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6991.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7950.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8040.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8340.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8341.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8342.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8402.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8754.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9020.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9067.xml"/>
+	<?rfc include='reference.I-D.ietf-idr-bgp-model.xml'?>
+	<?rfc include='reference.I-D.ietf-spring-srv6-yang.xml'?>
+      </references>
+ 
+      <references>
+        <name>Informative References</name>
+	<?rfc include='reference.I-D.ietf-dmm-srv6-mobile-uplane.xml'?>
+      </references>
+    </references>
+    
+    <section>
+      <name>Appendix 1 Complete Tree Diagram</name>
+      <t>Here is a complete tree diagram for the configuration and
+      operational part of the model.</t>
+      <figure>
+	<name>Complete tree diagram</name>
+        <artwork><![CDATA[
+INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-tree.txt)
+
+]]></artwork>
+      </figure>
+    </section>
+
+    <section anchor="Acknowledgements" numbered="false">
+      <name>Acknowledgements</name>
+      <t>TBA</t>
+    </section>
+    
+    <section anchor="Contributors" numbered="false">
+      <!-- [REPLACE/DELETE] a Contributors section is optional -->
+      <name>Contributors</name>
+      <t>Thanks to all of the contributors.</t>
+      <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
+    </section>
+    
+ </back>
+</rfc>
