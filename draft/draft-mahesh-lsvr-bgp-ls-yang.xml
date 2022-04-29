@@ -62,13 +62,16 @@
    
     <date/>
     <area>Routing</area>
-    <workgroup>Spring</workgroup>
-    <keyword>srv6</keyword>
+    <workgroup>LSVR</workgroup>
+    <keyword>bgp</keyword>
+    <keyword>bgp-ls</keyword>
+    <keyword>bgp-ls-vpn</keyword>
+    <keyword>bgp-ls-spf</keyword>
     <keyword>yang</keyword>
 
     <abstract>
       <t>This document defines a YANG data model for configuration
-      and management of SRv6 for the mobile network.</t>
+      and management of BGP-LS, BGP-LS-VPN, and BGP-LS-SPF.</t>
     </abstract>
   </front>
 
@@ -76,36 +79,20 @@
     
     <section>
       <name>Introduction</name>
-      <t>In mobile networks, mobility systems provide connectivity
-      over a wireless link to stationary and non-stationary nodes.
-      The user-plane establishes a tunnel between the mobile node
-      and its anchor node over IP-based backhaul and core networks.
+      <t><xref target="RFC7752">North-Bound Distribution of Link-State
+      (LS) and Traffic Engineering (TE) Information Using BGP</xref>
+      describes a mechanism by which LS and TE information can be
+      collected and shared with external components using BGP routing
+      protocol. That LS combined with Shortest Path First (SPF)
+      algorithm can be used by BGP for making routing decisions. This
+      document defines a YANG model that can be used to configure a
+      router of that capability.
       </t>
 
-      <t>When SRv6 is applied to mobile networks, it enables a
-      source routing architecture, where operators get to explicitly
-      specify a route for the packets to traverse both to and from a
-      mobile node. The SRv6 Endpoint nodes serve as mobile user-plane
-      anchors.</t>
-
-      <t>For example, in an Enhanced mode topology, the intermediate
-      waypoints, SIDs, can be used for Traffic Engineering. For more
-      details, see <xref
-      target="I-D.ietf-dmm-srv6-mobile-uplane">Segment Routing IPv6
-      for Mobile User Plane</xref>, Section 5.2. The gNB and UPF are
-      SR-aware, and there are two service segments, one for traffic
-      engineering to support a low latency path, and the other for
-      service programming. In such a topology the operator routes the
-      traffic through these SRv6 nodes, so they can perform their
-      Endpoint functionality and forward the packet. Further, in the
-      uplink direction, when the gNB receives a packet from a UE, it
-      adds the segments of the SR policy to route the traffic through
-      those two segments, while doing something similar in the
-      downlink direction.</t>
       
       <t>This document describes a <xref target="RFC7950">YANG 1.1
-      </xref> data model for the Segment Routing IPv6 (SRv6) user
-      plane of mobile networks.</t>
+      </xref> data model that can be used to configure a router of
+      that capability.</t>
       
       <t>The model conforms to the <xref target="RFC8342">NMDA</xref>
       architecture.</t>
@@ -124,26 +111,11 @@
     <section>
       <name>Terminology</name>
       <t>
-	This document references terms defined in other documents.  In
-	particular, it imports definitions for the following terms
-	from <xref target="RFC8402">Segment Routing
-	Architecture</xref>, and <xref target="RFC8754">IPv6 Segment
-	Routing Header (SRH)</xref>.
+	This document references terms defined in other documents.
       </t>
 
       <ul>
-	<li>Active Segment</li>
-	<li>BGP-Prefix Segment</li>
-	<li>Prefix SID</li>
-	<li>Segment</li>
-	<li>SID</li>
-	<li>SRH</li>
-        <li>SRv6</li>
-	<li>SRv6 Endpoint nodes</li>
-	<li>SRv6 SID</li>
-	<li>Segment Routing domain (SR domain)</li>
-	<li>SR Global Block (SRGB)</li>
-	<li>SR Local Block (SRLB)</li>
+	<li>Foo</li>
       </ul>
 	
       <section>
@@ -157,13 +129,12 @@
             <tr><th>Acronym</th><th>Definition</th></tr>
           </thead>
           <tbody>
-	    <tr><td>gNB</td><td>gNodeB, a 5G Base Station using New
-	    Radio technology</td></tr>
-            <tr><td>MUP</td><td>Mobile User Plane</td></tr>
-            <tr><td>SR</td><td>Segment Routing</td></tr>
-            <tr><td>SRv6</td><td>Segment Routing over v6</td></tr>
-            <tr><td>UE</td><td>User Equipment</td></tr>
-            <tr><td>UPF</td><td>User Plane Function</td></tr>
+	    <tr><td>AFI</td><td>Address Family Indicator</td></tr>
+	    <tr><td>LS</td><td>Link-State</td></tr>
+	    <tr><td>SAFI</td><td>Subsequent Address Family
+	    Indicator</td></tr>
+            <tr><td>SPF</td><td>Shortest Path First</td></tr>
+            <tr><td>TE</td><td>Traffic Engineering</td></tr>
           </tbody>
 	</table>
       </section>
@@ -175,7 +146,7 @@
       Annotations used in the diagram are defined in <xref
       target="RFC8340">YANG Tree Diagrams </xref>.</t>
       <figure>
-	<name>Tree Diagram for SRv6 YANG Model</name>
+	<name>Tree Diagram for BGP-LS, BGP-LS-SPF YANG Model</name>
         <artwork><![CDATA[
 INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
 
@@ -185,31 +156,27 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
     </section>
     <section>
       <name>YANG Model</name>
-      <t>The YANG model is divided into two parts. The first part of
-      the model augments the BGP model in <xref
+      <t>The YANG model augments the BGP model in <xref
       target="I-D.ietf-idr-bgp-model"> BGP Model for Service Provider
-      Network</xref> for the BGP configuration, while the second part
-      augments the BGP Routing Policy model in <xref
-      target="I-D.ietf-idr-bgp-model">BGP Model for Service Provider
-      Network</xref>.</t>
+      Network</xref> for the extensions to BGP configuration.
+      The extension includes the addition of three new Address
+      Family Indicator (AFI) and Subsequent Address Family Indicator
+      (SAFI) - BGP-LS, BGP-LS-VPN, and BGP-LS-SPF.
+      </t>
 
-      <t>The BGP model is augmented both at a global level to add SRv6
-      configuration, and at the route selection option. The BGP policy
-      model is augemented to add a defined set, a set of match
-      options, and a set of actions.</t>
+      <t>The BGP model is augmented both at a global level to
+      add statistics related to LS, and at a neighbor level to
+      add support for the three new AFI/SAFI.
+      </t>
       
       <t>The model imports <xref target="RFC6991">Common YANG Data
       Types </xref>, <xref target="RFC8349">A YANG Data Model for
-      Routing Management(NMDA Version)</xref>, <xref
-      target="RFC9067">A YANG Data Model for Routing Policy</xref>,
-      <xref target="RFC9020">YANG Data Model for Segment
-      Routing</xref>, <xref target="I-D.ietf-spring-srv6-yang">YANG
-      Data Model for SRv6 Base and Static</xref>, and <xref
+      Routing Management(NMDA Version)</xref>, and <xref
       target="I-D.ietf-idr-bgp-model">BGP Model for Service Provider
       Network</xref>.</t>
       
       <figure>
-        <name>SRv6 YANG Model for Mobile User Plane</name>
+        <name>YANG Model for BGP-LS, BGP-LS-VPN, BGP-LS-SPF</name>
           <artwork><![CDATA[
 <CODE BEGINS> file "ietf-bgp-ls@YYYY-MM-DD.yang"
 INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
@@ -248,7 +215,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
         <dt>Namespace:</dt>
         <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-ls</dd>
         <dt>Prefix:</dt>
-        <dd>srv6-mob</dd>
+        <dd>bgp-ls</dd>
         <dt>Reference:</dt>
         <dd>RFC XXXX</dd>
       </dl>
@@ -311,6 +278,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6241.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6242.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6991.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7752.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7950.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8040.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
@@ -318,18 +286,12 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8341.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8342.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8402.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8754.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9020.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9067.xml"/>
 	<?rfc include='reference.I-D.ietf-idr-bgp-model.xml'?>
-	<?rfc include='reference.I-D.ietf-spring-srv6-yang.xml'?>
       </references>
  
       <references>
         <name>Informative References</name>
-	<?rfc include='reference.I-D.ietf-dmm-srv6-mobile-uplane.xml'?>
       </references>
     </references>
     
