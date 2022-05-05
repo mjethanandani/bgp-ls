@@ -190,6 +190,9 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
       </section>
       <section>
 	<name>BGP Link-State Database YANG model</name>
+	<t>The model imports <xref target="RFC6991">Common YANG Data
+	Types </xref>
+	</t>
 	<figure>
           <name>YANG Model for Link-State Database</name>
           <artwork><![CDATA[
