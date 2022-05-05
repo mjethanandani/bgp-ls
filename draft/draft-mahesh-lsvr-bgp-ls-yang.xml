@@ -155,28 +155,30 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
 
     </section>
     <section>
-      <name>YANG Model</name>
-      <t>The YANG model augments the BGP model in <xref
-      target="I-D.ietf-idr-bgp-model"> BGP Model for Service Provider
-      Network</xref> for the extensions to BGP configuration.
-      The extension includes the addition of three new Address
-      Family Indicator (AFI) and Subsequent Address Family Indicator
-      (SAFI) - BGP-LS, BGP-LS-VPN, and BGP-LS-SPF.
-      </t>
+      <name>YANG Models</name>
+      <section>
+	<name>BGP Link-State YANG model</name>
+	<t>The YANG model augments the BGP model in <xref
+	target="I-D.ietf-idr-bgp-model"> BGP Model for Service
+	Provider Network</xref> to add extensions to BGP
+	configuration. These extensions include the addition of three
+	new Address Family Indicator (AFI) and Subsequent Address
+	Family Indicator (SAFI) - BGP-LS, BGP-LS-VPN, and BGP-LS-SPF.
+	</t>
 
-      <t>The BGP model is augmented both at a global level to
-      add statistics related to LS, and at a neighbor level to
-      add support for the three new AFI/SAFI.
-      </t>
+	<t>The BGP model is augmented both at a global level to add
+	statistics related to LS, and at a neighbor level to add
+	support for the three new AFI/SAFI.
+	</t>
       
-      <t>The model imports <xref target="RFC6991">Common YANG Data
-      Types </xref>, <xref target="RFC8349">A YANG Data Model for
-      Routing Management(NMDA Version)</xref>, and <xref
-      target="I-D.ietf-idr-bgp-model">BGP Model for Service Provider
-      Network</xref>.</t>
+	<t>The model imports <xref target="RFC6991">Common YANG Data
+	Types </xref>, <xref target="RFC8349">A YANG Data Model for
+	Routing Management(NMDA Version)</xref>, and <xref
+	target="I-D.ietf-idr-bgp-model">BGP Model for Service
+	Provider Network</xref>.</t>
       
-      <figure>
-        <name>YANG Model for BGP-LS, BGP-LS-VPN, BGP-LS-SPF</name>
+	<figure>
+          <name>YANG Model for BGP-LS, BGP-LS-VPN, BGP-LS-SPF</name>
           <artwork><![CDATA[
 <CODE BEGINS> file "ietf-bgp-ls@YYYY-MM-DD.yang"
 INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
@@ -184,8 +186,22 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
 
 ]]></artwork>
         <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
-      </figure>
-    </section>   
+	</figure>
+      </section>
+      <section>
+	<name>BGP Link-State Database YANG model</name>
+	<figure>
+          <name>YANG Model for Link-State Database</name>
+          <artwork><![CDATA[
+<CODE BEGINS> file "ietf-bgp-lsdb@YYYY-MM-DD.yang"
+INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
+<CODE ENDS>
+
+]]></artwork>
+        <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
+	</figure>
+      </section>
+    </section>
     
     <section anchor="IANA">
       <name>IANA Considerations</name>
@@ -203,10 +219,18 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
         <dt>XML:</dt>
         <dd>N/A; the requested URI is an XML namespace.</dd>
       </dl>
+      <dl newline="false" spacing="compact" indent="3">
+        <dt>URI:</dt>
+        <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb</dd>
+        <dt>Registrant Contact:</dt>
+        <dd>The IESG.</dd>
+        <dt>XML:</dt>
+        <dd>N/A; the requested URI is an XML namespace.</dd>
+      </dl>
 
-      <t indent="0">This document registers the following YANG modules
-      in the "YANG Module Names" registry <xref target="RFC6020"
-      format="default" sectionFormat="of"
+      <t indent="0">This document registers the following YANG
+      modules in the "YANG Module Names" registry
+      <xref target="RFC6020" format="default" sectionFormat="of"
       derivedContent="RFC6020"/>:</t>
 
       <dl newline="false" spacing="compact" indent="3">
@@ -216,6 +240,16 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
         <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-ls</dd>
         <dt>Prefix:</dt>
         <dd>bgp-ls</dd>
+        <dt>Reference:</dt>
+        <dd>RFC XXXX</dd>
+      </dl>
+      <dl newline="false" spacing="compact" indent="3">
+        <dt>Name:</dt>
+        <dd>ietf-bgp-lsdb</dd>
+        <dt>Namespace:</dt>
+        <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb</dd>
+        <dt>Prefix:</dt>
+        <dd>bgp-lsdb</dd>
         <dt>Reference:</dt>
         <dd>RFC XXXX</dd>
       </dl>
