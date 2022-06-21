@@ -1,0 +1,9 @@
+# Emacs files
+*#
+.#*
+*~
+
+# Built files
+draft-mahesh-lsvr-bgp-ls-yang-*.*
+bin/
+src/yang/*-tree.txt
