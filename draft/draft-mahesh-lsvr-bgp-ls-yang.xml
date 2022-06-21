@@ -84,16 +84,18 @@
       describes a mechanism by which LS and TE information can be
       collected and shared with external components using BGP routing
       protocol. That LS combined with Shortest Path First (SPF)
-      algorithm can be used by BGP for making routing decisions. This
-      document defines a YANG model that can be used to configure a
-      router of that capability.
+      algorithm can be used by BGP for making routing
+      decisions. Additionally, <xref
+      target="I-D.ietf-lsvr-bgp-spf">BGP Link-State Shortest Path
+      First (SPF) Routing</xref> describes how it allows BGP to be
+      used efficiently as both the underlay and the overlay protocol
+      in Many Massively Scaled Data Centers (MSDC). This document
+      defines a <xref target="RFC7950">YANG 1.1 </xref> model that can
+      be used to configure a router of that capability. It also
+      defines a model for Link State DataBase (LSDB) that is used to
+      store Link State Advertisements (LSA).
       </t>
 
-      
-      <t>This document describes a <xref target="RFC7950">YANG 1.1
-      </xref> data model that can be used to configure a router of
-      that capability.</t>
-      
       <t>The model conforms to the <xref target="RFC8342">NMDA</xref>
       architecture.</t>
 
@@ -115,7 +117,8 @@
       </t>
 
       <ul>
-	<li>Foo</li>
+	<li>BGP SPF Routing Domain</li>
+	<li>BGP-LS-SPF NLRI</li>
       </ul>
 	
       <section>
@@ -131,6 +134,8 @@
           <tbody>
 	    <tr><td>AFI</td><td>Address Family Indicator</td></tr>
 	    <tr><td>LS</td><td>Link-State</td></tr>
+	    <tr><td>LSA</td><td>Link-State Advertisements</td></tr>
+	    <tr><td>LSDB</td><td>Link-State DataBase</td></tr>
 	    <tr><td>SAFI</td><td>Subsequent Address Family
 	    Indicator</td></tr>
             <tr><td>SPF</td><td>Shortest Path First</td></tr>
@@ -325,6 +330,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
 	<?rfc include='reference.I-D.ietf-idr-bgp-model.xml'?>
+	<?rfc include='reference.I-D.ietf-lsvr-bgp-spf.xml'?>
       </references>
  
       <references>
@@ -333,7 +339,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
     </references>
     
     <section>
-      <name>Appendix 1 Complete Tree Diagram</name>
+      <name>Complete Tree Diagram</name>
       <t>Here is a complete tree diagram for the configuration and
       operational part of the model.</t>
       <figure>

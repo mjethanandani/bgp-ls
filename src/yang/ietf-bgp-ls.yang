@@ -90,10 +90,10 @@ module ietf-bgp-ls {
       "RFC 7752: Link-State Info Distribution using BGP.";
   }
 
-  identity bgp-spf {
+  identity bgp-ls-spf {
     base bt:afi-safi-type;
     description
-      "BGP Link-State Shortest Path First (BGP-SPF).";
+      "BGP Link-State Shortest Path First (BGP-LS-SPF).";
     reference
       "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
   }
@@ -119,7 +119,7 @@ module ietf-bgp-ls {
            claiming support for Algorithm 1 MUST NOT alter the SPF
            paths computed by Algorithm 1";
       }
-      enum SPF_ALGO_UNKNOWN {
+      enum spf-algorithm-unknown {
         description
           "Unknown Algorithm";
       }
@@ -129,13 +129,6 @@ module ietf-bgp-ls {
   }
       
   // Groupings
-  grouping bgp-global-lsdb {
-    description
-      "Grouping for global LS dB.";
-    
-    uses bgp-lsdb:lsdb-top;
-  }
-
   grouping bgp-neighbor-ls-common {
     description
       "Grouping for neighbor configuration for Link-State.";
@@ -261,7 +254,7 @@ module ietf-bgp-ls {
           "/bgp:afi-safis/bgp:afi-safi/link-state" {
     description
       "Augmentation of BGL-LS to add dB.";
-    uses bgp-global-lsdb;
+    uses bgp-lsdb:lsdb-top;
   }
 
   augment "/rt:routing/rt:control-plane-protocols" +
@@ -421,7 +414,7 @@ module ietf-bgp-ls {
         }
       }
     }
-    uses bgp-global-lsdb;
+    uses bgp-lsdb:lsdb-top;
   }
 
   augment "/rt:routing/rt:control-plane-protocols" +
@@ -437,7 +430,7 @@ module ietf-bgp-ls {
           "/rt:control-plane-protocol/bgp:bgp/bgp:neighbors" +
           "/bgp:neighbor/bgp:afi-safis/bgp:afi-safi/link-state-spf" {
     description
-      "Augmentation of the BGP model to add BGL-LS.";
+      "Augmentation of the BGP neighbor to add BGL-LS.";
     uses bgp-neighbor-ls-common;
   }
 
@@ -521,5 +514,24 @@ module ietf-bgp-ls {
       reference
         "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
     }
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols" +
+          "/rt:control-plane-protocol/bgp:bgp/bgp:peer-groups" +
+          "/bgp:peer-group/bgp:afi-safis/bgp:afi-safi" {
+    description
+      "Augmentation of the BGP peer-group to add BGP-LS and
+       BGP-LS-SPF.";
+
+    uses bgp-mp-ls;
+    uses bgp-mp-ls-spf;
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols" +
+          "/rt:control-plane-protocol/bgp:bgp/bgp:peer-groups" +
+          "/bgp:peer-group/bgp:afi-safis/bgp:afi-safi/link-state-spf" {
+    description
+      "Augmentation of the BGP peer-groups to add BGL-LS.";
+    uses bgp-neighbor-ls-common;
   }
 }
