@@ -24,8 +24,7 @@ next_ver ?=
 else
 next_ver ?= $(shell printf "%.2d" $$((1$(current_ver)-99)))
 endif
-#next := $(draft)-$(next_ver)
-next := $(draft)-00
+next := $(draft)-$(next_ver)
 
 .PHONY: latest submit clean
 
