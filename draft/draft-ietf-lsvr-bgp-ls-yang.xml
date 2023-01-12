@@ -17,7 +17,7 @@
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="std"
   consensus="true"
-  docName="draft-mahesh-lsvr-bgp-ls-yang-latest"
+  docName="draft-ietf-lsvr-bgp-ls-yang-latest"
   ipr="trust200902"
   obsoletes=""
   submissionType="IETF"
@@ -27,7 +27,7 @@
 
   <front>
     <title abbrev="BGP LS, LS-VPN, LS-SPF YANG Model">A YANG Model for BGP-LS, BGP-LS-VPN, and BGP-LS-SPF</title>
-    <seriesInfo name="Internet-Draft" value="draft-mahesh-lsvr-bgp-ls-yang-latest"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-lsvr-bgp-ls-yang-latest"/>
    
     <author fullname="Mahesh Jethanandani" initials="M." role="editor" surname="Jethanandani">
       <organization>Arrcus, Inc</organization>
