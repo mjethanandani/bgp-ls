@@ -171,9 +171,14 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
 	Family Indicator (SAFI) - BGP-LS, BGP-LS-VPN, and BGP-LS-SPF.
 	</t>
 
-	<t>The BGP model is augmented both at a global level to add
-	statistics related to LS, and at a neighbor level to add
-	support for the three new AFI/SAFI.
+	<t>The BGP model is augmented both at a global level, and at a
+	neighbor level to add support for the three new AFI/SAFI. In
+	addition, there is support for statistics both at a global and
+	at a neighbor level for the new address families. The
+	'feature' definition in <xref target="I-D.ietf-idr-bgp-model">
+	BGP Model for Service Provider Network</xref> for
+	'clear-statistics' is used in this model to determine whether
+	ability to clear statistics will be supported.
 	</t>
       
 	<t>The model imports <xref target="RFC6991">Common YANG Data
