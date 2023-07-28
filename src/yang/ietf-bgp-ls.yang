@@ -98,6 +98,38 @@ module ietf-bgp-ls {
       "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
   }
 
+  identity attribute-type {
+    description
+      "Base identity for BGP-LS Attribute type.";
+  }
+
+  identity multi-topology-identifier {
+    base attribute-type;
+    description
+      "Multi Topology Identifier TLV.";
+    reference
+      "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP.";
+  }
+
+  identity node-flag-bits {
+    base attribute-type;
+    description
+      "The Node Flag Bits TLV.";
+    reference
+        "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP.";
+  }
+
+  identity opaque-node-attribute {
+    base attribute-type;
+    description
+      "The Opaque Node Attribute TLV.";
+    reference
+      "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP.";
+  }
+
   // Typedefs
   typedef spf-algorithm-type {
     type enumeration {
@@ -236,6 +268,45 @@ module ietf-bgp-ls {
 
     }
   }
+
+  grouping tlv {
+    description
+      "BGP-LS Attributes in the form of Type-Length-Value (TLV).";
+
+    leaf type {
+      type uint16;
+      description
+        "TLV type.";
+    }
+
+    leaf length {
+      type uint16;
+      description
+        "TLV length in octets.";
+    }
+
+    leaf value {
+      type yang:hex-string;
+      description
+        "TLV value in the form of a hex string.";
+    }
+  }
+
+  grouping unknown-tlvs {
+    description
+      "Unknown TLVs grouping.  Used for unknown TLVs or
+       unknown sub-TLVs.";
+    container unknown-tlvs {
+      description
+        "All unknown TLVs.";
+      list unknown-tlv {
+        description
+          "Unknown TLV.";
+        uses tlv;
+      }
+    }
+  }
+
 	
   augment "/rt:routing/rt:control-plane-protocols" +
           "/rt:control-plane-protocol/bgp:bgp/bgp:global" +
