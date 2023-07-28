@@ -232,11 +232,9 @@ module ietf-bgp-ls {
       description "BGP Linkstate-SPF configuration options";
 
       uses bgp:mp-all-afi-safi-common;
-
-
     }
   }
-	
+
   augment "/rt:routing/rt:control-plane-protocols" +
           "/rt:control-plane-protocol/bgp:bgp/bgp:global" +
           "/bgp:afi-safis/bgp:afi-safi" {
@@ -429,6 +427,30 @@ module ietf-bgp-ls {
     description
       "Augmentation of the BGP neighbor to add BGL-LS.";
     uses bgp-neighbor-ls-common;
+  }
+
+  augment "/rt:routing/rt:control-plane-protocols" +
+          "/rt:control-plane-protocol/bgp:bgp/bgp:rib" +
+          "/bgp:afi-safis/bgp:afi-safi" {
+    description
+      "Augmentation of the BGP RIB to add BGP-LS.";
+    container ls {
+      when "derived-from-or-self(../bgp:name, 'bgp-ls')" {
+        description
+          "Include this container for BGP-LS RIB.";
+      }
+      description
+        "Container for BGP-LS RIB.";
+    }
+
+    container ls-spf {
+      when "derived-from-or-self(../bgp:name, 'bgp-ls-spf')" {
+        description
+          "Include this container for BGP-LS-SPF RIB.";
+      }
+      description
+        "Container for BGP-LS-SPF RIB.";
+    }
   }
 
   augment "/rt:routing/rt:control-plane-protocols" +
