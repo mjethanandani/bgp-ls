@@ -293,6 +293,7 @@ module ietf-bgp-ls {
             "Multi Protocol Identifier TLV.";
           leaf type {
             type uint16;
+            range 0..max;
             description
               "Type should be of value 263.";
             reference
@@ -315,11 +316,64 @@ module ietf-bgp-ls {
               "Leaf list of Multi Topology IDs.";
           }
         }
-        uses tlv {
+
+        container node-flag-values {
           description
-            "Multi Topology TLV. Type should be
-             multi-topology-identifier.";
+            "Node Flag Values TLV.":
+          
+          leaf type {
+            type uint16;
+            range 0..max;
+            description
+              "The type should be 1024";
+          }
+
+          leaf length {
+            type uint16;
+            range 0..max;
+          }
+
+          leaf value {
+            type bits {
+              bit overload {
+                position 0;
+                description
+                  "Overload bit."
+                reference
+                  "ISO10589: International Organization for
+                   Standardization, Intermediate System to
+                   Intermediate System intra-domain
+                   routeing information exchange protocol for use
+                   in conjunction with the protocol for providing
+                   the connectionless-mode network service
+                   (ISO 8473)", ISO/IEC 10589, November 2002.";
+              }
+
+              bit attached {
+                position 1;
+                description
+                  "Attached bit.";
+                reference
+                  "ISO10589: International Organization for
+                   Standardization, Intermediate System to
+                   Intermediate System intra-domain
+                   routeing information exchange protocol for use
+                   in conjunction with the protocol for providing
+                   the connectionless-mode network service
+                   (ISO 8473)", ISO/IEC 10589, November 2002.";
+              }
+
+              bit external {
+                position 2;
+                description
+                  "External bit.";
+                reference
+                  "RFC 2328: OSPF Version 2.";
+              }
+            }
+          }
         }
+
         uses unknown-tlvs;
       }
     }
