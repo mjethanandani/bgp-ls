@@ -130,6 +130,41 @@ module ietf-bgp-ls {
                                  Using BGP.";
   }
 
+  identity node-name {
+    base attribute-type;
+    description
+      "The Node Name TLV.";
+    reference
+      "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP.";
+  }
+
+  identity isis-area-identifier {
+    base attribute-type;
+    description
+      "IS-IS Area Identifier.";
+    reference
+      "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP."; 
+  }
+
+  identity ipv4-route-id-of-local-node {
+    base attribute-type;
+    description
+      "IPv4 Router-ID of Local Node.";
+    reference
+      "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP."; 
+  }
+
+  identity ipv6-router-id-of-local-node {
+    base attribute-type;
+    description
+      "IPv6 Router-ID of Local Node.";
+    reference
+      "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                 Using BGP."; 
+  }
   // Typedefs
   typedef spf-algorithm-type {
     type enumeration {
@@ -198,12 +233,12 @@ module ietf-bgp-ls {
     container link-state {
       when "derived-from-or-self(../../bgp:afi-safi/bgp:name, " +
            "'bgp-ls')" {
-	description
-	  "Include this container for BGP Linkstate specific
+	      description
+	        "Include this container for BGP Linkstate specific
            configuration";
       }
       presence
-	"This container is for BGP Linkstate specific congfiguration.";
+	      "This container is for BGP Linkstate specific congfiguration.";
       
       description
         "Information related to Link-State configuration and
@@ -248,6 +283,46 @@ module ietf-bgp-ls {
           "RFC 7752: Link-State Info Distribution Using BGP.";
       }
     }
+    container tlvs {
+      config false;
+      description
+        "Container for BGP-LS attribute TLVs.";
+      list tlv {
+        container multi-protocol-identifier {
+          description
+            "Multi Protocol Identifier TLV.";
+          leaf type {
+            type uint16;
+            description
+              "Type should be of value 263.";
+            reference
+              "I-D.ietf-idr-rfc7752-bis: Link State Info Distribution
+                                        Using BGP.";
+          }
+
+          leaf length {
+            type uint16;
+            units octets;
+            description
+              "The length of the TLV in octets.";
+          }
+
+          leaf-list value {
+            type uint16 {
+              range 0..2048;
+            }
+            description
+              "Leaf list of Multi Topology IDs.";
+          }
+        }
+        uses tlv {
+          description
+            "Multi Topology TLV. Type should be
+             multi-topology-identifier.";
+        }
+        uses unknown-tlvs;
+      }
+    }
   }
 
   grouping bgp-mp-ls-spf {
@@ -271,10 +346,11 @@ module ietf-bgp-ls {
 
   grouping tlv {
     description
-      "BGP-LS Attributes in the form of Type-Length-Value (TLV).";
-
+      "Generic grouping for all TLVs.";
     leaf type {
-      type uint16;
+      type identityref {
+        base attribute-type;
+      }
       description
         "TLV type.";
     }
@@ -291,7 +367,6 @@ module ietf-bgp-ls {
         "TLV value in the form of a hex string.";
     }
   }
-
   grouping unknown-tlvs {
     description
       "Unknown TLVs grouping.  Used for unknown TLVs or
