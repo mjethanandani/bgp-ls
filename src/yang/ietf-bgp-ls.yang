@@ -465,6 +465,31 @@ module ietf-bgp-ls {
       reference
         "RFC 7752: Link-State Info Distribution Using BGP.";
     }
+
+    action clear {
+      if-feature "bt:clear-statistics";
+      description
+        "Clear statistics action command.
+
+        Execution of this command should result in all the
+        counters to be cleared and set to 0.";
+
+      input {
+        leaf clear-at {
+          type yang:date-and-time;
+          description
+            "Time when the clear action needs to be executed.";
+        }
+      }
+
+      output {
+        leaf clear-finished-at {
+          type yang:date-and-time;
+            description
+              "Time when the clear action command completed.";
+        }
+      }
+    }
   }
 
   augment "/rt:routing/rt:control-plane-protocols" +
@@ -574,6 +599,31 @@ module ietf-bgp-ls {
         "SPF triggering events.";
       reference
         "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
+    }
+
+    action clear {
+      if-feature "bt:clear-statistics";
+      description
+        "Clear statistics action command.
+
+        Execution of this command should result in all the
+        counters to be cleared and set to 0.";
+
+      input {
+        leaf clear-at {
+          type yang:date-and-time;
+          description
+            "Time when the clear action needs to be executed.";
+        }
+      }
+
+      output {
+        leaf clear-finished-at {
+          type yang:date-and-time;
+            description
+              "Time when the clear action command completed.";
+        }
+      }
     }
   }
 
