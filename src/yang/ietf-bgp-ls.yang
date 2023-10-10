@@ -314,6 +314,8 @@ module ietf-bgp-ls {
             units octets;
             description
               "The length of the TLV in octets.";
+            reference
+              "RFC 8654: Extended Message Support for BGP.";
           }
 
           leaf-list value {
@@ -407,8 +409,11 @@ module ietf-bgp-ls {
             type uint16 {
               range 0..max;
             }
+            units octets;
             description
-              "The length of this TLV in octets.";
+              "The length of the TLV in octets.";
+            reference
+              "RFC 8654: Extended Message Support for BGP.";
           }
 
           leaf-list value {
@@ -442,8 +447,11 @@ module ietf-bgp-ls {
             type uint16 {
               range 0..max;
             }
+            units octets;
             description
-              "The length of this TLV in octets.";
+              "The length of the TLV in octets.";
+            reference
+              "RFC 8654: Extended Message Support for BGP.";
           }
 
           leaf-list value {
@@ -477,8 +485,11 @@ module ietf-bgp-ls {
             type uint16 {
               range 0..max;
             }
+            units octets;
             description
-              "The length of this TLV in octets.";
+              "The length of the TLV in octets.";
+            reference
+              "RFC 8654: Extended Message Support for BGP.";
           }
 
           leaf-list value {
