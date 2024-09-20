@@ -623,6 +623,7 @@ module ietf-bgp-ls {
         "TLV value in the form of a hex string.";
     }
   }
+
   grouping unknown-tlvs {
     description
       "Unknown TLVs grouping.  Used for unknown TLVs or
@@ -638,6 +639,94 @@ module ietf-bgp-ls {
     }
   }
 
+  grouping link-state {
+    description
+      "Grouping to define Link-State NLRI.";
+
+    container node {
+      description
+	"Container that consists of node Link-State NLRI.";
+
+      list nlri {
+	description
+	  "List of node Link-State NLRIs.";
+
+	key "id";
+
+	leaf id {
+	  type uint32;
+	  description
+	    "Unique id to define the node Link-State NLRI.";
+	}
+
+	leaf type {
+	  type nlri-type;
+	  description
+	    "NLRI type.";
+	  reference
+	    "RFC 9552: Distribution of Link-State and Traffic
+	               Engineering Information Using BGP.";
+	}
+
+	leaf length {
+          type uint32;
+	  description
+	    "Total length of NLRI.";
+	}
+
+	container link-state {
+	  description
+	    "Container for Link-State.";
+
+	  leaf protocol-id {
+	    type protocol-id;
+	    description
+	      "NLRI information source protocol.";
+	  }
+
+	  leaf identifier {
+	    type uint64;
+	    description
+	      "Link-State identifier.";
+	  }
+
+	  list tlv {
+	    key "type";
+	    description
+	      "List of TLVs.";
+
+	    leaf type {
+	      type uint32;
+	      description
+		"Type as a unique id for TLV.";
+	    }
+
+	    leaf length {
+	      type uint32;
+	      description
+		"Length of the TLV.";
+	    }
+
+	    leaf value {
+	      type uint32;
+	      description
+		"Value of the TLV.";
+	    }
+	  }
+	}
+      }
+    }
+
+    container link {
+      description
+	"Container that consists of Link Link-State NLRI.";
+    }
+
+    container prefix {
+      description
+	"Container that conists of Prefix Link-State NLRI.";
+    }
+  }
 	
   augment "/rt:routing/rt:control-plane-protocols" +
           "/rt:control-plane-protocol/bgp:bgp/bgp:global" +
