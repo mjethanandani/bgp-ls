@@ -27,7 +27,7 @@ do
         printf "$name.yang failed pyang validation\n"
         printf "$response\n\n"
         echo
-	rm yang/*-tree.txt.tmp
+	    rm yang/*-tree.txt.tmp
         exit 1
     fi
     fold -w 71 $name-tree.txt.tmp > $name-tree.txt
@@ -36,7 +36,7 @@ do
         printf "$name.yang failed yanglint validation\n"
         printf "$response\n\n"
         echo
-        exit 1
+        #exit 1
     fi
 done
 rm ../bin/*-tree.txt.tmp

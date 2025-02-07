@@ -15,7 +15,9 @@ list_of_ietf_models =\
     ["ietf-bgp-neighbor", "draft-ietf-idr-bgp-model", "13"],
     ["ietf-bgp-types", "draft-ietf-idr-bgp-model", "13"],
     ["ietf-bgp-common-multiprotocol", "draft-ietf-idr-bgp-model", "13"],
-    ["ietf-bgp", "draft-ietf-idr-bgp-model", "13"]
+    ["ietf-bgp", "draft-ietf-idr-bgp-model", "13"],
+    ["ietf-isis", "draft-ietf-isis-yang-isis-cfg", "42"],
+    ["ietf-ospf", "draft-ietf-ospf-yang", "29"]
 ]
 
 

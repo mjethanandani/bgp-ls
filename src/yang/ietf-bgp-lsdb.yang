@@ -3,17 +3,29 @@ module ietf-bgp-lsdb {
   namespace "urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb";
   prefix bgp-lsdb;
 
-  import ietf-yang-types {
-    prefix yang;
-    reference
-      "RFC 6991: Common YANG Data Types.";
-  }
-
   import ietf-inet-types {
     prefix inet;
     reference
       "RFC 6991: Common YANG Data Types.";
   }
+
+  import ietf-bgp-ls-topo-types {
+    prefix bgpls-topo-t;
+  }
+
+  import ietf-routing-types {
+    prefix ietf-rt-t;
+  }
+
+  import ietf-isis {
+    prefix ietf-isis-t;
+  }
+
+  import ietf-ospf {
+    prefix ietf-ospf-t;
+  }
+
+  include ietf-bgp-ls-topo-attr;
 
   organization
     "IETF LSVR Working Group";
@@ -56,6 +68,7 @@ module ietf-bgp-lsdb {
   }
 
   // Typedefs
+  /*
   typedef lsdb-proto-id-type {
     type enumeration {
       enum unknown {
@@ -86,7 +99,9 @@ module ietf-bgp-lsdb {
     description
       "LS database proto id type.";
   }
+*/
 
+/*
   typedef lsdb-attr-type {
     type enumeration {
       enum unknown {
@@ -309,7 +324,9 @@ module ietf-bgp-lsdb {
     description
       "Link-State database attribute type.";
   }
+*/
 
+/*
   typedef lsdb-obj-type {
     type enumeration {
       enum lsdb-unknown-obj {
@@ -332,8 +349,10 @@ module ietf-bgp-lsdb {
     description
       "Link-State database object type.";
   }
+*/
 
   // Groupings
+/*
   grouping lsdb-obj-common {
     description "Common details for all object types.";
   
@@ -358,7 +377,9 @@ module ietf-bgp-lsdb {
         "Id of the original protocol PDU unit this object belongs
          to."; 
     }
+*/
 
+/*
     container attributes {
       description
 	"List of attributes for a given object.";
@@ -403,11 +424,160 @@ module ietf-bgp-lsdb {
       }
     }
   }
+*/
 
   grouping lsdb-top {
     description
       "Details for all databases under an application instance.";
 
+    container bgpls-topology {
+      config false;
+      description
+        "Top level container for BGPLS topology entries";
+
+      container instances {
+        description
+          "Enclosing container for instance list";
+
+        list instance {
+          key "vrf-name protocol identifier";
+          description
+            "List of instances";
+          
+          leaf vrf-name {
+            type string;
+            description
+              "Name of the VRF this database belongs to.";
+          }
+
+          leaf protocol {
+            type bgpls-topo-t:protocol;
+            description
+              "Protocol originating the NLRI. Section 5.2 of 
+              [RFC9552]";
+          }
+
+          leaf identifier {
+            type uint64;
+            description
+              "Instance identifier identifying the IGP routing domain 
+              where the NLRI belongs. Section 5.2 of [RFC9552]";
+          }
+
+          container nodes {
+            description
+              "BGPLS topology entries for nodes";
+
+            list ospf-nodes {
+              key "is-as-scoped area-id router-id dr-identifier as";
+              description
+                "List of node types";
+
+              leaf is-as-scoped {
+                type boolean;
+                description
+                  "Is area ID valid?";
+              }
+
+              leaf area-id {
+                type ietf-ospf-t:area-id-type;
+                description
+                  "Area ID. Section 5.2.1 of [RFC9552]";
+              }
+
+              leaf router-id {
+                type ietf-rt-t:router-id;
+                description
+                  "Router ID. Section 5.2.1 of [RFC9552]";
+              }
+
+              leaf dr-identifier {
+                type inet:ipv4-address;
+                description
+                  "Designated Router (DR) Identifier. Section 5.2.1 
+                  of [RFC9552]";
+              }
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI. Section 5.2.1 
+                   of [RFC9552]";
+              }
+
+              uses bgpls-topo-node-attr;
+            }
+
+            list isis-nodes {
+              key "system-id psn-id as";
+              description
+                "List of node types";
+
+              leaf system-id {
+                type ietf-isis-t:system-id;
+                description
+                  "System ID. Section 5.2.1 of [RFC9552]";
+              }
+
+              leaf psn-id {
+                type uint8;
+                description
+                  "Pseudo Node Identifier (PSN ID). Section 5.2.1 of
+                   [RFC9552]";
+              }
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI. Section 5.2.1 
+                   of [RFC9552]";
+              }
+
+              uses bgpls-topo-node-attr;
+            }
+          }
+
+          /*
+          container links {
+          }
+
+          container prefixes {
+          }
+          */
+
+          container unknowns {
+            description
+              "BGPLS topology entries for unknown NLRIs -- active 
+              when the nlri-type is unknown";
+            list unknowns {
+              key "nlri";
+              description
+                "List of unknown types";
+
+              leaf nlri {
+                type binary {
+                  length "1..65535";
+                }
+                description
+                  "NLRI. Section 5.2 of [RFC9552]";
+              }
+
+              leaf attributes {
+                type binary {
+                  length "1..65535";
+                }
+                description
+                  "Attributes. Section 5.3 of [RFC9552]";
+              }
+            }
+          }        
+        }
+      }
+    }
+    
+    /*
     container local-databases {
       config false;
       description
@@ -532,5 +702,6 @@ module ietf-bgp-lsdb {
         }
       }
     }
+    */
   }
 }

@@ -267,6 +267,7 @@ module ietf-bgp-ls {
           "RFC 7752: Link-State Info Distribution Using BGP.";
       }
 
+/*
       leaf instance-id {
         type uint64;
         description
@@ -283,8 +284,10 @@ module ietf-bgp-ls {
         reference
           "RFC 7752: Link-State Info Distribution Using BGP.";
       }
+  */
     }
 
+    /*
     container tlvs {
       config false;
       description
@@ -579,6 +582,7 @@ module ietf-bgp-ls {
         uses unknown-tlvs;
       }
     }
+    */
   }
 
   grouping bgp-mp-ls-spf {
@@ -833,10 +837,12 @@ module ietf-bgp-ls {
     uses bgp-neighbor-ls-common;
   }
 
+/*
   augment "/rt:routing/rt:control-plane-protocols" +
-          "/rt:control-plane-protocol/bgp:bgp/bgp:global" +
-          "/bgp:afi-safis/bgp:afi-safi/bgp:statistics" {
-    when "derived-from-or-self (../bgp:name, 'bgp-ls')" {
+          "/rt:control-plane-protocol/bgp:bgp/bgp:neighbors" +
+          "/bgp:neighbor/bgp:statistics" {
+    when "derived-from-or-self (../bgp:afi-safis/bgp:afi-safi" +
+                               "/bgp:name, 'bgp-ls')" {
       description
         "Include these for BGP Link-State specific statistics.";
     }
@@ -893,11 +899,11 @@ module ietf-bgp-ls {
       }
     }
   }
-
   augment "/rt:routing/rt:control-plane-protocols" +
-          "/rt:control-plane-protocol/bgp:bgp/bgp:global" +
-          "/bgp:afi-safis/bgp:afi-safi/bgp:statistics" {
-    when "derived-from-or-self (../bgp:name, 'bgp-ls-spf')" {
+          "/rt:control-plane-protocol/bgp:bgp/bgp:neighbors" +
+          "/bgp:neighbor/bgp:statistics" {
+    when "derived-from-or-self (../bgp:afi-safis/bgp:afi-safi" +
+                               "/bgp:name, 'bgp-ls')" {
       description
         "Include these for BGP Link-State SPF specific statistics.";
     }
@@ -948,7 +954,7 @@ module ietf-bgp-ls {
          address-family";
     }
   }
-
+*/
   augment "/rt:routing/rt:control-plane-protocols" +
           "/rt:control-plane-protocol/bgp:bgp/bgp:neighbors" +
           "/bgp:neighbor/bgp:statistics" {
