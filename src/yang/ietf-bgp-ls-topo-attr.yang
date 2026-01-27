@@ -6,26 +6,34 @@ submodule ietf-bgp-ls-topo-attr {
   }
 
   import ietf-inet-types { 
-    prefix inet; 
+    prefix inet;
+    reference
+      "RFC 6991: Common YANG Data Types.";
   }
 
   import ietf-bgp-ls-topo-types { 
-    prefix bgpls-topo-t; 
+    prefix bgpls-topo-t;
+    reference
+      "RFC XXXX: BGP Model for Link State Distribution.";
   }
 
   import ietf-routing-types { 
-    prefix ietf-rt-t; 
+    prefix ietf-rt-t;
+    reference
+      "RFC 8294: Common YANG Data Types for the Routing Area.";
   }
   
   import ietf-isis { 
-    prefix ietf-isis-t; 
+    prefix ietf-isis-t;
+    reference
+      "RFC 9130: YANG Data Model for IS-IS Protocol.";
   }
 
   organization
     "IETF LSVR Working Group";
   
   contact
-    "WG Web:   <http://tools.ietf.org/wg/lsvr>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsvr>
      WG List:  <lsvr@ietf.org>
 
      Authors: Mahesh Jethanandani (mjethanandani at gmail.com),
@@ -33,7 +41,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   description
     "This submodule contains structural data definitions associated
-     BGPLS topology attributes.
+     BGP-LS topology attributes.
     
      Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code. All rights reserved.
@@ -64,7 +72,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-ipv4-router-id-attr {
     description
-      "Grouping for the BGPLS topology IPv4 router-id attribute";
+      "Grouping for the BGP-LS topology IPv4 router-id attribute";
 
     leaf-list router-id {
       type ietf-rt-t:router-id;
@@ -75,7 +83,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-ipv6-router-id-attr {
     description
-      "Grouping for the BGPLS topology IPv6 router-id attribute";
+      "Grouping for the BGP-LS topology IPv6 router-id attribute";
 
     leaf-list router-id {
       type inet:ipv6-address;
@@ -86,7 +94,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-msd-attr {
     description
-      "Grouping for the BGPLS topology Maximum SID Depth (MSD)
+      "Grouping for the BGP-LS topology Maximum SID Depth (MSD)
        attribute";
 
     list msd {
@@ -99,7 +107,9 @@ submodule ietf-bgp-ls-topo-attr {
         type uint8;
         description
           "MSD type. One of the values defined in the
-           'IGP MSD-Types' registry defined in [RFC8491]";
+           'IGP MSD-Types' registry.";
+        reference
+          "RFC 8491: Signaling Maximum SID Depth (MSD) Using IS-IS.";
       }
 
       leaf msd-value {
@@ -112,7 +122,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-opaque-attribute {
     description
-      "Grouping for the BGPLS topology opaque attribute";
+      "Grouping for the BGP-LS topology opaque attribute";
 
     leaf opaque-attrs {
       type binary {
@@ -125,29 +135,31 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-eag-attr {
     description
-      "Grouping for the BGPLS topology EAG attribute";
+      "Grouping for the BGP-LS topology EAG attribute";
 
     leaf-list eag {
       type uint32;
       description
-        "EAG";
+        "Extended Administrative Group (EAG) value for link affinity
+         constraints to be used in traffic engineering";
     }
   }
 
   grouping bgpls-topo-srlg-attr {
     description
-      "Grouping for the BGPLS topology SRLG attribute";
+      "Grouping for the BGP-LS topology SRLG attribute";
 
     leaf-list srlg {
       type uint32;
       description
-        "SRLG";
+        "Shared Risk Link Group (SRLG) value representing links that
+         share a common resource and may fail together";
     }
   }
 
   grouping bgpls-topo-delay-attr {
     description
-      "Grouping for the BGPLS topology delay attribute";
+      "Grouping for the BGP-LS topology delay attribute";
 
     leaf delay {
       type uint32;
@@ -159,7 +171,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-bw-attr {
     description
-      "Grouping for the BGPLS topology bandwidth attribute";
+      "Grouping for the BGP-LS topology bandwidth attribute";
 
     leaf bw {
       type ietf-rt-t:bandwidth-ieee-float32;
@@ -170,14 +182,14 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-common-node-link-attr {
     description
-      "Grouping for the BGPLS topology common node and link attributes";
+      "Grouping for the BGP-LS topology common node and link attributes";
 
     container local-ipv4-router-ids {
-      when "../type = " +
-          "'bgpls-topo-t:BGPLS_TOPO_ATTR_LOCAL_IPV4_ROUTERID'" {
+      when "derived-from-or-self(../type, " +
+          "'bgpls-topo-t:bgpls-topo-attr-local-ipv4-routerid')" {
       description
           "Only include the local-ipv4-router-ids container when the
-           type is BGPLS_TOPO_ATTR_LOCAL_IPV4_ROUTERID";
+           type is bgpls-topo-attr-local-ipv4-routerid";
       }      
       description
         "This container describes the auxiliary Router-IDs used by the
@@ -190,11 +202,11 @@ submodule ietf-bgp-ls-topo-attr {
     }
 
     container local-ipv6-router-ids {
-      when "../type = " +
-          "'bgpls-topo-t:BGPLS_TOPO_ATTR_LOCAL_IPV6_ROUTERID'" {
+      when "derived-from-or-self(../type, " +
+          "'bgpls-topo-t:bgpls-topo-attr-local-ipv6-routerid')" {
       description
           "Only include the local-ipv6-router-ids container when the
-           type is BGPLS_TOPO_ATTR_LOCAL_IPV6_ROUTERID";
+           type is bgpls-topo-attr-local-ipv6-routerid";
       }      
       description
         "This container describes the auxiliary Router-IDs used by the
@@ -207,11 +219,11 @@ submodule ietf-bgp-ls-topo-attr {
     }
 
     container unknowns {
-      when "../type = " +
-          "'bgpls-topo-t:BGPLS_TOPO_ATTR_UNKNOWNS'" {
+      when "derived-from-or-self(../type, " +
+          "'bgpls-topo-t:bgpls-topo-attr-unknowns')" {
       description
           "Only include the unknowns container when the type is
-          BGPLS_TOPO_ATTR_UNKNOWNS";
+          bgpls-topo-attr-unknowns";
       }      
       description
         "This container describes the unknown attributes.";
@@ -219,7 +231,7 @@ submodule ietf-bgp-ls-topo-attr {
         "RFC 9552: Distribution of Link-State and Traffic Engineering
         Information Using BGP.";
 
-      list unknowns {
+      list unknown {
         key "type";
         
         description 
@@ -228,7 +240,10 @@ submodule ietf-bgp-ls-topo-attr {
         leaf type {
           type uint16;
           description
-            "Attribute type. Section 5.3 of [RFC9552]";
+            "Attribute type.";
+          reference
+            "RFC 9552: Distribution of Link-State and Traffic Engineering
+             Information Using BGP, Section 5.3.";
         }
 
         leaf value {
@@ -236,7 +251,10 @@ submodule ietf-bgp-ls-topo-attr {
             length "1..65535";
           }
           description
-            "Attribute value. Section 5.3 of [RFC9552]";
+            "Attribute value.";
+          reference
+            "RFC 9552: Distribution of Link-State and Traffic Engineering
+             Information Using BGP, Section 5.3.";
         }
       }
     }    
@@ -244,7 +262,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-node-fad-attr {
     description
-      "Grouping for the BGPLS topology node Flexible Algorithm 
+      "Grouping for the BGP-LS topology node Flexible Algorithm 
       Definition (FAD) attributes";
 
     container node-fad-attributes {
@@ -259,19 +277,19 @@ submodule ietf-bgp-ls-topo-attr {
 
         leaf type {
           type identityref {
-            base bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_TYPE;
+            base bgpls-topo-t:bgpls-topo-attr-fad-type;
           }
           description
             "The type of node FAD attribute";
         }
 
         container exclude-any-affinity {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_EXCL_ANY_AFF'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-excl-any-aff')" {
             description
               "Only include the exclude-any-affinity container when 
               the type is 
-              BGPLS_TOPO_ATTR_FAD_EXCL_ANY_AFF";
+              bgpls-topo-attr-fad-excl-any-aff";
           }          
           description
             "This container contains the affinity constraints
@@ -287,12 +305,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container include-any-affinity {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_INCL_ANY_AFF'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-incl-any-aff')" {
             description
               "Only include the include-any-affinity container when the
                type is 
-               BGPLS_TOPO_ATTR_FAD_INCL_ANY_AFF";
+               bgpls-topo-attr-fad-incl-any-aff";
           }          
           description
             "This container contains the affinity constraints
@@ -308,12 +326,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container include-all-affinity {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_INCL_ALL_AFF'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-incl-any-aff')" {
             description
               "Only include the include-all-affinity container when 
               the type is 
-              BGPLS_TOPO_ATTR_FAD_INCL_ALL_AFF";
+              bgpls-topo-attr-fad-incl-all-aff";
           }                    
           description
             "This container contains the affinity constraints
@@ -329,11 +347,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container flags {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_FLAGS'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-flags')" {
             description
               "Only include the flags container when the type is
-              BGPLS_TOPO_ATTR_FAD_FLAGS";
+              bgpls-topo-attr-fad-flags";
           }          
           description
             "This container contains the flags associated with the FAD";
@@ -349,17 +367,18 @@ submodule ietf-bgp-ls-topo-attr {
             description
               "Bit mask representing the FAD flags. The flags are
                derived from the IS-IS and OSPF protocol-specific
-               Flexible Algorithm Definition Flags sub-TLV, as defined
-               in [RFC9350].";
+               Flexible Algorithm Definition Flags sub-TLV.";
+            reference
+              "RFC 9350: IGP Flexible Algorithm.";
           }
         }
 
         container exclude-srlg {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_EXCL_SRLG'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-excl-srlg')" {
             description
               "Only include the exclude-srlg container when the type is
-               BGPLS_TOPO_ATTR_FAD_EXCL_SRLG";
+               bgpls-topo-attr-fad-excl-srlg";
           }          
           description
             "This container contains the affinity constraints 
@@ -375,11 +394,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container exclude-minimum-bw {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_EXCL_MINIMUM_BW'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-excl-minimum-bw')" {
             description
               "Only include the exclude-minimum-bw container when the
-               type is BGPLS_TOPO_ATTR_FAD_EXCL_MINIMUM_BW";
+               type is bgpls-topo-attr-fad-excl-minimum-bw";
           }          
           description
             "This container enables the exclusion of links not having
@@ -393,12 +412,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container exclude-maximum-delay {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_EXCL_MAXIMUM_DELAY'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-excl-maximum-delay')" {
             description
               "Only include the exclude-maximum-delay container when
                the type is 
-               BGPLS_TOPO_ATTR_FAD_EXCL_MAXIMUM_DELAY";
+               bgpls-topo-attr-fad-excl-maximum-delay";
           }          
           description
             "This container enables the exclusion of links having 
@@ -413,12 +432,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container exclude-any-reverse-affinity {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_EXCL_ANY_REV_AFF'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-excl-any-rev-aff')" {
             description
               "Only include the exclude-any-reverse-affinity container
                when the type is 
-               BGPLS_TOPO_ATTR_FAD_EXCL_ANY_REV_AFF";
+               bgpls-topo-attr-fad-excl-any-rev-aff";
           }          
           description
             "This container contains the affinity constraints 
@@ -433,12 +452,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container include-any-reverse-affinity {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_INCL_ANY_REV_AFF'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-incl-any-rev-aff')" {
             description
               "Only include the include-any-reverse-affinity container
                when the type is 
-               BGPLS_TOPO_ATTR_FAD_INCL_ANY_REV_AFF";
+               bgpls-topo-attr-fad-incl-any-rev-aff";
           }          
           description
             "This container contains the affinity constraints
@@ -454,12 +473,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container include-all-reverse-affinity {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD_INCL_ALL_REV_AFF'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fad-incl-all-rev-aff')" {
             description
               "Only include the include-all-reverse-affinity container
                when the type is 
-               BGPLS_TOPO_ATTR_FAD_INCL_ALL_REV_AFF";
+               bgpls-topo-attr-fad-incl-all-rev-aff";
           }          
           description
             "This container contains the affinity constraints 
@@ -475,11 +494,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container fa-unsupported-tlvs {
-          when "../type = " +
-               "'bgpls-topo-t:BGPLS_TOPO_ATTR_FA_UNSUPPORTED'" {
+          when "derived-from-or-self(../type, " +
+               "'bgpls-topo-t:bgpls-topo-attr-fa-unsupported')" {
             description
               "Only include the fa-unsupported-tlvs container when the
-               type is BGPLS_TOPO_ATTR_FA_UNSUPPORTED";
+               type is bgpls-topo-attr-fa-unsupported";
           }          
           description
             "Indicates the presence of unsupported Flexible Algorithm
@@ -492,7 +511,7 @@ submodule ietf-bgp-ls-topo-attr {
           leaf protocol-id {
             type bgpls-topo-t:protocol;
             description
-              "BGPLS protocol advertising the FAD";
+              "BGP-LS protocol advertising the FAD";
           }
 
           leaf-list type {
@@ -507,7 +526,7 @@ submodule ietf-bgp-ls-topo-attr {
 
   grouping bgpls-topo-node-attr {
     description
-      "Grouping for the BGPLS topology node attributes";
+      "Grouping for the BGP-LS topology node attributes";
 
     container node-attributes {
       description
@@ -521,7 +540,7 @@ submodule ietf-bgp-ls-topo-attr {
 
         leaf type {
           type identityref {
-            base bgpls-topo-t:BGPLS_TOPO_ATTR_TYPE;
+            base bgpls-topo-t:bgpls-topo-attr-type;
           }
           description
             "The type of node attribute";
@@ -530,11 +549,11 @@ submodule ietf-bgp-ls-topo-attr {
         uses bgpls-topo-common-node-link-attr;
 
         container multi-topology-ids {
-          when "../type = " +
-                "'bgpls-topo-t:BGPLS_TOPO_ATTR_MULTI_TOPOLOGY_ID'" {
+          when "derived-from-or-self(../type, " +
+                "'bgpls-topo-t:bgpls-topo-attr-multi-topology-id')" {
             description
               "Only include the multi-topology-ids container when the
-               type is BGPLS_TOPO_ATTR_MULTI_TOPOLOGY_ID";
+               type is bgpls-topo-attr-multi-topology-id";
           }        
           description
             "This container defines topologies.";
@@ -550,11 +569,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container node-flag-bits {
-          when "../type = " +
-                "'bgpls-topo-t:BGPLS_TOPO_ATTR_NODE_FLAG_BITS'" {
+          when "derived-from-or-self(../type, " +
+                "'bgpls-topo-t:bgpls-topo-attr-node-flag-bits')" {
             description
               "Only include the node-flag-bits container when the type
-               is BGPLS_TOPO_ATTR_NODE_FLAG_BITS";
+               is bgpls-topo-attr-node-flag-bits";
           }        
           description
             "This container defines node attributes as a bit mask.";
@@ -570,11 +589,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container opaque-node-attribute {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_OPAQUE_NODE'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-opaque-node')" {
           description
               "Only include the opaque-node-attribute container when
-               the type is BGPLS_TOPO_ATTR_NODE_OPAQUE";
+               the type is bgpls-topo-attr-opaque-node";
           }        
           description
             "This container defines an envelope that transparently
@@ -588,11 +607,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container node-name {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_NODE_NAME'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-node-name')" {
           description
               "Only include the node-name container when the type is 
-              BGPLS_TOPO_ATTR_NODE_NAME";
+              bgpls-topo-attr-node-name";
           }        
           description
             "This container identifies the symbolic name of the router
@@ -611,11 +630,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container sr-capabilities {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_SR_CAPABILITIES'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-sr-capabilities')" {
           description
               "Only include the sr-capabilities container when the type
-               is BGPLS_TOPO_ATTR_SR_CAPABILITIES";
+               is bgpls-topo-attr-sr-capabilities";
           }        
           description
             "This container defines node's Segment Routing (SR)
@@ -648,17 +667,18 @@ submodule ietf-bgp-ls-topo-attr {
               length "1";
             }
             description
-              "ISIS flags as defined in Section 3.1 of [RFC8667] for
-               IS-IS";
+              "ISIS flags for IS-IS.";
+            reference
+              "RFC 8667: IS-IS Extensions for Segment Routing, Section 3.1.";
           }
         }
 
         container sr-local-block {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_SRLB'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-srlb')" {
           description
               "Only include the sr-local-block container when the type
-               is BGPLS_TOPO_ATTR_SRLB";
+               is bgpls-topo-attr-srlb";
           }        
           description
             "This container contains the range(s) of labels reserved by
@@ -690,17 +710,18 @@ submodule ietf-bgp-ls-topo-attr {
               length "1";
             }
             description
-              "ISIS flags as defined in Section 3.3 of [RFC8667] for
-               IS-IS";
+              "ISIS flags for IS-IS.";
+            reference
+              "RFC 8667: IS-IS Extensions for Segment Routing, Section 3.3.";
           }
         }
 
         container sr-algorithm {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_SR_ALGORITHM'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-sr-algorithm')" {
           description
               "Only include the sr-algorithm container when the type is 
-              BGPLS_TOPO_ATTR_SR_ALGORITHM";
+              bgpls-topo-attr-sr-algorithm";
           }        
           description
             "This container defines Segment Routing (SR) algorithms
@@ -717,11 +738,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container node-msd {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_NODE_MSD'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-node-msd')" {
           description
               "Only include the node-msd container when the type is 
-              BGPLS_TOPO_ATTR_NODE_MSD";
+              bgpls-topo-attr-node-msd";
           }        
           description
             "This container defines node Maximum SID Depth (MSD).";
@@ -733,11 +754,11 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container fads {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_FAD'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-fad')" {
           description
               "Only include the fads container when the type is 
-              BGPLS_TOPO_ATTR_FAD";
+              bgpls-topo-attr-fad";
           }        
           description
             "This container defines the Flexible Algorithms supported
@@ -784,12 +805,12 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         container isis-area-identifiers {
-          when "../type = " +
-              "'bgpls-topo-t:BGPLS_TOPO_ATTR_ISIS_AREA_IDENTIFIER'" {
+          when "derived-from-or-self(../type, " +
+              "'bgpls-topo-t:bgpls-topo-attr-isis-area-identifier')" {
           description
               "Only include the isis-area-identifiers container when 
                the type is 
-               BGPLS_TOPO_ATTR_ISIS_AREA_IDENTIFIER";
+               bgpls-topo-attr-isis-area-identifier";
           }          
           description
             "This container contains the ISIS area addresses";

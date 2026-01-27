@@ -9,7 +9,7 @@
     "IETF LSVR Working Group";
   
   contact
-    "WG Web:   <http://tools.ietf.org/wg/lsvr>
+    "WG Web:   <https://datatracker.ietf.org/wg/lsvr>
      WG List:  <lsvr@ietf.org>
 
      Authors: Mahesh Jethanandani (mjethanandani at gmail.com),
@@ -48,37 +48,37 @@
 
   typedef protocol {
     type enumeration {
-      enum ISIS_L1  {
+      enum isis-l1  {
         value 1;
         description
           "Value of BGP-LS protocol ISIS L1";
       }
-      enum ISIS_L2  {
+      enum isis-l2  {
         value 2;
         description
           "Value of BGP-LS protocol ISIS L2";
       }
-      enum OSPFv2 {
+      enum ospfv2 {
         value 3;
         description
           "Value of BGP-LS protocol OSPFv2";
       }
-      enum DIRECT {
+      enum direct {
         value 4;
         description
           "Value of BGP-LS protocol Direct";
       }
-      enum STATIC {
+      enum static {
         value 5;
         description
           "Value of BGP-LS protocol Static";
       }
-      enum OSPFv3 {
+      enum ospfv3 {
         value 6;
         description
           "Value of BGP-LS protocol OSPFv3";
       }
-      enum BGP {
+      enum bgp {
         value 7;
         description
           "Value of BGP-LS protocol BGP";
@@ -86,36 +86,39 @@
     }
     description
       "BGP-LS Protocol";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+       Information Using BGP, Section 5.2.";
   }
 
   typedef nlri-type {
     type enumeration {
-      enum NODE  {
+      enum node  {
         value 1;
         description
           "Value of BGP-LS Node NLRI";
       }
-      enum LINK  {
+      enum link  {
         value 2;
         description
           "Value of BGP-LS Link NLRI";
       }
-      enum IPV4_PREFIX {
+      enum ipv4-prefix {
         value 3;
         description
           "Value of BGP-LS IPv4 Prefix NLRI";
       }
-      enum IPV6_PREFIX {
+      enum ipv6-prefix {
         value 4;
         description
           "Value of BGP-LS IPv6 Prefix NLRI";
       }
-      enum SR_POLICY_CANDIDATE_PATH {
+      enum sr-policy-candidate-path {
         value 5;
         description
           "Value of BGP-LS SR Policy Candidate Path NLRI";
       }
-      enum SRV6_SID {
+      enum srv6-sid {
         value 6;
         description
           "Value of BGP-LS SRv6 SID NLRI";
@@ -123,36 +126,39 @@
     }
     description
       "BGP-LS NLRI Types";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+       Information Using BGP, Section 5.1.";
  }
 
   typedef ospf-route-type {
     type enumeration {
-      enum INTRA_AREA  {
+      enum intra-area  {
         value 1;
         description
           "Value of OSPF Route Type Intra Area";
       }
-      enum INTER_AREA  {
+      enum inter-area  {
         value 2;
         description
           "Value of OSPF Route Type Inter Area";
       }
-      enum EXTERNAL_1 {
+      enum external-1 {
         value 3;
         description
           "Value of OSPF Route Type External 1";
       }
-      enum EXTERNAL_2 {
+      enum external-2 {
         value 4;
         description
           "Value of OSPF Route Type External 2";
       }
-      enum NSSA_1 {
+      enum nssa-1 {
         value 5;
         description
           "Value of OSPF Route Type NSSA 1";
       }
-      enum NSSA_2 {
+      enum nssa-2 {
         value 6;
         description
           "Value of OSPF Route Type NSSA 2";
@@ -160,6 +166,9 @@
     }
     description
       "OSPF Route Type";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+       Information Using BGP, Section 3.2.3.";
  }
 
   typedef node-flag-bits {
@@ -198,7 +207,9 @@
     description
       "BGP-LS Node flag bits";
 
-    reference "https://tools.ietf.org/html/rfc7752#section-3.3.1.1";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+       Information Using BGP. Section 3.3.1.1";
   }
 
   typedef igp-flags-bits {
@@ -207,21 +218,24 @@
     }
     description
       "BGP-LS IGP flag bits";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+       Information Using BGP, Section 3.3.3.";
 }
 
-  identity BGPLS_TOPO_ATTR_TYPE {
+  identity bgpls-topo-attr-type {
     description
       "Base identity for BGPLS topology attribute type.";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_TYPE {
+  identity bgpls-topo-attr-fad-type {
     description
       "Base identity for BGPLS topology Flexible Algorithm Definition
        (FAD) attribute type.";
   }
 
-  identity BGPLS_TOPO_ATTR_MULTI_TOPOLOGY_ID {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-multi-topology-id {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 263. Multi-Topology IDs";
     reference
@@ -229,8 +243,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_NODE_MSD {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-node-msd {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 266. Node Maximum SID Depth";
     reference
@@ -238,8 +252,8 @@
       Border Gateway Protocol - Link State";
   }
 
-  identity BGPLS_TOPO_ATTR_NODE_FLAG_BITS {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-node-flag-bits {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1024. Bit mask describing node attributes";
     reference
@@ -247,8 +261,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_OPAQUE_NODE {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-opaque-node {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1025. Envelope that transparently carries optional
       Node Attribute TLVs advertised by a router";
@@ -257,8 +271,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_NODE_NAME {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-node-name {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1026. Symbolic name of the router node";
     reference
@@ -266,8 +280,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_ISIS_AREA_IDENTIFIER {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-isis-area-identifier {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1027. Area address of an ISIS area";
     reference
@@ -275,8 +289,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_LOCAL_IPV4_ROUTERID {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-local-ipv4-routerid {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1028. Auxiliary Router-ID used by the IGP";
     reference
@@ -284,8 +298,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_LOCAL_IPV6_ROUTERID {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-local-ipv6-routerid {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1029. Auxiliary Router-ID used by the IGP";
     reference
@@ -293,8 +307,8 @@
       Information Using BGP.";
   }
 
-  identity BGPLS_TOPO_ATTR_SR_CAPABILITIES {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-sr-capabilities {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1034. Node's Segment Routing (SR) capabilities";
     reference
@@ -302,8 +316,8 @@
        Extensions for Segment Routing";
   }
 
-  identity BGPLS_TOPO_ATTR_SR_ALGORITHM {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-sr-algorithm {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1035. Segment Routing (SR) algorithms supported by
        the node";
@@ -312,8 +326,8 @@
        Extensions for Segment Routing";
   }
 
-  identity BGPLS_TOPO_ATTR_SRLB {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-srlb {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1036. Range(s) of labels reserved by the node for
        local SIDs (Segment Identifiers)";
@@ -322,8 +336,8 @@
        Extensions for Segment Routing";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-fad {
+    base "bgpls-topo-attr-type";
     description
       "BGPLS TLV 1039. Definition of Flexible Algorithms (FA) supported
        by the node";
@@ -332,8 +346,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_EXCL_ANY_AFF {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-excl-any-aff {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV 1040. Exclude links carrying any of the specified
        affinities";
@@ -342,8 +356,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_INCL_ANY_AFF {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-incl-any-aff {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV 1041. Include links carrying any of the specified
        affinities";
@@ -352,8 +366,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_INCL_ALL_AFF {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-incl-all-aff {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV 1042. Include links carrying all of the specified
        affinities";
@@ -362,8 +376,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_FLAGS {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-flags {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV 1043. Flags associated with the FAD";
     reference
@@ -371,8 +385,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_EXCL_SRLG {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-excl-srlg {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV 1045. Exclude links associated with any of the
        specified (Shared Risk Link Group) SRLG";
@@ -381,8 +395,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FA_UNSUPPORTED {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fa-unsupported {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV 1046. Indicates the presence of unsupported
       Flexible Algorithm Definition (FAD) sub-TLVs";
@@ -391,8 +405,8 @@
        Extensions for Flexible Algorithm Advertisement";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_EXCL_MINIMUM_BW {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-excl-minimum-bw {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV TBD (1049). Exclude links not having a minimum
        specified bandwidth";
@@ -401,8 +415,8 @@
        Bandwidth, Delay, Metrics and Constraints";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_EXCL_MAXIMUM_DELAY {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-excl-maximum-delay {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV TBD (1050). Exclude links having delay above a maximum
       specified delay";
@@ -411,8 +425,8 @@
        Bandwidth, Delay, Metrics and Constraints";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_EXCL_ANY_REV_AFF {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-excl-any-rev-aff {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV TBD (1053). Exclude links carrying any of the
        specified affinities in the reverse direction";
@@ -421,8 +435,8 @@
        Affinity Constraint";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_INCL_ANY_REV_AFF {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-incl-any-rev-aff {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV TBD (1054). Include links carrying any of the
        specified affinities in the reverse direction";
@@ -431,8 +445,8 @@
        Affinity Constraint";
   }
 
-  identity BGPLS_TOPO_ATTR_FAD_INCL_ALL_REV_AFF {
-    base "BGPLS_TOPO_ATTR_FAD_TYPE";
+  identity bgpls-topo-attr-fad-incl-all-rev-aff {
+    base "bgpls-topo-attr-fad-type";
     description
       "BGPLS TLV TBD (1055). Include links carrying all of the
        specified affinities in the reverse direction";
@@ -441,8 +455,8 @@
        Affinity Constraint";
   }
 
-  identity BGPLS_TOPO_ATTR_UNKNOWNS {
-    base "BGPLS_TOPO_ATTR_TYPE";
+  identity bgpls-topo-attr-unknowns {
+    base "bgpls-topo-attr-type";
     description
       "Unknown BGPLS attribute TLVs.";
     reference
