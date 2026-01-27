@@ -10,7 +10,7 @@ module ietf-bgp-lsdb {
   }
 
   import ietf-bgp-ls-topo-types {
-    prefix bgpls-topo-t;
+    prefix bgp-ls-topo-t;
     reference
       "RFC XXXX: BGP Model for Link State Distribution.";
   }
@@ -81,7 +81,7 @@ module ietf-bgp-lsdb {
     description
       "Details for all databases under an application instance.";
 
-    container bgpls-topology {
+    container bgp-ls-topology {
       config false;
       description
         "Top level container for BGP-LS topology entries";
@@ -102,7 +102,7 @@ module ietf-bgp-lsdb {
           }
 
           leaf protocol {
-            type bgpls-topo-t:protocol;
+            type bgp-ls-topo-t:protocol;
             description
               "Protocol originating the NLRI.";
             reference
@@ -172,7 +172,7 @@ module ietf-bgp-lsdb {
                    Information Using BGP, Section 5.2.1.";
               }
 
-              uses bgpls-topo-node-attr;
+              uses bgp-ls-topo-node-attr;
             }
 
             list isis-node {
@@ -208,7 +208,7 @@ module ietf-bgp-lsdb {
                    Information Using BGP, Section 5.2.1.";
               }
 
-              uses bgpls-topo-node-attr;
+              uses bgp-ls-topo-node-attr;
             }
           }
 
