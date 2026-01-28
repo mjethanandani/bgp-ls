@@ -6,7 +6,7 @@ module ietf-bgp-ls {
   import ietf-yang-types {
     prefix yang;
     reference
-      "RFC 6991: Common YANG Data Types.";
+      "RFC 9911: Common YANG Data Types.";
   }
   import ietf-routing {
     prefix rt;
@@ -119,8 +119,8 @@ module ietf-bgp-ls {
     description
       "The Node Flag Bits TLV.";
     reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
   }
 
   identity opaque-node-attribute {
@@ -219,7 +219,8 @@ module ietf-bgp-ls {
           }
           enum uncreachable {
             description
-              "The link is unreachable in the current SPF topology.";
+              "The link is unreachable in the current SPF
+               topology.";
           }
         }
         default reachable;
@@ -258,8 +259,8 @@ module ietf-bgp-ls {
           "Maximum rate at which Link-State NLRIs will be
            advertised or withdrawn from neighbors.";
         reference
-          "RFC 9552: Distribution of Link-State and Traffic Engineering
-           Information Using BGP.";
+          "RFC 9552: Distribution of Link-State and Traffic
+           Engineering Information Using BGP.";
       }
 
       leaf max-number {
@@ -268,8 +269,8 @@ module ietf-bgp-ls {
           "Maximim number of Link-State NLRIs stored in a router's
            RIB.";
         reference
-          "RFC 9552: Distribution of Link-State and Traffic Engineering
-           Information Using BGP.";
+          "RFC 9552: Distribution of Link-State and Traffic
+           Engineering Information Using BGP.";
       }
     }
   }
@@ -532,16 +533,16 @@ module ietf-bgp-ls {
         "Include these for BGP Link-State specific statistics.";
     }
     description
-      "Augmentation of the global statistics counter to add BGP-LS
-       statistics.";
+      "Augmentation of the global statistics counter to add
+       BGP-LS statistics.";
 
     leaf updates-sent {
       type yang:zero-based-counter32;
       description
         "Total number of Link-State NLRI updates sent.";
       reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
     }
 
     leaf updates-received {
@@ -549,8 +550,8 @@ module ietf-bgp-ls {
       description
         "Total number of Link-State NLRI updates received.";
       reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
     }
 
     leaf local-ls-originated {
@@ -558,8 +559,8 @@ module ietf-bgp-ls {
       description
         "Total number of locally originated Link-State NLRIs.";
       reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
     }
 
     action clear {
@@ -595,8 +596,8 @@ module ietf-bgp-ls {
         "Include these for BGP Link-State SPF specific statistics.";
     }
     description
-      "Augmentation of the global statistics counter to add BGP-LS-SPF
-       statistics.";
+      "Augmentation of the global statistics counter to add
+       BGP-LS-SPF statistics.";
 
     leaf scheduled {
       type yang:zero-based-counter64;
@@ -656,10 +657,11 @@ module ietf-bgp-ls {
     leaf updates-sent {
       type yang:zero-based-counter32;
       description
-        "Total number of Link-State NLRIs updates sent per neighbor.";
+        "Total number of Link-State NLRIs updates sent per
+         neighbor.";
       reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
     }
 
     leaf updates-received {
@@ -668,8 +670,8 @@ module ietf-bgp-ls {
         "Total number of Link-State NLRIs updates received per
          neighbor.";
       reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
     }
 
     leaf error-updates-received {
@@ -678,8 +680,8 @@ module ietf-bgp-ls {
         "Total number of Link-State NLRIs updates received that
          were errored, per neighbor.";
       reference
-        "RFC 9552: Distribution of Link-State and Traffic Engineering
-         Information Using BGP.";
+        "RFC 9552: Distribution of Link-State and Traffic
+         Engineering Information Using BGP.";
     }
 
     leaf computations {
@@ -737,7 +739,8 @@ module ietf-bgp-ls {
 
   augment "/rt:routing/rt:control-plane-protocols" +
           "/rt:control-plane-protocol/bgp:bgp/bgp:peer-groups" +
-          "/bgp:peer-group/bgp:afi-safis/bgp:afi-safi/link-state-spf" {
+          "/bgp:peer-group/bgp:afi-safis/bgp:afi-safi/" +
+          "link-state-spf" {
     description
       "Augmentation of the BGP peer-groups to add BGL-LS.";
     uses bgp-neighbor-ls-common;

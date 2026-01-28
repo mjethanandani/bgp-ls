@@ -6,7 +6,7 @@ module ietf-bgp-lsdb {
   import ietf-inet-types {
     prefix inet;
     reference
-      "RFC 6991: Common YANG Data Types.";
+      "RFC 9911: Common YANG Data Types.";
   }
 
   import ietf-bgp-ls-topo-types {
@@ -106,18 +106,18 @@ module ietf-bgp-lsdb {
             description
               "Protocol originating the NLRI.";
             reference
-              "RFC 9552: Distribution of Link-State and Traffic Engineering
-               Information Using BGP, Section 5.2.";
+              "RFC 9552: Distribution of Link-State and Traffic
+               Engineering Information Using BGP, Section 5.2.";
           }
 
           leaf identifier {
             type uint64;
             description
-              "Instance identifier identifying the IGP routing domain 
-              where the NLRI belongs.";
+              "Instance identifier identifying the IGP routing
+               domain where the NLRI belongs.";
             reference
-              "RFC 9552: Distribution of Link-State and Traffic Engineering
-               Information Using BGP, Section 5.2.";
+              "RFC 9552: Distribution of Link-State and Traffic
+               Engineering Information Using BGP, Section 5.2.";
           }
 
           container nodes {
@@ -140,8 +140,9 @@ module ietf-bgp-lsdb {
                 description
                   "Area ID.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               leaf router-id {
@@ -149,8 +150,9 @@ module ietf-bgp-lsdb {
                 description
                   "Router ID.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               leaf dr-identifier {
@@ -158,8 +160,9 @@ module ietf-bgp-lsdb {
                 description
                   "Designated Router (DR) Identifier.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               leaf as {
@@ -168,8 +171,9 @@ module ietf-bgp-lsdb {
                   "Autonomous System (AS) number associated with the
                    BGP process originating the NLRI.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               uses bgp-ls-topo-node-attr;
@@ -185,8 +189,9 @@ module ietf-bgp-lsdb {
                 description
                   "System ID.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               leaf psn-id {
@@ -194,8 +199,9 @@ module ietf-bgp-lsdb {
                 description
                   "Pseudo Node Identifier (PSN ID).";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               leaf as {
@@ -204,8 +210,9 @@ module ietf-bgp-lsdb {
                   "Autonomous System (AS) number associated with the
                    BGP process originating the NLRI.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.1.";
+                  "RFC 9552: Distribution of Link-State and
+                   Traffic Engineering Information Using BGP,
+                   Section 5.2.1.";
               }
 
               uses bgp-ls-topo-node-attr;
@@ -228,8 +235,8 @@ module ietf-bgp-lsdb {
                 description
                   "NLRI.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.2.";
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP, Section 5.2.";
               }
 
               leaf attributes {
@@ -239,8 +246,8 @@ module ietf-bgp-lsdb {
                 description
                   "Attributes.";
                 reference
-                  "RFC 9552: Distribution of Link-State and Traffic Engineering
-                   Information Using BGP, Section 5.3.";
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP, Section 5.3.";
               }
             }
           }        
