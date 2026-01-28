@@ -230,8 +230,8 @@
 
   identity bgp-ls-topo-attr-fad-type {
     description
-      "Base identity for BGP-LS topology Flexible Algorithm Definition
-       (FAD) attribute type.";
+      "Base identity for BGP-LS topology Flexible Algorithm
+       Definition (FAD) attribute type.";
   }
 
   identity bgp-ls-topo-attr-multi-topology-id {
@@ -339,8 +339,8 @@
   identity bgp-ls-topo-attr-fad {
     base "bgp-ls-topo-attr-type";
     description
-      "BGP-LS TLV 1039. Definition of Flexible Algorithms (FA) supported
-       by the node";
+      "BGP-LS TLV 1039. Definition of Flexible Algorithms
+       (FA) supported by the node";
     reference
       "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
        Extensions for Flexible Algorithm Advertisement";
@@ -418,8 +418,8 @@
   identity bgp-ls-topo-attr-fad-excl-maximum-delay {
     base "bgp-ls-topo-attr-fad-type";
     description
-      "BGP-LS TLV TBD (1050). Exclude links having delay above a maximum
-      specified delay";
+      "BGP-LS TLV TBD (1050). Exclude links having delay
+       above a maximum specified delay";
     reference
       "RFC TBD: BGP-LS extensions for IP Flexible Algorithms and
        Bandwidth, Delay, Metrics and Constraints";
