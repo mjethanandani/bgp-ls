@@ -11,6 +11,12 @@ submodule ietf-bgp-ls-topo-attr {
       "RFC 9911: Common YANG Data Types.";
   }
 
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 9911: Common YANG Data Types.";
+  }
+
   import ietf-bgp-ls-topo-types { 
     prefix bgp-ls-topo-t;
     reference
@@ -126,9 +132,7 @@ submodule ietf-bgp-ls-topo-attr {
       "Grouping for the BGP-LS topology opaque attribute";
 
     leaf opaque-attrs {
-      type binary {
-        length "1..65535";
-      }
+      type yang:hex-string;
       description
         "Opaque attribute";
     }
@@ -177,7 +181,10 @@ submodule ietf-bgp-ls-topo-attr {
     leaf bw {
       type ietf-rt-t:bandwidth-ieee-float32;
       description
-        "Bandwidth";
+        "Bandwidth in IEEE 754 floating point format. BGP-LS defines
+         various bandwidth types.";
+      reference
+        "IEEE 754: IEEE Standard for Floating-Point Arithmetic.";
     }
   }
 
