@@ -1,5 +1,7 @@
 #!/bin/sh
 
-cd /app/draft
+cd /app/
+rm -rf bin
+cd draft
 make clean
 make
