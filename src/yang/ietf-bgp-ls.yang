@@ -20,7 +20,7 @@ module ietf-bgp-ls {
       "I-D.ietf-idr-bgp-model: BGP YANG Model for Service Provider
                                Networks.";
   }
-  import ietf-bgp-types {
+  import iana-bgp-types {
     prefix bt;
     reference
       "I-D.ietf-idr-bgp-model: BGP YANG Model for Service Provider
