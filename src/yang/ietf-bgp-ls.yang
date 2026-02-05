@@ -292,45 +292,6 @@ module ietf-bgp-ls {
     }
   }
 
-  grouping tlv {
-    description
-      "Generic grouping for all TLVs.";
-    leaf type {
-      type identityref {
-        base attribute-type;
-      }
-      description
-        "TLV type.";
-    }
-
-    leaf length {
-      type uint16;
-      description
-        "TLV length in octets.";
-    }
-
-    leaf value {
-      type yang:hex-string;
-      description
-        "TLV value in the form of a hex string.";
-    }
-  }
-  
-  grouping unknown-tlvs {
-    description
-      "Unknown TLVs grouping.  Used for unknown TLVs or
-       unknown sub-TLVs.";
-    container unknown-tlvs {
-      description
-        "All unknown TLVs.";
-      list unknown-tlv {
-        description
-          "Unknown TLV.";
-        uses tlv;
-      }
-    }
-  }
-
   augment "/rt:routing/rt:control-plane-protocols" +
           "/rt:control-plane-protocol/bgp:bgp/bgp:global" +
           "/bgp:afi-safis/bgp:afi-safi" {

@@ -256,9 +256,7 @@ submodule ietf-bgp-ls-topo-attr {
         }
 
         leaf value {
-          type binary {
-            length "1..65535";
-          }
+          type yang:hex-string;
           description
             "Attribute value.";
           reference

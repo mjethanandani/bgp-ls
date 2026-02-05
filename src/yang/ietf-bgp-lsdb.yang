@@ -9,6 +9,12 @@ module ietf-bgp-lsdb {
       "RFC 9911: Common YANG Data Types.";
   }
 
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 9911: Common YANG Data Types.";
+  }
+  
   import ietf-bgp-ls-topo-types {
     prefix bgp-ls-topo-t;
     reference
@@ -229,9 +235,7 @@ module ietf-bgp-lsdb {
                 "List of unknown types";
 
               leaf nlri {
-                type binary {
-                  length "1..65535";
-                }
+                type yang:hex-string;
                 description
                   "NLRI.";
                 reference
@@ -240,9 +244,7 @@ module ietf-bgp-lsdb {
               }
 
               leaf attributes {
-                type binary {
-                  length "1..65535";
-                }
+                type yang:hex-string;
                 description
                   "Attributes.";
                 reference
