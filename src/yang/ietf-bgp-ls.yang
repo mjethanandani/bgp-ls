@@ -97,7 +97,7 @@ module ietf-bgp-ls {
     description
       "BGP Link-State Shortest Path First (BGP-LS-SPF).";
     reference
-      "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
+      "RFC 9815: BGP Link-State SPF Routing.";
   }
 
   identity attribute-type {
@@ -651,16 +651,16 @@ module ietf-bgp-ls {
       type yang:zero-based-counter32;
       description
         "Count of number of SPF computations made.";
-      reference
-        "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
+        reference
+          "RFC 9815: BGP Link-State SPF Routing.";
     }
 
     leaf triggering-events {
       type yang:zero-based-counter32;
       description
         "SPF triggering events.";
-      reference
-        "I-D.ietf-lsvr-bgp-spf: BGP Link-State SPF Routing.";
+        reference
+          "RFC 9815: BGP Link-State SPF Routing.";
     }
 
     action clear {
