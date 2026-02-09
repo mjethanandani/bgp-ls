@@ -2,20 +2,17 @@ import os
 
 list_of_ietf_models =\
 [ 
-  ["ietf-bfd-types", "draft-ietf-bfd-rfc9127-bis", "01"],
-  ["ietf-tcp", "draft-ietf-tcpm-yang-tcp", "06"],
   ["ietf-if-extensions", "draft-ietf-netmod-intf-ext-yang", "10"],
   ["ietf-if-vlan-encapsulation", "draft-ietf-netmod-sub-intf-vlan-model", "07"],
   ["ietf-if-flexible-encapsulation", "draft-ietf-netmod-sub-intf-vlan-model", "07"],
-  ["ietf-crypto-types", "draft-ietf-netconf-crypto-types", "21"],
-  ["ietf-tcp-client", "draft-ietf-netconf-tcp-client-server", "12"],
-  ["ietf-tcp-server", "draft-ietf-netconf-tcp-client-server", "12"],
-    ["ietf-tcp-common", "draft-ietf-netconf-tcp-client-server", "12"],
-    ["ietf-bgp-common", "draft-ietf-idr-bgp-model", "13"],
-    ["ietf-bgp-neighbor", "draft-ietf-idr-bgp-model", "13"],
-    ["ietf-bgp-types", "draft-ietf-idr-bgp-model", "13"],
-    ["ietf-bgp-common-multiprotocol", "draft-ietf-idr-bgp-model", "13"],
-    ["ietf-bgp", "draft-ietf-idr-bgp-model", "13"]
+    ["ietf-bgp-common", "draft-ietf-idr-bgp-model", "18"],
+    ["ietf-bgp-neighbor", "draft-ietf-idr-bgp-model", "18"],
+    ["iana-bgp-types", "draft-ietf-idr-bgp-model", "18"],
+    ["iana-bgp-notification", "draft-ietf-idr-bgp-model", "18"],
+    ["ietf-bgp-common-multiprotocol", "draft-ietf-idr-bgp-model", "18"],
+    ["iana-bgp-community-types", "draft-ietf-idr-bgp-model", "18"],
+    ["iana-bgp-rib-types", "draft-ietf-idr-bgp-model", "18"],
+    ["ietf-bgp", "draft-ietf-idr-bgp-model", "18"]
 ]
 
 

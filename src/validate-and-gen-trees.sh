@@ -27,10 +27,12 @@ do
         printf "$name.yang failed pyang validation\n"
         printf "$response\n\n"
         echo
-	rm yang/*-tree.txt.tmp
+	    rm yang/*-tree.txt.tmp
         exit 1
     fi
     fold -w 71 $name-tree.txt.tmp > $name-tree.txt
+    sed -e 's/\[/(/g' -e 's/\]/)/g' $name-tree.txt > $name-tree.txt.tmp2
+    mv $name-tree.txt.tmp2 $name-tree.txt
     response=`yanglint -p ../bin/iana/yang-parameters -p ../bin $name.yang -i`
     if [ $? -ne 0 ]; then
         printf "$name.yang failed yanglint validation\n"
@@ -60,6 +62,8 @@ do
         exit 1
     fi
     fold -w 71 $name-sub-tree.txt.tmp > $name-sub-tree.txt
+    sed -e 's/\[/(/g' -e 's/\]/)/g' $name-sub-tree.txt > $name-sub-tree.txt.tmp2
+    mv $name-sub-tree.txt.tmp2 $name-sub-tree.txt
 done
 rm ../bin/*-sub-tree.txt.tmp
 

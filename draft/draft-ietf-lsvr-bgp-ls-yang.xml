@@ -79,14 +79,14 @@
     
     <section>
       <name>Introduction</name>
-      <t><xref target="RFC7752">North-Bound Distribution of Link-State
+      <t><xref target="RFC9552">North-Bound Distribution of Link-State
       (LS) and Traffic Engineering (TE) Information Using BGP</xref>
       describes a mechanism by which LS and TE information can be
       collected and shared with external components using BGP routing
       protocol. That LS combined with Shortest Path First (SPF)
       algorithm can be used by BGP for making routing
       decisions. Additionally, <xref
-      target="I-D.ietf-lsvr-bgp-spf">BGP Link-State Shortest Path
+      target="RFC9815">BGP Link-State Shortest Path
       First (SPF) Routing</xref> describes how it allows BGP to be
       used efficiently as both the underlay and the overlay protocol
       in Many Massively Scaled Data Centers (MSDC). This document
@@ -181,7 +181,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
 	ability to clear statistics will be supported.
 	</t>
       
-	<t>The model imports <xref target="RFC6991">Common YANG Data
+  <t>The model imports <xref target="RFC9911">Common YANG Data
 	Types </xref>, <xref target="RFC8349">A YANG Data Model for
 	Routing Management(NMDA Version)</xref>, and <xref
 	target="I-D.ietf-idr-bgp-model">BGP Model for Service
@@ -200,7 +200,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
       </section>
       <section>
 	<name>BGP Link-State Database YANG model</name>
-	<t>The model imports <xref target="RFC6991">Common YANG Data
+  <t>The model imports <xref target="RFC9911">Common YANG Data
 	Types </xref>
 	</t>
 	<figure>
@@ -324,8 +324,6 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6020.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6241.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6242.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6991.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7752.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7950.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8040.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
@@ -334,8 +332,10 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8342.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
-	<?rfc include='reference.I-D.ietf-idr-bgp-model.xml'?>
-	<?rfc include='reference.I-D.ietf-lsvr-bgp-spf.xml'?>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9552.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9815.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9911.xml"/>
+        <?rfc include='reference.I-D.ietf-idr-bgp-model.xml'?>
       </references>
  
       <references>
