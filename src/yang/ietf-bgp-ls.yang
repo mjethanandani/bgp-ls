@@ -40,7 +40,8 @@ module ietf-bgp-ls {
      WG List:  <lsvr@ietf.org>
 
      Authors: Mahesh Jethanandani (mjethanandani at gmail.com),
-              Keyur Patel (keyur at arrcus.com)";
+              Keyur Patel (keyur at arrcus.com),
+              Aravind Babu MahendraBabu (aramahen at cisco.com)";
 
   description
     "This module contains contains management

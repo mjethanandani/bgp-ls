@@ -13,7 +13,8 @@
      WG List:  <lsvr@ietf.org>
 
      Authors: Mahesh Jethanandani (mjethanandani at gmail.com),
-              Keyur Patel (keyur at arrcus.com)";
+              Keyur Patel (keyur at arrcus.com),
+              Aravind Babu MahendraBabu (aramahen at cisco.com)";
 
   description
     "Defines identity and type definitions associated with BGP-LS 
