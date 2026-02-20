@@ -33,13 +33,8 @@ module ietf-bgp-lsdb {
       "RFC 9130: YANG Data Model for IS-IS Protocol.";
   }
 
-  import ietf-ospf {
-    prefix ietf-ospf-t;
-    reference
-      "RFC 9129: YANG Data Model for the OSPF Protocol.";
-  }
-
   include ietf-bgp-ls-topo-attr;
+  include ietf-bgp-ls-topo-ospf;
 
   organization
     "IETF LSVR Working Group";
@@ -135,52 +130,17 @@ module ietf-bgp-lsdb {
               description
                 "List of node types";
 
-              leaf is-as-scoped {
-                type boolean;
-                description
-                  "Is area ID valid?";
-              }
+              uses bgp-ls-ospf-node-common;
 
-              leaf area-id {
-                type ietf-ospf-t:area-id-type;
-                description
-                  "Area ID.";
-                reference
-                  "RFC 9552: Distribution of Link-State and
-                   Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
-              }
+              uses bgp-ls-topo-node-attr;
+            }
 
-              leaf router-id {
-                type ietf-rt-t:router-id;
-                description
-                  "Router ID.";
-                reference
-                  "RFC 9552: Distribution of Link-State and
-                   Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
-              }
+            list ospfv3-node {
+              key "is-as-scoped area-id router-id dr-identifier as";
+              description
+                "List of node types";
 
-              leaf dr-identifier {
-                type inet:ipv4-address;
-                description
-                  "Designated Router (DR) Identifier.";
-                reference
-                  "RFC 9552: Distribution of Link-State and
-                   Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
-              }
-
-              leaf as {
-                type inet:as-number;
-                description
-                  "Autonomous System (AS) number associated with the
-                   BGP process originating the NLRI.";
-                reference
-                  "RFC 9552: Distribution of Link-State and
-                   Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
-              }
+              uses bgp-ls-ospf-node-common;
 
               uses bgp-ls-topo-node-attr;
             }
@@ -225,10 +185,555 @@ module ietf-bgp-lsdb {
             }
           }
 
+          container links {
+            description 
+              "BGP-LS topology entries for links";
+
+            list ospf-link {
+              key "is-as-scoped area-id local-as local-router-id " +
+                  "local-dr-identifier remote-as " +
+                  "remote-router-id remote-dr-identifier " +
+                  "local-id remote-id " +
+                  "local-ipv4-address remote-ipv4-address " +
+                  "local-ipv6-address remote-ipv6-address " +
+                  "multi-topology-id";
+              description
+                "List of OSPFv2 link types";
+
+              uses bgp-ls-ospf-link-common;
+              uses bgp-ls-topo-igp-link-attr;
+            }
+
+            list ospfv3-link {
+              key "is-as-scoped area-id local-as local-router-id " +
+                  "local-dr-identifier remote-as " +
+                  "remote-router-id remote-dr-identifier " +
+                  "local-id remote-id " +
+                  "local-ipv4-address remote-ipv4-address " +
+                  "local-ipv6-address remote-ipv6-address " +
+                  "multi-topology-id";
+              description
+                "List of OSPFv3 link types";
+
+              uses bgp-ls-ospf-link-common;
+              uses bgp-ls-topo-igp-link-attr;
+            }
+
+            list isis-link {
+              key "local-system-id local-psn-id local-as " +
+                  "remote-system-id remote-psn-id remote-as " +
+                  "local-id remote-id local-ipv4-address " +
+                  "remote-ipv4-address local-ipv6-address " +
+                  "remote-ipv6-address multi-topology-id";
+              description
+                "List of ISIS link types";
+
+              leaf local-system-id {
+                type ietf-isis-t:system-id;
+                description
+                  "Local System ID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf local-psn-id {
+                type uint8;
+                description
+                  "Local Pseudo Node Identifier (PSN ID).";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf local-as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf remote-system-id {
+                type ietf-isis-t:system-id;
+                description
+                  "Remote System ID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf remote-psn-id {
+                type uint8;
+                description
+                  "Remote Pseudo Node Identifier (PSN ID).";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf remote-as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf local-id {
+                type uint32;
+                description
+                  "Local Identifier of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.";
+              }
+
+              leaf remote-id {
+                type uint32;
+                description
+                  "Remote Identifier of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.";
+              }
+
+              leaf local-ipv4-address {
+                type inet:ipv4-address;
+                description
+                  "Local IPv4 address of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.";
+              }
+
+              leaf remote-ipv4-address {
+                type inet:ipv4-address;
+                description
+                  "Remote IPv4 address of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.";
+              }
+
+              leaf local-ipv6-address {
+                type inet:ipv6-address;
+                description
+                  "Local IPv6 address of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.";
+              }
+
+              leaf remote-ipv6-address {
+                type inet:ipv6-address;
+                description
+                  "Remote IPv6 address of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.";
+              }
+
+              leaf multi-topology-id {
+                type uint16;
+                description
+                  "Multi Topology Identifier (MTID) of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.1.";
+              }
+
+              uses bgp-ls-topo-igp-link-attr;
+            }
+
+            list bgp-link {
+              key "local-as local-router-id remote-as " +
+                  "remote-router-id local-id remote-id " +
+                  "local-ipv4-address remote-ipv4-address " +
+                  "local-ipv6-address remote-ipv6-address " +
+                  "multi-topology-id";
+              description
+                "List of BGP link types";
+
+              leaf local-as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number or AS
+                   Confederation Identifier.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2.";
+              }
+
+              leaf local-router-id {
+                type ietf-rt-t:router-id;
+                description
+                  "Local BGP Router ID.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2.";
+              }
+
+              leaf remote-as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number or AS
+                   Confederation Identifier.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2.";
+              }
+
+              leaf remote-router-id {
+                type ietf-rt-t:router-id;
+                description
+                  "Remote BGP Router ID.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2.";
+              }
+
+              leaf local-id {
+                type uint32;
+                description
+                  "Local Identifier of a link.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 5.3.";
+              }
+
+              leaf remote-id {
+                type uint32;
+                description
+                  "Remote Identifier of a link.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 5.3.";
+              }
+
+              leaf local-ipv4-address {
+                type inet:ipv4-address;
+                description
+                  "Local IPv4 address of a link.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 5.2.";
+              }
+
+              leaf remote-ipv4-address {
+                type inet:ipv4-address;
+                description
+                  "Remote IPv4 address of a link.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 5.2.";
+              }
+
+              leaf local-ipv6-address {
+                type inet:ipv6-address;
+                description
+                  "Local IPv6 address of a link.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 5.2.";
+              }
+
+              leaf remote-ipv6-address {
+                type inet:ipv6-address;
+                description
+                  "Remote IPv6 address of a link.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 5.2.";
+              }
+
+              leaf multi-topology-id {
+                type uint16;
+                description
+                  "Multi Topology Identifier (MTID) of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.1.";
+              }
+
+              uses bgp-ls-topo-bgp-link-attr;
+            }
+          }
+
+          container prefixes {
+            description
+              "BGP-LS topology entries for prefixes";
+
+            list ospf-prefix {
+              key "is-as-scoped as router-id dr-identifier " +
+                  "multi-topology-id route-type prefix";
+              description
+                "List of OSPFv2 prefix types";
+
+              uses bgp-ls-ospf-prefix-common;
+              uses bgp-ls-topo-prefix-attr;
+            }
+
+            list ospfv3-prefix {
+              key "is-as-scoped as router-id dr-identifier " +
+                  "multi-topology-id route-type prefix";
+              description
+                "List of OSPFv3 prefix types";
+
+              uses bgp-ls-ospf-prefix-common;
+              uses bgp-ls-topo-prefix-attr;
+            }
+
+            list isis-prefix {
+              key "system-id psn-id as multi-topology-id prefix";
+              description
+                "List of ISIS prefix types";
+
+              leaf system-id {
+                type ietf-isis-t:system-id;
+                description
+                  "System ID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf psn-id {
+                type uint8;
+                description
+                  "Pseudo Node Identifier (PSN ID).";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.";
+              }
+
+              leaf multi-topology-id {
+                type uint16;
+                description
+                  "Multi Topology Identifier (MTID) of a prefix.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.1.";
+              }
+
+              leaf prefix {
+                type inet:ip-prefix;
+                description
+                  "IP address prefix (IPv4 or IPv6) advertised in
+                   the IGP topology.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.3.2.";
+              }
+            }
+
+            uses bgp-ls-topo-prefix-attr;
+          }
+
+          container srv6-sids {
+            description
+              "BGP-LS topology entries for SRv6 SIDs";
+
+            list ospf-srv6-sid {
+              key "router-id dr-identifier as sid multi-topology-id";
+              description
+                "List of OSPF SRv6 SID types";
+
+              leaf router-id {
+                type ietf-rt-t:router-id;
+                description
+                  "Router ID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf dr-identifier {
+                type union {
+                  type inet:ipv4-address;
+                  type uint32;
+                }
+                description
+                  "Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.";
+              }
+
+              leaf sid {
+                type inet:ipv6-prefix;
+                description
+                  "SRv6 SID.";
+                reference
+                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.";
+              }
+
+              leaf multi-topology-id {
+                type uint16;
+                description
+                  "Multi Topology Identifier (MTID) of a SRv6 SID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.1.";
+              }
+
+              uses bgp-ls-topo-srv6-sid-attr;
+            }
+
+            list isis-srv6-sid {
+              key "system-id psn-id as sid multi-topology-id";
+              description
+                "List of ISIS SRv6 SID types";
+
+              leaf system-id {
+                type ietf-isis-t:system-id;
+                description
+                  "System ID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf psn-id {
+                type uint8;
+                description
+                  "Pseudo Node Identifier (PSN ID).";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number associated with the
+                   BGP process originating the NLRI.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.";
+              }
+
+              leaf sid {
+                type inet:ipv6-prefix;
+                description
+                  "SRv6 SID.";
+                reference
+                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.";
+              }
+
+              leaf multi-topology-id {
+                type uint16;
+                description
+                  "Multi Topology Identifier (MTID) of a SRv6 SID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.1.";
+              }
+
+              uses bgp-ls-topo-srv6-sid-attr;
+            }
+
+            list bgp-srv6-sid {
+              key "router-id as sid multi-topology-id";
+              description
+                "List of BGP SRv6 SID types";
+
+              leaf router-id {
+                type ietf-rt-t:router-id;
+                description
+                  "BGP Router ID.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2.";
+              }
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number or AS
+                   Confederation Identifier.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2.";
+              }
+
+              leaf sid {
+                type inet:ipv6-prefix;
+                description
+                  "SRv6 SID.";
+                reference
+                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.";
+              }
+
+              leaf multi-topology-id {
+                type uint16;
+                description
+                  "Multi Topology Identifier (MTID) of a SRv6 SID.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2.1.";
+              }
+
+              uses bgp-ls-topo-bgp-srv6-sid-attr;
+            }
+          }
+
           container unknowns {
             description
-              "BGP-LS topology entries for unknown NLRIs -- active 
-              when the nlri-type is unknown";
+              "BGP-LS topology entries for unknown NLRIs -- active
+               when the nlri-type is unknown";
             list unknown {
               key "nlri";
               description
@@ -240,7 +745,8 @@ module ietf-bgp-lsdb {
                   "NLRI.";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
-                   Engineering Information Using BGP, Section 5.2.";
+                   Engineering Information Using BGP,
+                   Section 5.2.";
               }
 
               leaf attributes {
@@ -249,7 +755,8 @@ module ietf-bgp-lsdb {
                   "Attributes.";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
-                   Engineering Information Using BGP, Section 5.3.";
+                   Engineering Information Using BGP,
+                   Section 5.3.";
               }
             }
           }        
