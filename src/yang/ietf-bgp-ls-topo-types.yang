@@ -233,6 +233,57 @@
        Information Using BGP, Section 3.3.3.";
   }
 
+  typedef adj-sid-format {
+    type enumeration {
+      enum label {
+        value 1;
+        description
+          "SID represented as an MPLS label value.";
+      }
+      enum index {
+        value 2;
+        description
+          "SID represented as an index value.";
+      }
+    }
+    description
+      "Format of an adjacency SID value.";
+  }
+
+  typedef pfx-sid-format {
+    type enumeration {
+      enum label {
+        value 1;
+        description
+          "SID represented as an MPLS label value.";
+      }
+      enum index {
+        value 2;
+        description
+          "SID represented as an index value.";
+      }
+    }
+    description
+      "Format of a prefix SID value.";
+  }
+
+  typedef bgp-peer-sid-format {
+    type enumeration {
+      enum label {
+        value 1;
+        description
+          "SID represented as an MPLS label value.";
+      }
+      enum index {
+        value 2;
+        description
+          "SID represented as an index value.";
+      }
+    }
+    description
+      "Format of a BGP peer SID value.";
+  }
+
   identity bgp-ls-topo-attr-type {
     description
       "Base identity for BGP-LS topology attribute type.";

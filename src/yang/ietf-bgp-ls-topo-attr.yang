@@ -210,7 +210,7 @@ submodule ietf-bgp-ls-topo-attr {
     }
 
     leaf format {
-      type uint8;
+      type bgp-ls-topo-t:adj-sid-format;
       description
         "Format of the SID";
     }
@@ -639,17 +639,32 @@ submodule ietf-bgp-ls-topo-attr {
           "List of Application Specific Link Attributes (ASLA)";
 
         leaf sabm {
-          type uint32;
+          type binary {
+            length "0|4|8";
+          }
           description
-            "Standard Application Identifier Bit Mask (SABM). Each
-             bit represents a single standard application";
+            "Standard Application Identifier Bit Mask (SABM).
+             Optional bit mask of length 0, 4, or 8 octets where
+             each bit represents a single standard application.";
+          reference
+            "RFC 9294: Application-Specific Link Attributes
+             Advertisement Using the Border Gateway Protocol - Link
+             State (BGP-LS), Section 3.2; RFC 8920.";
         }
 
         leaf udabm {
-          type uint32;
+          type binary {
+            length "0|4|8";
+          }
           description
             "User-Defined Application Identifier Bit Mask (UDABM).
-             Each bit represents a single user-defined application";
+             Optional bit mask of length 0, 4, or 8 octets where
+             each bit represents a single user-defined
+             application.";
+          reference
+            "RFC 9294: Application-Specific Link Attributes
+             Advertisement Using the Border Gateway Protocol - Link
+             State (BGP-LS), Section 3.2; RFC 8920.";
         }
 
         list asla-attribute {
@@ -887,7 +902,7 @@ submodule ietf-bgp-ls-topo-attr {
         container include-all-affinity {
           when "derived-from-or-self(../type, " +
                "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-incl-any-aff')" {
+               "bgp-ls-topo-attr-fad-incl-all-aff')" {
             description
               "Only include the include-all-affinity container when 
               the type is 
@@ -1249,7 +1264,7 @@ submodule ietf-bgp-ls-topo-attr {
 
           leaf name {
             type string {
-              length "1..65535";
+              length "1..255";
             }
             description
               "Node name";
@@ -1332,17 +1347,6 @@ submodule ietf-bgp-ls-topo-attr {
               description
                 "Number of labels in the range";
             }
-          }
-
-          leaf isis-flags {
-            type binary {
-              length "1";
-            }
-            description
-              "ISIS flags for IS-IS.";
-            reference
-              "RFC 8667: IS-IS Extensions for Segment Routing,
-               Section 3.3.";
           }
         }
 
@@ -1502,7 +1506,6 @@ submodule ietf-bgp-ls-topo-attr {
             "The type of link attribute";
         }
 
-        uses bgp-ls-topo-common-link-l2-bundle-member-attr;
         uses bgp-ls-topo-common-link-asla-l2-bundle-member-attr;
 
         container link-local-remote-identifiers {
@@ -1719,7 +1722,7 @@ submodule ietf-bgp-ls-topo-attr {
 
           leaf name {
             type string {
-              length "1..65535";
+              length "1..255";
             }
             description
               "Link name";
@@ -1783,6 +1786,8 @@ submodule ietf-bgp-ls-topo-attr {
           }
         }
 
+        uses bgp-ls-topo-common-link-l2-bundle-member-attr;
+
         container l2-bundle-members {
           when "derived-from-or-self(../type, " +
                "'bgp-ls-topo-t:" +
@@ -1824,9 +1829,9 @@ submodule ietf-bgp-ls-topo-attr {
                   "The type of bundle member attribute";
               }
 
-              uses bgp-ls-topo-common-link-l2-bundle-member-attr;
               uses
                 bgp-ls-topo-common-link-asla-l2-bundle-member-attr;
+              uses bgp-ls-topo-common-link-l2-bundle-member-attr;
             }
           }
         }
@@ -1894,7 +1899,7 @@ submodule ietf-bgp-ls-topo-attr {
             }
 
             leaf format {
-              type uint8;
+              type bgp-ls-topo-t:bgp-peer-sid-format;
               description
                 "Format of the SID";
             }
@@ -2139,7 +2144,7 @@ submodule ietf-bgp-ls-topo-attr {
             }
 
             leaf format {
-              type uint8;
+              type bgp-ls-topo-t:pfx-sid-format;
               description
                 "Format of the SID";
             }
@@ -2360,6 +2365,10 @@ submodule ietf-bgp-ls-topo-attr {
           }
           description
             "This container contains the SRv6 endpoint behavior.";
+          reference
+            "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
+             Extensions for Segment Routing over IPv6 (SRv6).
+             SRv6 endpoint behavior. TLV 1250.";
 
           uses bgp-ls-topo-srv6-endpoint-behavior-attr;
         }
@@ -2375,6 +2384,10 @@ submodule ietf-bgp-ls-topo-attr {
           }
           description
             "This container defines the SRv6 SID structure.";
+          reference
+            "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
+             Extensions for Segment Routing over IPv6 (SRv6).
+             SRv6 SID structure. TLV 1252.";
 
           uses bgp-ls-topo-srv6-sid-struct-attr;
         }
@@ -2434,6 +2447,10 @@ submodule ietf-bgp-ls-topo-attr {
           }
           description
             "This container contains the SRv6 BGP peer node SID.";
+          reference
+            "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
+             Extensions for Segment Routing over IPv6 (SRv6).
+             SRv6 BGP peer node SID. TLV 1251.";
 
           leaf flags {
             type uint32;

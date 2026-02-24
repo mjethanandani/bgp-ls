@@ -128,7 +128,7 @@ module ietf-bgp-lsdb {
             list ospf-node {
               key "is-as-scoped area-id router-id dr-identifier as";
               description
-                "List of node types";
+                "List of OSPFv2 nodes";
 
               uses bgp-ls-ospf-node-common;
 
@@ -138,7 +138,7 @@ module ietf-bgp-lsdb {
             list ospfv3-node {
               key "is-as-scoped area-id router-id dr-identifier as";
               description
-                "List of node types";
+                "List of OSPFv3 nodes";
 
               uses bgp-ls-ospf-node-common;
 
@@ -148,7 +148,7 @@ module ietf-bgp-lsdb {
             list isis-node {
               key "system-id psn-id as";
               description
-                "List of node types";
+                "List of IS-IS nodes";
 
               leaf system-id {
                 type ietf-isis-t:system-id;
@@ -157,7 +157,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and
                    Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf psn-id {
@@ -167,7 +167,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and
                    Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf as {
@@ -178,7 +178,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and
                    Traffic Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 512.";
               }
 
               uses bgp-ls-topo-node-attr;
@@ -190,8 +190,8 @@ module ietf-bgp-lsdb {
               "BGP-LS topology entries for links";
 
             list ospf-link {
-              key "is-as-scoped area-id local-as local-router-id " +
-                  "local-dr-identifier remote-as " +
+              key "area-id as local-router-id " +
+                  "local-dr-identifier " +
                   "remote-router-id remote-dr-identifier " +
                   "local-id remote-id " +
                   "local-ipv4-address remote-ipv4-address " +
@@ -205,8 +205,8 @@ module ietf-bgp-lsdb {
             }
 
             list ospfv3-link {
-              key "is-as-scoped area-id local-as local-router-id " +
-                  "local-dr-identifier remote-as " +
+              key "area-id as local-router-id " +
+                  "local-dr-identifier " +
                   "remote-router-id remote-dr-identifier " +
                   "local-id remote-id " +
                   "local-ipv4-address remote-ipv4-address " +
@@ -235,7 +235,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf local-psn-id {
@@ -245,7 +245,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf local-as {
@@ -256,7 +256,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 512.";
               }
 
               leaf remote-system-id {
@@ -266,7 +266,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf remote-psn-id {
@@ -276,7 +276,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf remote-as {
@@ -287,7 +287,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 512.";
               }
 
               leaf local-id {
@@ -297,7 +297,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.";
+                   Section 5.2.2. TLV 258.";
               }
 
               leaf remote-id {
@@ -307,7 +307,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.";
+                   Section 5.2.2. TLV 258.";
               }
 
               leaf local-ipv4-address {
@@ -317,7 +317,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.";
+                   Section 5.2.2. TLV 259.";
               }
 
               leaf remote-ipv4-address {
@@ -327,7 +327,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.";
+                   Section 5.2.2. TLV 260.";
               }
 
               leaf local-ipv6-address {
@@ -337,7 +337,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.";
+                   Section 5.2.2. TLV 261.";
               }
 
               leaf remote-ipv6-address {
@@ -347,7 +347,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.";
+                   Section 5.2.2. TLV 262.";
               }
 
               leaf multi-topology-id {
@@ -357,7 +357,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.1.";
+                   Section 5.2.2.1. TLV 263.";
               }
 
               uses bgp-ls-topo-igp-link-attr;
@@ -379,7 +379,7 @@ module ietf-bgp-lsdb {
                    Confederation Identifier.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2.";
+                   Segments, Section 4.2. TLV 512.";
               }
 
               leaf local-router-id {
@@ -388,7 +388,7 @@ module ietf-bgp-lsdb {
                   "Local BGP Router ID.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2.";
+                   Segments, Section 4.2. TLV 516.";
               }
 
               leaf remote-as {
@@ -398,7 +398,7 @@ module ietf-bgp-lsdb {
                    Confederation Identifier.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2.";
+                   Segments, Section 4.2. TLV 512.";
               }
 
               leaf remote-router-id {
@@ -407,7 +407,7 @@ module ietf-bgp-lsdb {
                   "Remote BGP Router ID.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2.";
+                   Segments, Section 4.2. TLV 516.";
               }
 
               leaf local-id {
@@ -416,7 +416,7 @@ module ietf-bgp-lsdb {
                   "Local Identifier of a link.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 5.3.";
+                   Segments, Section 5.3. TLV 258.";
               }
 
               leaf remote-id {
@@ -425,7 +425,7 @@ module ietf-bgp-lsdb {
                   "Remote Identifier of a link.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 5.3.";
+                   Segments, Section 5.3. TLV 258.";
               }
 
               leaf local-ipv4-address {
@@ -434,7 +434,7 @@ module ietf-bgp-lsdb {
                   "Local IPv4 address of a link.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 5.2.";
+                   Segments, Section 5.2. TLV 259.";
               }
 
               leaf remote-ipv4-address {
@@ -443,7 +443,7 @@ module ietf-bgp-lsdb {
                   "Remote IPv4 address of a link.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 5.2.";
+                   Segments, Section 5.2. TLV 260.";
               }
 
               leaf local-ipv6-address {
@@ -452,7 +452,7 @@ module ietf-bgp-lsdb {
                   "Local IPv6 address of a link.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 5.2.";
+                   Segments, Section 5.2. TLV 261.";
               }
 
               leaf remote-ipv6-address {
@@ -461,7 +461,7 @@ module ietf-bgp-lsdb {
                   "Remote IPv6 address of a link.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 5.2.";
+                   Segments, Section 5.2. TLV 262.";
               }
 
               leaf multi-topology-id {
@@ -471,7 +471,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.1.";
+                   Section 5.2.2.1. TLV 263.";
               }
 
               uses bgp-ls-topo-bgp-link-attr;
@@ -483,7 +483,8 @@ module ietf-bgp-lsdb {
               "BGP-LS topology entries for prefixes";
 
             list ospf-prefix {
-              key "is-as-scoped as router-id dr-identifier " +
+              key "is-as-scoped area-id as " +
+                  "router-id dr-identifier " +
                   "multi-topology-id route-type prefix";
               description
                 "List of OSPFv2 prefix types";
@@ -493,7 +494,8 @@ module ietf-bgp-lsdb {
             }
 
             list ospfv3-prefix {
-              key "is-as-scoped as router-id dr-identifier " +
+              key "is-as-scoped area-id as " +
+                  "router-id dr-identifier " +
                   "multi-topology-id route-type prefix";
               description
                 "List of OSPFv3 prefix types";
@@ -514,7 +516,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf psn-id {
@@ -524,7 +526,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf as {
@@ -535,7 +537,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.";
+                   Section 5.2. TLV 512.";
               }
 
               leaf multi-topology-id {
@@ -545,7 +547,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.1.";
+                   Section 5.2.2.1. TLV 263.";
               }
 
               leaf prefix {
@@ -556,7 +558,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.3.2.";
+                   Section 5.2.3.2. TLV 265.";
               }
             }
 
@@ -567,10 +569,32 @@ module ietf-bgp-lsdb {
             description
               "BGP-LS topology entries for SRv6 SIDs";
 
-            list ospf-srv6-sid {
-              key "router-id dr-identifier as sid multi-topology-id";
+            list ospfv3-srv6-sid {
+              key "is-as-scoped area-id router-id " +
+                  "dr-identifier as sid multi-topology-id";
               description
                 "List of OSPF SRv6 SID types";
+
+              leaf is-as-scoped {
+                type boolean;
+                description
+                  "Flag indicating whether the OSPF link-state
+                   identifier is AS scoped.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1.";
+              }
+
+              leaf area-id {
+                type inet:ipv4-address;
+                description
+                  "OSPF area identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 514.";
+              }
 
               leaf router-id {
                 type ietf-rt-t:router-id;
@@ -579,20 +603,17 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf dr-identifier {
-                type union {
-                  type inet:ipv4-address;
-                  type uint32;
-                }
+                type uint32;
                 description
                   "Designated Router (DR) Identifier.";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf as {
@@ -603,7 +624,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.";
+                   Section 5.2. TLV 512.";
               }
 
               leaf sid {
@@ -611,7 +632,8 @@ module ietf-bgp-lsdb {
                 description
                   "SRv6 SID.";
                 reference
-                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.";
+                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.
+                   TLV 518.";
               }
 
               leaf multi-topology-id {
@@ -621,7 +643,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.1.";
+                   Section 5.2.2.1. TLV 263.";
               }
 
               uses bgp-ls-topo-srv6-sid-attr;
@@ -639,7 +661,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf psn-id {
@@ -649,7 +671,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.1.";
+                   Section 5.2.1. TLV 515.";
               }
 
               leaf as {
@@ -660,7 +682,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.";
+                   Section 5.2. TLV 512.";
               }
 
               leaf sid {
@@ -668,7 +690,8 @@ module ietf-bgp-lsdb {
                 description
                   "SRv6 SID.";
                 reference
-                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.";
+                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.
+                   TLV 518.";
               }
 
               leaf multi-topology-id {
@@ -678,7 +701,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.1.";
+                   Section 5.2.2.1. TLV 263.";
               }
 
               uses bgp-ls-topo-srv6-sid-attr;
@@ -695,7 +718,7 @@ module ietf-bgp-lsdb {
                   "BGP Router ID.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2.";
+                   Segments, Section 4.2. TLV 516.";
               }
 
               leaf as {
@@ -705,7 +728,7 @@ module ietf-bgp-lsdb {
                    Confederation Identifier.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2.";
+                   Segments, Section 4.2. TLV 517.";
               }
 
               leaf sid {
@@ -713,7 +736,8 @@ module ietf-bgp-lsdb {
                 description
                   "SRv6 SID.";
                 reference
-                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.";
+                  "RFC 9514: BGP-LS SRv6 Extensions, Section 6.1.
+                   TLV 518.";
               }
 
               leaf multi-topology-id {
@@ -723,7 +747,7 @@ module ietf-bgp-lsdb {
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
-                   Section 5.2.2.1.";
+                   Section 5.2.2.1. TLV 263.";
               }
 
               uses bgp-ls-topo-bgp-srv6-sid-attr;
