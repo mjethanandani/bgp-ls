@@ -195,12 +195,32 @@ module ietf-bgp-lsdb {
                   "remote-router-id remote-dr-identifier " +
                   "local-id remote-id " +
                   "local-ipv4-address remote-ipv4-address " +
-                  "local-ipv6-address remote-ipv6-address " +
                   "multi-topology-id";
               description
                 "List of OSPFv2 link types";
 
               uses bgp-ls-ospf-link-common;
+
+              leaf local-dr-identifier {
+                type inet:ipv4-address;
+                description
+                  "Local Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 515.";
+              }
+
+              leaf remote-dr-identifier {
+                type inet:ipv4-address;
+                description
+                  "Remote Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 515.";
+              }
+
               uses bgp-ls-topo-igp-link-attr;
             }
 
@@ -216,6 +236,47 @@ module ietf-bgp-lsdb {
                 "List of OSPFv3 link types";
 
               uses bgp-ls-ospf-link-common;
+
+              leaf local-dr-identifier {
+                type uint32;
+                description
+                  "Local Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 515.";
+              }
+
+              leaf remote-dr-identifier {
+                type uint32;
+                description
+                  "Remote Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 515.";
+              }
+
+              leaf local-ipv6-address {
+                type inet:ipv6-address;
+                description
+                  "Local IPv6 address of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2. TLV 261.";
+              }
+
+              leaf remote-ipv6-address {
+                type inet:ipv6-address;
+                description
+                  "Remote IPv6 address of a link.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.2. TLV 262.";
+              }
+
               uses bgp-ls-topo-igp-link-attr;
             }
 
@@ -490,6 +551,28 @@ module ietf-bgp-lsdb {
                 "List of OSPFv2 prefix types";
 
               uses bgp-ls-ospf-prefix-common;
+
+              leaf dr-identifier {
+                type inet:ipv4-address;
+                description
+                  "Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 515.";
+              }
+
+              leaf prefix {
+                type inet:ipv4-prefix;
+                description
+                  "IPv4 address prefix advertised in the
+                   OSPFv2 topology.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.3.2. TLV 265.";
+              }
+
               uses bgp-ls-topo-prefix-attr;
             }
 
@@ -501,6 +584,28 @@ module ietf-bgp-lsdb {
                 "List of OSPFv3 prefix types";
 
               uses bgp-ls-ospf-prefix-common;
+
+              leaf dr-identifier {
+                type uint32;
+                description
+                  "Designated Router (DR) Identifier.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.1. TLV 515.";
+              }
+
+              leaf prefix {
+                type inet:ip-prefix;
+                description
+                  "IP address prefix (IPv4 or IPv6) advertised in
+                   the OSPFv3 topology.";
+                reference
+                  "RFC 9552: Distribution of Link-State and Traffic
+                   Engineering Information Using BGP,
+                   Section 5.2.3.2. TLV 265.";
+              }
+
               uses bgp-ls-topo-prefix-attr;
             }
 

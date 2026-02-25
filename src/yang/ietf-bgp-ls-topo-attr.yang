@@ -649,7 +649,7 @@ submodule ietf-bgp-ls-topo-attr {
           reference
             "RFC 9294: Application-Specific Link Attributes
              Advertisement Using the Border Gateway Protocol - Link
-             State (BGP-LS), Section 3.2; RFC 8920.";
+             State (BGP-LS), Section 2";
         }
 
         leaf udabm {
@@ -664,7 +664,7 @@ submodule ietf-bgp-ls-topo-attr {
           reference
             "RFC 9294: Application-Specific Link Attributes
              Advertisement Using the Border Gateway Protocol - Link
-             State (BGP-LS), Section 3.2; RFC 8920.";
+             State (BGP-LS), Section 2;";
         }
 
         list asla-attribute {
