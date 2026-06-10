@@ -337,10 +337,10 @@ submodule ietf-bgp-ls-topo-attr {
         container include-all-affinity {
           when "derived-from-or-self(../type, " +
                "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-incl-any-aff')" {
+               "bgp-ls-topo-attr-fad-incl-all-aff')" {
             description
-              "Only include the include-all-affinity container when 
-              the type is 
+              "Only include the include-all-affinity container when
+              the type is
               bgp-ls-topo-attr-fad-incl-all-aff";
           }                    
           description
@@ -647,7 +647,7 @@ submodule ietf-bgp-ls-topo-attr {
 
           leaf name {
             type string {
-              length "1..65535";
+              length "1..255";
             }
             description
               "Node name";
