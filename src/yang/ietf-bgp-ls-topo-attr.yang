@@ -832,286 +832,6 @@ submodule ietf-bgp-ls-topo-attr {
     }
   }
 
-  grouping bgp-ls-topo-node-fad-attr {
-    description
-      "Grouping for the BGP-LS topology node Flexible Algorithm 
-      Definition (FAD) attributes";
-
-    container node-fad-attributes {
-      description
-        "Enclosing container for node FAD attributes list";
-
-      list node-fad-attribute {
-        key "type";
-
-        description
-          "List of node FAD attribute types.";
-
-        leaf type {
-          type identityref {
-            base bgp-ls-topo-t:bgp-ls-topo-attr-fad-type;
-          }
-          description
-            "The type of node FAD attribute";
-        }
-
-        container exclude-any-affinity {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-excl-any-aff')" {
-            description
-              "Only include the exclude-any-affinity container when 
-              the type is 
-              bgp-ls-topo-attr-fad-excl-any-aff";
-          }          
-          description
-            "This container contains the affinity constraints
-             associated with the FAD and enables the exclusion
-             of links carrying any of the specified affinities
-             from the computation of the specific algorithm";
-          reference
-            "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Flexible Algorithm Advertisement. 
-             TLV 1040";
-
-          uses bgp-ls-topo-eag-attr;
-        }
-
-        container include-any-affinity {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-incl-any-aff')" {
-            description
-              "Only include the include-any-affinity container
-               when the type is 
-               bgp-ls-topo-attr-fad-incl-any-aff";
-          }          
-          description
-            "This container contains the affinity constraints
-             associated with the FAD and enables the inclusion of
-             links carrying any of the specified affinities from the
-             computation of the specific algorithm";
-          reference
-            "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Flexible Algorithm Advertisement. 
-             TLV 1041";
-
-          uses bgp-ls-topo-eag-attr;
-        }
-
-        container include-all-affinity {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-incl-all-aff')" {
-            description
-              "Only include the include-all-affinity container when 
-              the type is 
-              bgp-ls-topo-attr-fad-incl-all-aff";
-          }                    
-          description
-            "This container contains the affinity constraints
-             associated with the FAD and enables the inclusion
-             of links carrying all of the specified affinities
-             from the computation of the specific algorithm";
-          reference
-            "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Flexible Algorithm Advertisement. 
-             TLV 1042";
-
-          uses bgp-ls-topo-eag-attr;
-        }
-
-        container flags {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:bgp-ls-topo-attr-fad-flags')" {
-            description
-              "Only include the flags container when the type is
-              bgp-ls-topo-attr-fad-flags";
-          }          
-          description
-            "This container contains the flags associated with
-             the FAD";
-          reference
-            "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Flexible Algorithm Advertisement. 
-             TLV 1043";
-
-          leaf flags {
-            type binary {
-              length "1..65535";
-            }
-            description
-              "Bit mask representing the FAD flags. The flags are
-               derived from the IS-IS and OSPF protocol-specific
-               Flexible Algorithm Definition Flags sub-TLV.";
-            reference
-              "RFC 9350: IGP Flexible Algorithm.";
-          }
-        }
-
-        container exclude-srlg {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:bgp-ls-topo-attr-fad-excl-srlg')" {
-            description
-              "Only include the exclude-srlg container when the
-               type is bgp-ls-topo-attr-fad-excl-srlg";
-          }          
-          description
-            "This container contains the affinity constraints 
-             associated with the FAD and enables the exclusion of
-             links associated with any of the specified SRLG from
-             the computation of the specific algorithm";
-          reference
-            "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Flexible Algorithm Advertisement. 
-             TLV 1045";
-
-          uses bgp-ls-topo-srlg-attr;
-        }
-
-        container exclude-minimum-bw {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-excl-minimum-bw')" {
-            description
-              "Only include the exclude-minimum-bw container
-               when the type is
-               bgp-ls-topo-attr-fad-excl-minimum-bw";
-          }          
-          description
-            "This container enables the exclusion of links not
-             having a minimum specified bandwidth from the
-             computation of the specific algorithm";
-          reference
-            "RFC TBD: BGP-LS extensions for IP Flexible
-             Algorithms and Bandwidth, Delay, Metrics and
-             Constraints. TLV TBD (1049)";
-
-          uses bgp-ls-topo-bw-attr;
-        }
-
-        container exclude-maximum-delay {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-excl-maximum-delay')" {
-            description
-              "Only include the exclude-maximum-delay container when
-               the type is 
-               bgp-ls-topo-attr-fad-excl-maximum-delay";
-          }          
-          description
-            "This container enables the exclusion of links having 
-            delay above a maximum specified delay from the 
-            computation of the specific algorithm";
-          reference
-            "RFC TBD: BGP-LS extensions for IP Flexible
-             Algorithms and Bandwidth, Delay, Metrics and
-             Constraints. TLV TBD (1050)";
-
-          uses bgp-ls-topo-delay-attr;
-        }
-
-        container exclude-any-reverse-affinity {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-excl-any-rev-aff')" {
-            description
-              "Only include the exclude-any-reverse-affinity
-               container when the type is 
-               bgp-ls-topo-attr-fad-excl-any-rev-aff";
-          }          
-          description
-            "This container contains the affinity constraints
-             associated with the FAD and enables the exclusion
-             of links carrying any of the specified affinities
-             in the reverse direction from the computation of
-             the specific algorithm";
-          reference
-            "RFC TBD: BGP-LS extensions for Flexible
-             Algorithms Reverse Affinity Constraint.
-             TLV TBD (1053)";
-
-          uses bgp-ls-topo-eag-attr;
-        }
-
-        container include-any-reverse-affinity {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-incl-any-rev-aff')" {
-            description
-              "Only include the include-any-reverse-affinity
-               container when the type is 
-               bgp-ls-topo-attr-fad-incl-any-rev-aff";
-          }          
-          description
-            "This container contains the affinity constraints
-             associated with the FAD and enables the inclusion of 
-             links carrying any of the specified affinities in the 
-             reverse direction from the computation of the specific
-             algorithm";
-          reference
-            "RFC TBD: BGP-LS extensions for Flexible
-             Algorithms Reverse Affinity Constraint.
-             TLV TBD (1054)";
-
-          uses bgp-ls-topo-eag-attr;
-        }
-
-        container include-all-reverse-affinity {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-fad-incl-all-rev-aff')" {
-            description
-              "Only include the include-all-reverse-affinity
-               container when the type is 
-               bgp-ls-topo-attr-fad-incl-all-rev-aff";
-          }          
-          description
-            "This container contains the affinity constraints 
-             associated with the FAD and enables the inclusion of 
-             links carrying all of the specified affinities in the 
-             reverse direction from the computation of the specific 
-             algorithm";
-          reference
-            "RFC TBD: BGP-LS extensions for Flexible
-             Algorithms Reverse Affinity Constraint.
-             TLV TBD (1055)";
-
-          uses bgp-ls-topo-eag-attr;
-        }
-
-        container fa-unsupported-tlvs {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:bgp-ls-topo-attr-fa-unsupported')" {
-            description
-              "Only include the fa-unsupported-tlvs container
-               when the type is
-               bgp-ls-topo-attr-fa-unsupported";
-          }          
-          description
-            "Indicates the presence of unsupported Flexible
-             Algorithm Definition (FAD) TLVs";
-          reference
-            "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Flexible Algorithm Advertisement. 
-             TLV 1046";
-
-          leaf protocol-id {
-            type bgp-ls-topo-t:protocol;
-            description
-              "BGP-LS protocol advertising the FAD";
-          }
-
-          leaf-list type {
-            type uint16;
-            description
-              "List of unsupported TLV types.";
-          }
-        }
-      }
-    }
-  }
-
   grouping bgp-ls-topo-node-attr {
     description
       "Grouping for the BGP-LS topology node attributes";
@@ -1434,7 +1154,279 @@ submodule ietf-bgp-ls-topo-attr {
                 "Priority of the FAD advertisement";
             }
 
-            uses bgp-ls-topo-node-fad-attr;
+            container node-fad-attributes {
+              description
+                "Enclosing container for node FAD attributes list";
+
+              list node-fad-attribute {
+                key "type";
+
+                description
+                  "List of node FAD attribute types.";
+
+                leaf type {
+                  type identityref {
+                    base bgp-ls-topo-t:bgp-ls-topo-attr-fad-type;
+                  }
+                  description
+                    "The type of node FAD attribute";
+                }
+
+                container exclude-any-affinity {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-excl-any-aff')" {
+                    description
+                      "Only include the exclude-any-affinity container when
+                      the type is
+                      bgp-ls-topo-attr-fad-excl-any-aff";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the exclusion
+                     of links carrying any of the specified affinities
+                     from the computation of the specific algorithm";
+                  reference
+                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+                     Extensions for Flexible Algorithm Advertisement.
+                     TLV 1040";
+
+                  uses bgp-ls-topo-eag-attr;
+                }
+
+                container include-any-affinity {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-incl-any-aff')" {
+                    description
+                      "Only include the include-any-affinity container
+                       when the type is
+                       bgp-ls-topo-attr-fad-incl-any-aff";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the inclusion of
+                     links carrying any of the specified affinities from the
+                     computation of the specific algorithm";
+                  reference
+                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+                     Extensions for Flexible Algorithm Advertisement.
+                     TLV 1041";
+
+                  uses bgp-ls-topo-eag-attr;
+                }
+
+                container include-all-affinity {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-incl-all-aff')" {
+                    description
+                      "Only include the include-all-affinity container when
+                      the type is
+                      bgp-ls-topo-attr-fad-incl-all-aff";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the inclusion
+                     of links carrying all of the specified affinities
+                     from the computation of the specific algorithm";
+                  reference
+                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+                     Extensions for Flexible Algorithm Advertisement.
+                     TLV 1042";
+
+                  uses bgp-ls-topo-eag-attr;
+                }
+
+                container flags {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:bgp-ls-topo-attr-fad-flags')" {
+                    description
+                      "Only include the flags container when the type is
+                      bgp-ls-topo-attr-fad-flags";
+                  }
+                  description
+                    "This container contains the flags associated with
+                     the FAD";
+                  reference
+                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+                     Extensions for Flexible Algorithm Advertisement.
+                     TLV 1043";
+
+                  leaf flags {
+                    type binary {
+                      length "1..65535";
+                    }
+                    description
+                      "Bit mask representing the FAD flags. The flags are
+                       derived from the IS-IS and OSPF protocol-specific
+                       Flexible Algorithm Definition Flags sub-TLV.";
+                    reference
+                      "RFC 9350: IGP Flexible Algorithm.";
+                  }
+                }
+
+                container exclude-srlg {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:bgp-ls-topo-attr-fad-excl-srlg')" {
+                    description
+                      "Only include the exclude-srlg container when the
+                       type is bgp-ls-topo-attr-fad-excl-srlg";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the exclusion of
+                     links associated with any of the specified SRLG from
+                     the computation of the specific algorithm";
+                  reference
+                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+                     Extensions for Flexible Algorithm Advertisement.
+                     TLV 1045";
+
+                  uses bgp-ls-topo-srlg-attr;
+                }
+
+                container exclude-minimum-bw {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-excl-minimum-bw')" {
+                    description
+                      "Only include the exclude-minimum-bw container
+                       when the type is
+                       bgp-ls-topo-attr-fad-excl-minimum-bw";
+                  }
+                  description
+                    "This container enables the exclusion of links not
+                     having a minimum specified bandwidth from the
+                     computation of the specific algorithm";
+                  reference
+                    "RFC TBD: BGP-LS extensions for IP Flexible
+                     Algorithms and Bandwidth, Delay, Metrics and
+                     Constraints. TLV TBD (1049)";
+
+                  uses bgp-ls-topo-bw-attr;
+                }
+
+                container exclude-maximum-delay {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-excl-maximum-delay')" {
+                    description
+                      "Only include the exclude-maximum-delay container when
+                       the type is
+                       bgp-ls-topo-attr-fad-excl-maximum-delay";
+                  }
+                  description
+                    "This container enables the exclusion of links having
+                    delay above a maximum specified delay from the
+                    computation of the specific algorithm";
+                  reference
+                    "RFC TBD: BGP-LS extensions for IP Flexible
+                     Algorithms and Bandwidth, Delay, Metrics and
+                     Constraints. TLV TBD (1050)";
+
+                  uses bgp-ls-topo-delay-attr;
+                }
+
+                container exclude-any-reverse-affinity {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-excl-any-rev-aff')" {
+                    description
+                      "Only include the exclude-any-reverse-affinity
+                       container when the type is
+                       bgp-ls-topo-attr-fad-excl-any-rev-aff";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the exclusion
+                     of links carrying any of the specified affinities
+                     in the reverse direction from the computation of
+                     the specific algorithm";
+                  reference
+                    "RFC TBD: BGP-LS extensions for Flexible
+                     Algorithms Reverse Affinity Constraint.
+                     TLV TBD (1053)";
+
+                  uses bgp-ls-topo-eag-attr;
+                }
+
+                container include-any-reverse-affinity {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-incl-any-rev-aff')" {
+                    description
+                      "Only include the include-any-reverse-affinity
+                       container when the type is
+                       bgp-ls-topo-attr-fad-incl-any-rev-aff";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the inclusion of
+                     links carrying any of the specified affinities in the
+                     reverse direction from the computation of the specific
+                     algorithm";
+                  reference
+                    "RFC TBD: BGP-LS extensions for Flexible
+                     Algorithms Reverse Affinity Constraint.
+                     TLV TBD (1054)";
+
+                  uses bgp-ls-topo-eag-attr;
+                }
+
+                container include-all-reverse-affinity {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-incl-all-rev-aff')" {
+                    description
+                      "Only include the include-all-reverse-affinity
+                       container when the type is
+                       bgp-ls-topo-attr-fad-incl-all-rev-aff";
+                  }
+                  description
+                    "This container contains the affinity constraints
+                     associated with the FAD and enables the inclusion of
+                     links carrying all of the specified affinities in the
+                     reverse direction from the computation of the specific
+                     algorithm";
+                  reference
+                    "RFC TBD: BGP-LS extensions for Flexible
+                     Algorithms Reverse Affinity Constraint.
+                     TLV TBD (1055)";
+
+                  uses bgp-ls-topo-eag-attr;
+                }
+
+                container fa-unsupported-tlvs {
+                  when "derived-from-or-self(../type, " +
+                       "'bgp-ls-topo-t:bgp-ls-topo-attr-fa-unsupported')" {
+                    description
+                      "Only include the fa-unsupported-tlvs container
+                       when the type is
+                       bgp-ls-topo-attr-fa-unsupported";
+                  }
+                  description
+                    "Indicates the presence of unsupported Flexible
+                     Algorithm Definition (FAD) TLVs";
+                  reference
+                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+                     Extensions for Flexible Algorithm Advertisement.
+                     TLV 1046";
+
+                  leaf protocol-id {
+                    type bgp-ls-topo-t:protocol;
+                    description
+                      "BGP-LS protocol advertising the FAD";
+                  }
+
+                  leaf-list type {
+                    type uint16;
+                    description
+                      "List of unsupported TLV types.";
+                  }
+                }
+              }
+            }
           }
         }
 

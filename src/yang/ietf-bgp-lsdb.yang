@@ -683,8 +683,8 @@ module ietf-bgp-lsdb {
               leaf is-as-scoped {
                 type boolean;
                 description
-                  "Flag indicating whether the OSPF link-state
-                   identifier is AS scoped.";
+                  "When true, the NLRI is AS-scoped and the area-id
+                   is not applicable.";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
