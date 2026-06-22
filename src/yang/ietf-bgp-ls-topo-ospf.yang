@@ -194,7 +194,9 @@ submodule ietf-bgp-ls-topo-ospf {
     leaf local-ipv4-address {
       type inet:ipv4-address;
       description
-        "Local IPv4 address of a link.";
+        "Local IPv4 address of a link. Use 0.0.0.0 as a sentinel
+         value when this address is not present (e.g., for
+         unnumbered or IPv6-only links).";
       reference
         "RFC 9552: Distribution of Link-State and Traffic
          Engineering Information Using BGP,
@@ -204,7 +206,9 @@ submodule ietf-bgp-ls-topo-ospf {
     leaf remote-ipv4-address {
       type inet:ipv4-address;
       description
-        "Remote IPv4 address of a link.";
+        "Remote IPv4 address of a link. Use 0.0.0.0 as a sentinel
+         value when this address is not present (e.g., for
+         unnumbered or IPv6-only links).";
       reference
         "RFC 9552: Distribution of Link-State and Traffic
          Engineering Information Using BGP,

@@ -266,7 +266,9 @@ module ietf-bgp-lsdb {
               leaf local-ipv6-address {
                 type inet:ipv6-address;
                 description
-                  "Local IPv6 address of a link.";
+                  "Local IPv6 address of a link. Use :: as a sentinel
+                   value when this address is not present (e.g., for
+                   unnumbered or IPv4-only links).";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
@@ -276,7 +278,9 @@ module ietf-bgp-lsdb {
               leaf remote-ipv6-address {
                 type inet:ipv6-address;
                 description
-                  "Remote IPv6 address of a link.";
+                  "Remote IPv6 address of a link. Use :: as a sentinel
+                   value when this address is not present (e.g., for
+                   unnumbered or IPv4-only links).";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
@@ -380,7 +384,9 @@ module ietf-bgp-lsdb {
               leaf local-ipv4-address {
                 type inet:ipv4-address;
                 description
-                  "Local IPv4 address of a link.";
+                  "Local IPv4 address of a link. Use 0.0.0.0 as a
+                   sentinel value when this address is not present
+                   (e.g., for unnumbered or IPv6-only links).";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
@@ -390,7 +396,9 @@ module ietf-bgp-lsdb {
               leaf remote-ipv4-address {
                 type inet:ipv4-address;
                 description
-                  "Remote IPv4 address of a link.";
+                  "Remote IPv4 address of a link. Use 0.0.0.0 as a
+                   sentinel value when this address is not present
+                   (e.g., for unnumbered or IPv6-only links).";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
@@ -400,7 +408,9 @@ module ietf-bgp-lsdb {
               leaf local-ipv6-address {
                 type inet:ipv6-address;
                 description
-                  "Local IPv6 address of a link.";
+                  "Local IPv6 address of a link. Use :: as a sentinel
+                   value when this address is not present (e.g., for
+                   unnumbered or IPv4-only links).";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
@@ -410,7 +420,9 @@ module ietf-bgp-lsdb {
               leaf remote-ipv6-address {
                 type inet:ipv6-address;
                 description
-                  "Remote IPv6 address of a link.";
+                  "Remote IPv6 address of a link. Use :: as a sentinel
+                   value when this address is not present (e.g., for
+                   unnumbered or IPv4-only links).";
                 reference
                   "RFC 9552: Distribution of Link-State and Traffic
                    Engineering Information Using BGP,
@@ -498,7 +510,9 @@ module ietf-bgp-lsdb {
               leaf local-ipv4-address {
                 type inet:ipv4-address;
                 description
-                  "Local IPv4 address of a link.";
+                  "Local IPv4 address of a link. Use 0.0.0.0 as a
+                   sentinel value when this address is not present
+                   (e.g., for unnumbered or IPv6-only links).";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
                    Segments, Section 5.2. TLV 259.";
@@ -507,7 +521,9 @@ module ietf-bgp-lsdb {
               leaf remote-ipv4-address {
                 type inet:ipv4-address;
                 description
-                  "Remote IPv4 address of a link.";
+                  "Remote IPv4 address of a link. Use 0.0.0.0 as a
+                   sentinel value when this address is not present
+                   (e.g., for unnumbered or IPv6-only links).";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
                    Segments, Section 5.2. TLV 260.";
@@ -516,7 +532,9 @@ module ietf-bgp-lsdb {
               leaf local-ipv6-address {
                 type inet:ipv6-address;
                 description
-                  "Local IPv6 address of a link.";
+                  "Local IPv6 address of a link. Use :: as a sentinel
+                   value when this address is not present (e.g., for
+                   unnumbered or IPv4-only links).";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
                    Segments, Section 5.2. TLV 261.";
@@ -525,7 +543,9 @@ module ietf-bgp-lsdb {
               leaf remote-ipv6-address {
                 type inet:ipv6-address;
                 description
-                  "Remote IPv6 address of a link.";
+                  "Remote IPv6 address of a link. Use :: as a sentinel
+                   value when this address is not present (e.g., for
+                   unnumbered or IPv4-only links).";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
                    Segments, Section 5.2. TLV 262.";
