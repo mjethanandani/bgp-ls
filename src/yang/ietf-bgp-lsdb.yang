@@ -1041,10 +1041,10 @@ module ietf-bgp-lsdb {
                     }
                     description
                       "This container describes the unknown
-                       attributes.
+                       attributes.";
                     reference
-                      "RFC 9552: Distribution of Link-State and Traffic
-                       Engineering Information Using BGP.";
+                      "RFC 9552: Distribution of Link-State and
+                       Traffic Engineering Information Using BGP.";
 
                     uses bgp-ls-topo-unknown-attr;
                   }
