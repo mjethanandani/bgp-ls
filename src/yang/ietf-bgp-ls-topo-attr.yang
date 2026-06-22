@@ -1145,9 +1145,9 @@ submodule ietf-bgp-ls-topo-attr {
                        "'bgp-ls-topo-t:" +
                        "bgp-ls-topo-attr-fad-excl-any-aff')" {
                     description
-                      "Only include the exclude-any-affinity container when
-                      the type is
-                      bgp-ls-topo-attr-fad-excl-any-aff";
+                      "Only include the exclude-any-affinity
+                       container when the type is
+                       bgp-ls-topo-attr-fad-excl-any-aff";
                   }
                   description
                     "This container contains the affinity constraints
@@ -1155,9 +1155,9 @@ submodule ietf-bgp-ls-topo-attr {
                      of links carrying any of the specified affinities
                      from the computation of the specific algorithm";
                   reference
-                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-                     Extensions for Flexible Algorithm Advertisement.
-                     TLV 1040";
+                    "RFC 9351: Border Gateway Protocol - Link State
+                     (BGP-LS) Extensions for Flexible Algorithm
+                     Advertisement. TLV 1040";
 
                   uses bgp-ls-topo-eag-attr;
                 }
@@ -1173,13 +1173,14 @@ submodule ietf-bgp-ls-topo-attr {
                   }
                   description
                     "This container contains the affinity constraints
-                     associated with the FAD and enables the inclusion of
-                     links carrying any of the specified affinities from the
-                     computation of the specific algorithm";
+                     associated with the FAD and enables the
+                     inclusion of links carrying any of the specified
+                     affinities from the computation of the specific
+                     algorithm";
                   reference
-                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-                     Extensions for Flexible Algorithm Advertisement.
-                     TLV 1041";
+                    "RFC 9351: Border Gateway Protocol - Link State
+                     (BGP-LS) Extensions for Flexible Algorithm
+                     Advertisement. TLV 1041";
 
                   uses bgp-ls-topo-eag-attr;
                 }
@@ -1189,9 +1190,9 @@ submodule ietf-bgp-ls-topo-attr {
                        "'bgp-ls-topo-t:" +
                        "bgp-ls-topo-attr-fad-incl-all-aff')" {
                     description
-                      "Only include the include-all-affinity container when
-                      the type is
-                      bgp-ls-topo-attr-fad-incl-all-aff";
+                      "Only include the include-all-affinity
+                       container when the type is
+                       bgp-ls-topo-attr-fad-incl-all-aff";
                   }
                   description
                     "This container contains the affinity constraints
@@ -1199,9 +1200,9 @@ submodule ietf-bgp-ls-topo-attr {
                      of links carrying all of the specified affinities
                      from the computation of the specific algorithm";
                   reference
-                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-                     Extensions for Flexible Algorithm Advertisement.
-                     TLV 1042";
+                    "RFC 9351: Border Gateway Protocol - Link State
+                     (BGP-LS) Extensions for Flexible Algorithm
+                     Advertisement. TLV 1042";
 
                   uses bgp-ls-topo-eag-attr;
                 }
@@ -1217,18 +1218,19 @@ submodule ietf-bgp-ls-topo-attr {
                     "This container contains the flags associated with
                      the FAD";
                   reference
-                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-                     Extensions for Flexible Algorithm Advertisement.
-                     TLV 1043";
+                    "RFC 9351: Border Gateway Protocol - Link State
+                     (BGP-LS) Extensions for Flexible Algorithm
+                     Advertisement. TLV 1043";
 
                   leaf flags {
                     type binary {
                       length "1..65535";
                     }
                     description
-                      "Bit mask representing the FAD flags. The flags are
-                       derived from the IS-IS and OSPF protocol-specific
-                       Flexible Algorithm Definition Flags sub-TLV.";
+                      "Bit mask representing the FAD flags. The
+                       flags are derived from the IS-IS and OSPF
+                       protocol-specific Flexible Algorithm
+                       Definition Flags sub-TLV.";
                     reference
                       "RFC 9350: IGP Flexible Algorithm.";
                   }
@@ -1236,20 +1238,22 @@ submodule ietf-bgp-ls-topo-attr {
 
                 container exclude-srlg {
                   when "derived-from-or-self(../type, " +
-                       "'bgp-ls-topo-t:bgp-ls-topo-attr-fad-excl-srlg')" {
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fad-excl-srlg')" {
                     description
                       "Only include the exclude-srlg container when the
                        type is bgp-ls-topo-attr-fad-excl-srlg";
                   }
                   description
                     "This container contains the affinity constraints
-                     associated with the FAD and enables the exclusion of
-                     links associated with any of the specified SRLG from
-                     the computation of the specific algorithm";
+                     associated with the FAD and enables the
+                     exclusion of links associated with any of the
+                     specified SRLG from the computation of the
+                     specific algorithm";
                   reference
-                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-                     Extensions for Flexible Algorithm Advertisement.
-                     TLV 1045";
+                    "RFC 9351: Border Gateway Protocol - Link State
+                     (BGP-LS) Extensions for Flexible Algorithm
+                     Advertisement. TLV 1045";
 
                   uses bgp-ls-topo-srlg-attr;
                 }
@@ -1280,14 +1284,14 @@ submodule ietf-bgp-ls-topo-attr {
                        "'bgp-ls-topo-t:" +
                        "bgp-ls-topo-attr-fad-excl-maximum-delay')" {
                     description
-                      "Only include the exclude-maximum-delay container when
-                       the type is
+                      "Only include the exclude-maximum-delay
+                       container when the type is
                        bgp-ls-topo-attr-fad-excl-maximum-delay";
                   }
                   description
-                    "This container enables the exclusion of links having
-                    delay above a maximum specified delay from the
-                    computation of the specific algorithm";
+                    "This container enables the exclusion of links
+                     having delay above a maximum specified delay
+                     from the computation of the specific algorithm";
                   reference
                     "RFC TBD: BGP-LS extensions for IP Flexible
                      Algorithms and Bandwidth, Delay, Metrics and
@@ -1330,10 +1334,10 @@ submodule ietf-bgp-ls-topo-attr {
                   }
                   description
                     "This container contains the affinity constraints
-                     associated with the FAD and enables the inclusion of
-                     links carrying any of the specified affinities in the
-                     reverse direction from the computation of the specific
-                     algorithm";
+                     associated with the FAD and enables the
+                     inclusion of links carrying any of the specified
+                     affinities in the reverse direction from the
+                     computation of the specific algorithm";
                   reference
                     "RFC TBD: BGP-LS extensions for Flexible
                      Algorithms Reverse Affinity Constraint.
@@ -1353,10 +1357,10 @@ submodule ietf-bgp-ls-topo-attr {
                   }
                   description
                     "This container contains the affinity constraints
-                     associated with the FAD and enables the inclusion of
-                     links carrying all of the specified affinities in the
-                     reverse direction from the computation of the specific
-                     algorithm";
+                     associated with the FAD and enables the
+                     inclusion of links carrying all of the specified
+                     affinities in the reverse direction from the
+                     computation of the specific algorithm";
                   reference
                     "RFC TBD: BGP-LS extensions for Flexible
                      Algorithms Reverse Affinity Constraint.
@@ -1367,7 +1371,8 @@ submodule ietf-bgp-ls-topo-attr {
 
                 container fa-unsupported-tlvs {
                   when "derived-from-or-self(../type, " +
-                       "'bgp-ls-topo-t:bgp-ls-topo-attr-fa-unsupported')" {
+                       "'bgp-ls-topo-t:" +
+                       "bgp-ls-topo-attr-fa-unsupported')" {
                     description
                       "Only include the fa-unsupported-tlvs container
                        when the type is
@@ -1377,9 +1382,9 @@ submodule ietf-bgp-ls-topo-attr {
                     "Indicates the presence of unsupported Flexible
                      Algorithm Definition (FAD) TLVs";
                   reference
-                    "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
-                     Extensions for Flexible Algorithm Advertisement.
-                     TLV 1046";
+                    "RFC 9351: Border Gateway Protocol - Link State
+                     (BGP-LS) Extensions for Flexible Algorithm
+                     Advertisement. TLV 1046";
 
                   leaf protocol-id {
                     type bgp-ls-topo-t:protocol;

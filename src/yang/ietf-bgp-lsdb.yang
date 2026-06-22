@@ -132,6 +132,7 @@ module ietf-bgp-lsdb {
               "BGP-LS topology entries for nodes";
 
             list ospf-node {
+              when "../../protocol = 'ospfv2'";
               key "is-as-scoped area-id router-id dr-identifier as";
               description
                 "List of OSPFv2 nodes";
@@ -142,6 +143,7 @@ module ietf-bgp-lsdb {
             }
 
             list ospfv3-node {
+              when "../../protocol = 'ospfv3'";
               key "is-as-scoped area-id router-id dr-identifier as";
               description
                 "List of OSPFv3 nodes";
@@ -152,6 +154,8 @@ module ietf-bgp-lsdb {
             }
 
             list isis-node {
+              when "../../protocol = 'isis-l1' or " +
+                   "../../protocol = 'isis-l2'";
               key "system-id psn-id as";
               description
                 "List of IS-IS nodes";
@@ -196,6 +200,7 @@ module ietf-bgp-lsdb {
               "BGP-LS topology entries for links";
 
             list ospf-link {
+              when "../../protocol = 'ospfv2'";
               key "area-id as local-router-id " +
                   "local-dr-identifier " +
                   "remote-router-id remote-dr-identifier " +
@@ -231,6 +236,7 @@ module ietf-bgp-lsdb {
             }
 
             list ospfv3-link {
+              when "../../protocol = 'ospfv3'";
               key "area-id as local-router-id " +
                   "local-dr-identifier " +
                   "remote-router-id remote-dr-identifier " +
@@ -291,6 +297,8 @@ module ietf-bgp-lsdb {
             }
 
             list isis-link {
+              when "../../protocol = 'isis-l1' or " +
+                   "../../protocol = 'isis-l2'";
               key "local-system-id local-psn-id local-as " +
                   "remote-system-id remote-psn-id remote-as " +
                   "local-id remote-id local-ipv4-address " +
@@ -443,6 +451,7 @@ module ietf-bgp-lsdb {
             }
 
             list bgp-link {
+              when "../../protocol = 'bgp'";
               key "local-as local-router-id remote-as " +
                   "remote-router-id local-id remote-id " +
                   "local-ipv4-address remote-ipv4-address " +
@@ -590,8 +599,9 @@ module ietf-bgp-lsdb {
                          "'bgp-ls-topo-t:" +
                          "bgp-ls-topo-attr-bgp-peer-set-sid')" {
                       description
-                        "Only include the bgp-peer-sids container when the
-                         type is bgp-ls-topo-attr-bgp-peer-node-sid,
+                        "Only include the bgp-peer-sids container
+                         when the type is
+                         bgp-ls-topo-attr-bgp-peer-node-sid,
                          bgp-ls-topo-attr-bgp-peer-adj-sid, or
                          bgp-ls-topo-attr-bgp-peer-set-sid";
                     }
@@ -600,8 +610,8 @@ module ietf-bgp-lsdb {
                        Identifiers (SIDs) of a link";
                     reference
                       "RFC 9086: Border Gateway Protocol - Link State
-                       (BGP-LS) Extensions for Segment Routing. TLV 1101,
-                       TLV 1102 and TLV 1103";
+                       (BGP-LS) Extensions for Segment Routing.
+                       TLV 1101, TLV 1102 and TLV 1103";
 
                     list bgp-peer-sid {
                       key "label-index format";
@@ -646,6 +656,7 @@ module ietf-bgp-lsdb {
               "BGP-LS topology entries for prefixes";
 
             list ospf-prefix {
+              when "../../protocol = 'ospfv2'";
               key "is-as-scoped area-id as " +
                   "router-id dr-identifier " +
                   "multi-topology-id route-type prefix";
@@ -679,6 +690,7 @@ module ietf-bgp-lsdb {
             }
 
             list ospfv3-prefix {
+              when "../../protocol = 'ospfv3'";
               key "is-as-scoped area-id as " +
                   "router-id dr-identifier " +
                   "multi-topology-id route-type prefix";
@@ -712,6 +724,8 @@ module ietf-bgp-lsdb {
             }
 
             list isis-prefix {
+              when "../../protocol = 'isis-l1' or " +
+                   "../../protocol = 'isis-l2'";
               key "system-id psn-id as multi-topology-id prefix";
               description
                 "List of ISIS prefix types";
@@ -777,6 +791,7 @@ module ietf-bgp-lsdb {
               "BGP-LS topology entries for SRv6 SIDs";
 
             list ospfv3-srv6-sid {
+              when "../../protocol = 'ospfv3'";
               key "is-as-scoped area-id router-id " +
                   "dr-identifier as sid multi-topology-id";
               description
@@ -857,6 +872,8 @@ module ietf-bgp-lsdb {
             }
 
             list isis-srv6-sid {
+              when "../../protocol = 'isis-l1' or " +
+                   "../../protocol = 'isis-l2'";
               key "system-id psn-id as sid multi-topology-id";
               description
                 "List of ISIS SRv6 SID types";
@@ -915,6 +932,7 @@ module ietf-bgp-lsdb {
             }
 
             list bgp-srv6-sid {
+              when "../../protocol = 'bgp'";
               key "router-id as sid multi-topology-id";
               description
                 "List of BGP SRv6 SID types";
@@ -980,16 +998,17 @@ module ietf-bgp-lsdb {
                          "'bgp-ls-topo-t:" +
                          "bgp-ls-topo-attr-srv6-endpoint-behavior')" {
                       description
-                        "Only include the srv6-endpoint-behavior container
-                         when the type is
+                        "Only include the srv6-endpoint-behavior
+                         container when the type is
                          bgp-ls-topo-attr-srv6-endpoint-behavior";
                     }
                     description
-                      "This container contains the SRv6 endpoint behavior.";
+                      "This container contains the SRv6 endpoint
+                       behavior.";
                     reference
-                      "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
-                       Extensions for Segment Routing over IPv6 (SRv6).
-                       SRv6 endpoint behavior. TLV 1250.";
+                      "RFC 9514: Border Gateway Protocol - Link State
+                       (BGP-LS) Extensions for Segment Routing over
+                       IPv6 (SRv6). SRv6 endpoint behavior. TLV 1250.";
 
                     uses bgp-ls-topo-srv6-endpoint-behavior-attr;
                   }
@@ -1006,9 +1025,9 @@ module ietf-bgp-lsdb {
                     description
                       "This container defines the SRv6 SID structure.";
                     reference
-                      "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
-                       Extensions for Segment Routing over IPv6 (SRv6).
-                       SRv6 SID structure. TLV 1252.";
+                      "RFC 9514: Border Gateway Protocol - Link State
+                       (BGP-LS) Extensions for Segment Routing over
+                       IPv6 (SRv6). SRv6 SID structure. TLV 1252.";
 
                     uses bgp-ls-topo-srv6-sid-struct-attr;
                   }
@@ -1017,11 +1036,12 @@ module ietf-bgp-lsdb {
                     when "derived-from-or-self(../type, " +
                         "'bgp-ls-topo-t:bgp-ls-topo-attr-unknowns')" {
                     description
-                        "Only include the unknowns container when the type is
-                        bgp-ls-topo-attr-unknowns";
+                        "Only include the unknowns container when the
+                         type is bgp-ls-topo-attr-unknowns";
                     }
                     description
-                      "This container describes the unknown attributes.";
+                      "This container describes the unknown
+                       attributes.
                     reference
                       "RFC 9552: Distribution of Link-State and Traffic
                        Engineering Information Using BGP.";
@@ -1034,23 +1054,25 @@ module ietf-bgp-lsdb {
                          "'bgp-ls-topo-t:" +
                          "bgp-ls-topo-attr-srv6-bgp-peer-node-sid')" {
                       description
-                        "Only include the srv6-bgp-peer-node-sid container
-                         when the type is
+                        "Only include the srv6-bgp-peer-node-sid
+                         container when the type is
                          bgp-ls-topo-attr-srv6-bgp-peer-node-sid";
                     }
                     description
-                      "This container contains the SRv6 BGP peer node SID.";
+                      "This container contains the SRv6 BGP peer
+                       node SID.";
                     reference
-                      "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
-                       Extensions for Segment Routing over IPv6 (SRv6).
-                       SRv6 BGP peer node SID. TLV 1251.";
+                      "RFC 9514: Border Gateway Protocol - Link State
+                       (BGP-LS) Extensions for Segment Routing over
+                       IPv6 (SRv6). SRv6 BGP peer node SID. TLV 1251.";
 
                     leaf flags {
                       type binary {
                         length "1";
                       }
                       description
-                        "Flags associated with the SRv6 BGP peer node SID";
+                        "Flags associated with the SRv6 BGP peer
+                         node SID";
                     }
 
                     leaf weight {
