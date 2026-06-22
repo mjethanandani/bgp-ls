@@ -233,7 +233,7 @@
        Information Using BGP, Section 3.3.3.";
   }
 
-  typedef adj-sid-format {
+  typedef sid-format {
     type enumeration {
       enum label {
         value 1;
@@ -247,41 +247,7 @@
       }
     }
     description
-      "Format of an adjacency SID value.";
-  }
-
-  typedef pfx-sid-format {
-    type enumeration {
-      enum label {
-        value 1;
-        description
-          "SID represented as an MPLS label value.";
-      }
-      enum index {
-        value 2;
-        description
-          "SID represented as an index value.";
-      }
-    }
-    description
-      "Format of a prefix SID value.";
-  }
-
-  typedef bgp-peer-sid-format {
-    type enumeration {
-      enum label {
-        value 1;
-        description
-          "SID represented as an MPLS label value.";
-      }
-      enum index {
-        value 2;
-        description
-          "SID represented as an index value.";
-      }
-    }
-    description
-      "Format of a BGP peer SID value.";
+      "Format of a SID value (adjacency, prefix, or BGP peer).";
   }
 
   identity bgp-ls-topo-attr-type {
@@ -423,14 +389,6 @@
        Extensions for Segment Routing";
   }
 
-  identity bgp-ls-topo-attr-srgb-isis-flags {
-    base "bgp-ls-topo-attr-type";
-    description
-      "BGP-LS TLV 1034. SRGB ISIS flags";
-    reference
-      "RFC 8667: IS-IS Extensions for Segment Routing";
-  }
-
   identity bgp-ls-topo-attr-srlb {
     base "bgp-ls-topo-attr-type";
     description
@@ -446,7 +404,8 @@
     description
       "BGP-LS TLV 1038. SRv6 Capabilities Flags.";
     reference
-      "SLBgplsTopoSrv6CapFlags";
+      "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing over IPv6 (SRv6).";
   }
 
   identity bgp-ls-topo-attr-fad {
@@ -571,7 +530,7 @@
   identity bgp-ls-topo-attr-extended-admin-group {
     base "bgp-ls-topo-attr-type";
     description
-      "BGP-LS TLV 1088. Extended Administrative Group";
+      "BGP-LS TLV 1173. Extended Administrative Group";
     reference
       "RFC 9552: Distribution of Link-State and Traffic
        Engineering Information Using BGP.";
@@ -654,6 +613,15 @@
     description
       "BGP-LS TLV 1097. Envelope that transparently carries optional
        Link Attribute TLVs advertised by a router";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-link-name {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1098. Symbolic name of a link";
     reference
       "RFC 9552: Distribution of Link-State and Traffic
        Engineering Information Using BGP.";

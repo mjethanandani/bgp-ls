@@ -188,17 +188,6 @@ submodule ietf-bgp-ls-topo-attr {
     }
   }
 
-  grouping bgp-ls-topo-metric-attr {
-    description
-      "Grouping for the BGP-LS topology metric attribute";
-
-    leaf metric {
-      type uint32;
-      description
-        "Metric";
-    }
-  }
-
   grouping bgp-ls-topo-adj-sid-attr {
     description
       "Grouping for the BGP-LS topology adjacency SID attribute";
@@ -210,7 +199,7 @@ submodule ietf-bgp-ls-topo-attr {
     }
 
     leaf format {
-      type bgp-ls-topo-t:adj-sid-format;
+      type bgp-ls-topo-t:sid-format;
       description
         "Format of the SID";
     }
@@ -229,23 +218,6 @@ submodule ietf-bgp-ls-topo-attr {
       type uint8;
       description
         "Weight used for load balancing purposes";
-    }
-  }
-
-  grouping bgp-ls-topo-lan-adj-sid-attr {
-    description
-      "Grouping for the BGP-LS topology LAN adjacency SID
-       attribute";
-
-    uses bgp-ls-topo-adj-sid-attr;
-
-    leaf neighbor-id {
-      type union {
-        type inet:ipv4-address;
-        type ietf-isis-t:system-id;
-      }
-      description
-        "Neighbor ID";
     }
   }
 
@@ -268,7 +240,11 @@ submodule ietf-bgp-ls-topo-attr {
         "RFC 9552: Distribution of Link-State and Traffic
          Engineering Information Using BGP. TLV 1092";
 
-      uses bgp-ls-topo-metric-attr;
+      leaf metric {
+        type uint32;
+        description
+          "Traffic Engineering metric";
+      }
     }
 
     container unidirectional-link-delay {
@@ -613,7 +589,16 @@ submodule ietf-bgp-ls-topo-attr {
         description
           "List of LAN adjacency SID";
 
-        uses bgp-ls-topo-lan-adj-sid-attr;
+        uses bgp-ls-topo-adj-sid-attr;
+
+        leaf neighbor-id {
+          type union {
+            type inet:ipv4-address;
+            type ietf-isis-t:system-id;
+          }
+          description
+            "Neighbor ID";
+        }
       }
     }
 
@@ -783,23 +768,6 @@ submodule ietf-bgp-ls-topo-attr {
 
     uses bgp-ls-topo-srv6-endpoint-behavior-attr;
     uses bgp-ls-topo-srv6-sid-struct-attr;
-  }
-
-  grouping bgp-ls-topo-srv6-lan-end-x-sid-attr {
-    description
-      "Grouping for the BGP-LS topology SRv6 LAN End.X SID
-       attribute";
-
-    uses bgp-ls-topo-srv6-end-x-sid-attr;
-
-    leaf neighbor-id {
-      type union {
-        type inet:ipv4-address;
-        type ietf-isis-t:system-id;
-      }
-      description
-        "Neighbor ID";
-    }
   }
 
   grouping bgp-ls-topo-unknown-attr {
@@ -1774,7 +1742,16 @@ submodule ietf-bgp-ls-topo-attr {
             description
               "List of SRv6 LAN End.X SID";
 
-            uses bgp-ls-topo-srv6-lan-end-x-sid-attr;
+            uses bgp-ls-topo-srv6-end-x-sid-attr;
+
+            leaf neighbor-id {
+              type union {
+                type inet:ipv4-address;
+                type ietf-isis-t:system-id;
+              }
+              description
+                "Neighbor ID";
+            }
           }
         }
 
@@ -1824,90 +1801,6 @@ submodule ietf-bgp-ls-topo-attr {
               uses
                 bgp-ls-topo-common-link-asla-l2-bundle-member-attr;
               uses bgp-ls-topo-common-link-l2-bundle-member-attr;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  grouping bgp-ls-topo-bgp-link-attr {
-    description
-      "Grouping for the BGP-LS topology link attributes of BGP
-       protocol";
-
-    container link-attributes {
-      description
-        "Enclosing container for link attributes list";
-
-      list link-attribute {
-        key "type";
-
-        description
-          "List of link attribute types.";
-
-        leaf type {
-          type identityref {
-            base bgp-ls-topo-t:bgp-ls-topo-attr-type;
-          }
-          description
-            "The type of link attribute";
-        }
-
-        container bgp-peer-sids {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-bgp-peer-node-sid')" +
-               " or derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-bgp-peer-adj-sid')" +
-               " or derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-bgp-peer-set-sid')" {
-            description
-              "Only include the bgp-peer-sids container when the
-               type is bgp-ls-topo-attr-bgp-peer-node-sid,
-               bgp-ls-topo-attr-bgp-peer-adj-sid, or
-               bgp-ls-topo-attr-bgp-peer-set-sid";
-          }
-          description
-            "This container contains the BGP peer Segment
-             Identifiers (SIDs) of a link";
-          reference
-            "RFC 9086: Border Gateway Protocol - Link State
-             (BGP-LS) Extensions for Segment Routing. TLV 1101,
-             TLV 1102 and TLV 1103";
-
-          list bgp-peer-sid {
-            key "label-index format";
-
-            description
-              "List of BGP peer SID";
-
-            leaf label-index {
-              type uint32;
-              description
-                "Label or index";
-            }
-
-            leaf format {
-              type bgp-ls-topo-t:bgp-peer-sid-format;
-              description
-                "Format of the SID";
-            }
-
-            leaf flags {
-              type binary {
-                length "1";
-              }
-              description
-                "Flags associated with the BGP peer SID";
-            }
-
-            leaf weight {
-              type uint8;
-              description
-                "Weight used for load balancing purposes";
             }
           }
         }
@@ -2136,7 +2029,7 @@ submodule ietf-bgp-ls-topo-attr {
             }
 
             leaf format {
-              type bgp-ls-topo-t:pfx-sid-format;
+              type bgp-ls-topo-t:sid-format;
               description
                 "Format of the SID";
             }
@@ -2398,75 +2291,6 @@ submodule ietf-bgp-ls-topo-attr {
              Engineering Information Using BGP.";
 
           uses bgp-ls-topo-unknown-attr;
-        }
-      }
-    }
-  }
-
-  grouping bgp-ls-topo-bgp-srv6-sid-attr {
-    description
-      "Grouping for the BGP-LS topology SRv6 SID attributes of
-       BGP protocol";
-
-    container srv6-sid-attributes {
-      description
-        "Enclosing container for SRv6 SID attributes list";
-
-      list srv6-sid-attribute {
-        key "type";
-
-        description
-          "List of SRv6 SID attribute types.";
-
-        leaf type {
-          type identityref {
-            base bgp-ls-topo-t:bgp-ls-topo-attr-type;
-          }
-          description
-            "The type of SRv6 SID attribute";
-        }
-
-        uses bgp-ls-topo-srv6-sid-attr;
-
-        container srv6-bgp-peer-node-sid {
-          when "derived-from-or-self(../type, " +
-               "'bgp-ls-topo-t:" +
-               "bgp-ls-topo-attr-srv6-bgp-peer-node-sid')" {
-            description
-              "Only include the srv6-bgp-peer-node-sid container
-               when the type is
-               bgp-ls-topo-attr-srv6-bgp-peer-node-sid";
-          }
-          description
-            "This container contains the SRv6 BGP peer node SID.";
-          reference
-            "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
-             Extensions for Segment Routing over IPv6 (SRv6).
-             SRv6 BGP peer node SID. TLV 1251.";
-
-          leaf flags {
-            type uint32;
-            description
-              "Flags associated with the SRv6 BGP peer node SID";
-          }
-
-          leaf weight {
-            type uint32;
-            description
-              "Weight used for load balancing purposes";
-          }
-
-          leaf peer-as {
-            type inet:as-number;
-            description
-              "Autonomous system of peer";
-          }
-
-          leaf peer-bgp-id {
-            type ietf-rt-t:router-id;
-            description
-              "BGP Router ID of peer";
-          }
         }
       }
     }

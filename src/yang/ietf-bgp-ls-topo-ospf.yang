@@ -77,7 +77,8 @@ submodule ietf-bgp-ls-topo-ospf {
     leaf is-as-scoped {
       type boolean;
       description
-        "Is area ID valid?";
+        "When true, the NLRI is AS-scoped and the area-id
+         is not applicable.";
     }
 
     leaf area-id {
@@ -228,7 +229,8 @@ submodule ietf-bgp-ls-topo-ospf {
     leaf is-as-scoped {
       type boolean;
       description
-        "Is area ID valid?";
+        "When true, the NLRI is AS-scoped and the area-id
+         is not applicable.";
     }
 
     leaf area-id {
