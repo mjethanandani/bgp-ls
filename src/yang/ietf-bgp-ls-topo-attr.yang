@@ -43,7 +43,8 @@ submodule ietf-bgp-ls-topo-attr {
      WG List:  <lsvr@ietf.org>
 
      Authors: Mahesh Jethanandani (mjethanandani at gmail.com),
-              Keyur Patel (keyur at arrcus.com)";
+              Keyur Patel (keyur at arrcus.com),
+              Aravind Babu MahendraBabu (aramahen at cisco.com)";
 
   description
     "This submodule contains structural data definitions associated
