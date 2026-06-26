@@ -399,6 +399,314 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-tree.txt)
       </figure>
     </section>
 
+    <section>
+      <name>Examples</name>
+      <t>The following examples illustrate the BGP-LS Link-State
+      Database (LSDB) populated with NLRIs from different source
+      protocols.  The data shown represents the
+      <tt>bgp-ls-topology</tt> container defined in
+      <tt>ietf-bgp-lsdb</tt>, which is augmented into the
+      <tt>link-state</tt> presence container by
+      <tt>ietf-bgp-ls</tt> at the path
+      <tt>/rt:routing/rt:control-plane-protocols/
+rt:control-plane-protocol/bgp:bgp/bgp:global/
+bgp:afi-safis/bgp:afi-safi/ietf-bgp-ls:link-state</tt>.
+      XML encoding follows <xref target="RFC7950"/>.</t>
+
+      <section>
+        <name>OSPFv2 Instance</name>
+        <t>An OSPFv2 instance with one node (router-id
+        192.0.2.1), one link (192.0.2.1 to 192.0.2.2),
+        and one prefix (203.0.113.0/24).  Node and link
+        attribute types are expressed as identityrefs
+        from <tt>ietf-bgp-ls-topo-types</tt>.</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+<bgp-ls-topology
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb"
+    xmlns:t="urn:ietf:params:xml:ns:yang:ietf-bgp-ls-topo-types">
+  <instances>
+    <instance>
+      <vrf-name>default</vrf-name>
+      <protocol>ospfv2</protocol>
+      <identifier>0</identifier>
+      <nodes>
+        <ospf-node>
+          <is-as-scoped>false</is-as-scoped>
+          <area-id>0.0.0.0</area-id>
+          <router-id>192.0.2.1</router-id>
+          <dr-identifier>0.0.0.0</dr-identifier>
+          <as>65001</as>
+          <node-attributes>
+            <node-attribute>
+              <type>t:bgp-ls-topo-attr-local-ipv4-routerid
+              </type>
+              <local-ipv4-router-ids>
+                <router-id>192.0.2.1</router-id>
+              </local-ipv4-router-ids>
+            </node-attribute>
+          </node-attributes>
+        </ospf-node>
+      </nodes>
+      <links>
+        <ospf-link>
+          <area-id>0.0.0.0</area-id>
+          <as>65001</as>
+          <local-router-id>192.0.2.1</local-router-id>
+          <local-dr-identifier>0.0.0.0</local-dr-identifier>
+          <remote-router-id>192.0.2.2</remote-router-id>
+          <remote-dr-identifier>0.0.0.0</remote-dr-identifier>
+          <local-id>1</local-id>
+          <remote-id>2</remote-id>
+          <local-ipv4-address>198.51.100.1</local-ipv4-address>
+          <remote-ipv4-address>198.51.100.2</remote-ipv4-address>
+          <multi-topology-id>0</multi-topology-id>
+          <link-attributes>
+            <link-attribute>
+              <type>t:bgp-ls-topo-attr-igp-metric</type>
+              <igp-metric><metric>10</metric></igp-metric>
+            </link-attribute>
+          </link-attributes>
+        </ospf-link>
+      </links>
+      <prefixes>
+        <ospf-prefix>
+          <is-as-scoped>false</is-as-scoped>
+          <area-id>0.0.0.0</area-id>
+          <as>65001</as>
+          <router-id>192.0.2.1</router-id>
+          <dr-identifier>0.0.0.0</dr-identifier>
+          <route-type>intra-area</route-type>
+          <multi-topology-id>0</multi-topology-id>
+          <prefix>203.0.113.0/24</prefix>
+          <prefix-attributes>
+            <prefix-attribute>
+              <type>t:bgp-ls-topo-attr-prefix-metric</type>
+              <prefix-metric><metric>10</metric></prefix-metric>
+            </prefix-attribute>
+          </prefix-attributes>
+        </ospf-prefix>
+      </prefixes>
+    </instance>
+  </instances>
+</bgp-ls-topology>
+]]></artwork>
+        </figure>
+      </section>
+
+      <section>
+        <name>OSPFv3 Instance</name>
+        <t>An OSPFv3 instance with one node advertising an
+        IPv6 router-id attribute, one link using
+        <tt>0.0.0.0</tt> as the sentinel value for
+        absent IPv4 link addresses (the link is
+        IPv6-only), and one IPv6 prefix.</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+<bgp-ls-topology
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb"
+    xmlns:t="urn:ietf:params:xml:ns:yang:ietf-bgp-ls-topo-types">
+  <instances>
+    <instance>
+      <vrf-name>default</vrf-name>
+      <protocol>ospfv3</protocol>
+      <identifier>0</identifier>
+      <nodes>
+        <ospfv3-node>
+          <is-as-scoped>false</is-as-scoped>
+          <area-id>0.0.0.0</area-id>
+          <router-id>192.0.2.1</router-id>
+          <dr-identifier>0</dr-identifier>
+          <as>65001</as>
+          <node-attributes>
+            <node-attribute>
+              <type>t:bgp-ls-topo-attr-local-ipv6-routerid
+              </type>
+              <local-ipv6-router-ids>
+                <router-id>2001:db8::1</router-id>
+              </local-ipv6-router-ids>
+            </node-attribute>
+          </node-attributes>
+        </ospfv3-node>
+      </nodes>
+      <links>
+        <ospfv3-link>
+          <area-id>0.0.0.0</area-id>
+          <as>65001</as>
+          <local-router-id>192.0.2.1</local-router-id>
+          <local-dr-identifier>0</local-dr-identifier>
+          <remote-router-id>192.0.2.2</remote-router-id>
+          <remote-dr-identifier>0</remote-dr-identifier>
+          <local-id>1</local-id>
+          <remote-id>2</remote-id>
+          <!-- 0.0.0.0 sentinel: IPv6-only link -->
+          <local-ipv4-address>0.0.0.0</local-ipv4-address>
+          <remote-ipv4-address>0.0.0.0</remote-ipv4-address>
+          <local-ipv6-address>2001:db8::1</local-ipv6-address>
+          <remote-ipv6-address>2001:db8::2</remote-ipv6-address>
+          <multi-topology-id>0</multi-topology-id>
+          <link-attributes>
+            <link-attribute>
+              <type>t:bgp-ls-topo-attr-igp-metric</type>
+              <igp-metric><metric>10</metric></igp-metric>
+            </link-attribute>
+          </link-attributes>
+        </ospfv3-link>
+      </links>
+      <prefixes>
+        <ospfv3-prefix>
+          <is-as-scoped>false</is-as-scoped>
+          <area-id>0.0.0.0</area-id>
+          <as>65001</as>
+          <router-id>192.0.2.1</router-id>
+          <dr-identifier>0</dr-identifier>
+          <route-type>intra-area</route-type>
+          <multi-topology-id>0</multi-topology-id>
+          <prefix>2001:db8:1::/48</prefix>
+        </ospfv3-prefix>
+      </prefixes>
+    </instance>
+  </instances>
+</bgp-ls-topology>
+]]></artwork>
+        </figure>
+      </section>
+
+      <section>
+        <name>IS-IS Instance</name>
+        <t>An IS-IS Level-1 instance with one node
+        (system-id 0000.0000.0001), one link, and one
+        prefix (10.1.0.0/24).  IPv6 link addresses use
+        <tt>::</tt> as the sentinel value for absent
+        IPv6 addresses (the link is IPv4-only).</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+<bgp-ls-topology
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb"
+    xmlns:t="urn:ietf:params:xml:ns:yang:ietf-bgp-ls-topo-types">
+  <instances>
+    <instance>
+      <vrf-name>default</vrf-name>
+      <protocol>isis-l1</protocol>
+      <identifier>0</identifier>
+      <nodes>
+        <isis-node>
+          <system-id>0000.0000.0001</system-id>
+          <psn-id>0</psn-id>
+          <as>65001</as>
+          <node-attributes>
+            <node-attribute>
+              <type>t:bgp-ls-topo-attr-local-ipv4-routerid
+              </type>
+              <local-ipv4-router-ids>
+                <router-id>192.0.2.1</router-id>
+              </local-ipv4-router-ids>
+            </node-attribute>
+          </node-attributes>
+        </isis-node>
+      </nodes>
+      <links>
+        <isis-link>
+          <local-system-id>0000.0000.0001</local-system-id>
+          <local-psn-id>0</local-psn-id>
+          <local-as>65001</local-as>
+          <remote-system-id>0000.0000.0002</remote-system-id>
+          <remote-psn-id>0</remote-psn-id>
+          <remote-as>65001</remote-as>
+          <local-id>1</local-id>
+          <remote-id>2</remote-id>
+          <local-ipv4-address>198.51.100.1</local-ipv4-address>
+          <remote-ipv4-address>198.51.100.2</remote-ipv4-address>
+          <!-- :: sentinel: IPv4-only link -->
+          <local-ipv6-address>::</local-ipv6-address>
+          <remote-ipv6-address>::</remote-ipv6-address>
+          <multi-topology-id>0</multi-topology-id>
+          <link-attributes>
+            <link-attribute>
+              <type>t:bgp-ls-topo-attr-igp-metric</type>
+              <igp-metric><metric>10</metric></igp-metric>
+            </link-attribute>
+          </link-attributes>
+        </isis-link>
+      </links>
+      <prefixes>
+        <isis-prefix>
+          <system-id>0000.0000.0001</system-id>
+          <psn-id>0</psn-id>
+          <as>65001</as>
+          <multi-topology-id>0</multi-topology-id>
+          <prefix>10.1.0.0/24</prefix>
+        </isis-prefix>
+      </prefixes>
+    </instance>
+  </instances>
+</bgp-ls-topology>
+]]></artwork>
+        </figure>
+      </section>
+
+      <section>
+        <name>BGP Instance</name>
+        <t>A BGP instance with one BGP-LS link (AS 65001
+        router-id 192.0.2.1 to AS 65002 router-id
+        192.0.2.2).  The link carries a BGP Peer
+        Adjacency SID attribute (<tt>bgp-peer-sids</tt>)
+        as defined in <tt>ietf-bgp-ls-topo-attr</tt>,
+        demonstrating the new topology attribute
+        submodule.  The BGP protocol does not define
+        node or prefix NLRIs in this model.</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+<bgp-ls-topology
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-bgp-lsdb"
+    xmlns:t="urn:ietf:params:xml:ns:yang:ietf-bgp-ls-topo-types">
+  <instances>
+    <instance>
+      <vrf-name>default</vrf-name>
+      <protocol>bgp</protocol>
+      <identifier>0</identifier>
+      <links>
+        <bgp-link>
+          <local-as>65001</local-as>
+          <local-router-id>192.0.2.1</local-router-id>
+          <remote-as>65002</remote-as>
+          <remote-router-id>192.0.2.2</remote-router-id>
+          <local-id>1</local-id>
+          <remote-id>2</remote-id>
+          <local-ipv4-address>198.51.100.1</local-ipv4-address>
+          <remote-ipv4-address>198.51.100.2</remote-ipv4-address>
+          <!-- :: sentinel: IPv4-only link -->
+          <local-ipv6-address>::</local-ipv6-address>
+          <remote-ipv6-address>::</remote-ipv6-address>
+          <multi-topology-id>0</multi-topology-id>
+          <link-attributes>
+            <link-attribute>
+              <type>t:bgp-ls-topo-attr-bgp-peer-adj-sid</type>
+              <bgp-peer-sids>
+                <bgp-peer-sid>
+                  <label-index>100</label-index>
+                  <format>label</format>
+                  <!-- flags: 1 octet, all zeros -->
+                  <flags>AA==</flags>
+                  <weight>0</weight>
+                </bgp-peer-sid>
+              </bgp-peer-sids>
+            </link-attribute>
+          </link-attributes>
+        </bgp-link>
+      </links>
+    </instance>
+  </instances>
+</bgp-ls-topology>
+]]></artwork>
+        </figure>
+      </section>
+    </section>
+
     <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
       <t>TBA</t>
