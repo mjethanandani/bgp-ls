@@ -214,6 +214,49 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
         <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
 	</figure>
       </section>
+      <section>
+	<name>BGP Link-State Topology Types YANG model</name>
+	<t>This module defines the identity and typedef declarations
+	shared by the BGP-LS topology attribute submodules.</t>
+	<figure>
+          <name>YANG Model for BGP-LS Topology Types</name>
+          <artwork><![CDATA[
+<CODE BEGINS> file "ietf-bgp-ls-topo-types@YYYY-MM-DD.yang"
+INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls-topo-types@YYYY-MM-DD.yang)
+<CODE ENDS>
+
+]]></artwork>
+	</figure>
+      </section>
+      <section>
+	<name>BGP Link-State Topology Attributes YANG model</name>
+	<t>This submodule defines the node, link, and prefix attribute
+	containers used in the BGP-LS Link-State Database.</t>
+	<figure>
+          <name>YANG Model for BGP-LS Topology Attributes</name>
+          <artwork><![CDATA[
+<CODE BEGINS> file "ietf-bgp-ls-topo-attr@YYYY-MM-DD.yang"
+INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-attr@YYYY-MM-DD.yang)
+<CODE ENDS>
+
+]]></artwork>
+	</figure>
+      </section>
+      <section>
+	<name>BGP Link-State Topology OSPF YANG model</name>
+	<t>This submodule defines the OSPFv2 and OSPFv3 node, link,
+	and prefix NLRI groupings used in the BGP-LS Link-State
+	Database.</t>
+	<figure>
+          <name>YANG Model for BGP-LS Topology OSPF</name>
+          <artwork><![CDATA[
+<CODE BEGINS> file "ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang"
+INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
+<CODE ENDS>
+
+]]></artwork>
+	</figure>
+      </section>
     </section>
     
     <section anchor="IANA">
@@ -335,7 +378,7 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9552.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9815.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9911.xml"/>
-        <?rfc include='reference.I-D.ietf-idr-bgp-model.xml'?>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-idr-bgp-model.xml"/>
       </references>
  
       <references>

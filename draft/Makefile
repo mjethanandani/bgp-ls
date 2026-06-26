@@ -56,13 +56,14 @@ endif
 	-rm -f ../bin/submodules/*\@$(shell date +%Y)*.yang
 	-rm -f ../bin/submodules/*\@$(shell date +%Y)*-*-*.yang
 
-$(next).xml: $(draft).xml ../src/yang/ietf-bgp-ls.yang ../src/yang/ietf-bgp-lsdb.yang ../src/yang/ietf-bgp-ls-topo-types.yang ../src/yang/ietf-bgp-ls-topo-attr.yang 
+$(next).xml: $(draft).xml ../src/yang/ietf-bgp-ls.yang ../src/yang/ietf-bgp-lsdb.yang ../src/yang/ietf-bgp-ls-topo-types.yang ../src/yang/ietf-bgp-ls-topo-attr.yang ../src/yang/ietf-bgp-ls-topo-ospf.yang 
 	-mkdir -p ../bin
 	-mkdir -p ../bin/submodules
 	sed -e"s/$(basename $<)-latest/$(basename $@)/" -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" $< > $@
 	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-ls.yang > ../bin/ietf-bgp-ls\@$(shell date +%Y-%m-%d).yang
 	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-ls-topo-types.yang > ../bin/ietf-bgp-ls-topo-types\@$(shell date +%Y-%m-%d).yang
 	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-ls-topo-attr.yang > ../bin/submodules/ietf-bgp-ls-topo-attr\@$(shell date +%Y-%m-%d).yang
+	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-ls-topo-ospf.yang > ../bin/submodules/ietf-bgp-ls-topo-ospf\@$(shell date +%Y-%m-%d).yang
 	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-lsdb.yang > ../bin/ietf-bgp-lsdb\@$(shell date +%Y-%m-%d).yang
 
 	cd ../src; ./validate-and-gen-trees.sh; cd ..;
