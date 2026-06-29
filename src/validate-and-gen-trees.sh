@@ -69,15 +69,22 @@ rm ../bin/*-sub-tree.txt.tmp
 
 echo "Validating examples"
 
-#for i in yang/example-bgp-ls-configuration-a.*.xml
-#do
-#    name=$(echo $i | cut -f 1-3 -d '.')
-#    echo "Validating $name.xml"
-#    response=`yanglint -ii -t config -p ../bin/iana/yang-parameters/ -p ../bin/iana/yang-parameters/ietf-network-instance@2019-01-21.yang ../bin/iana/yang-parameters/ietf-bgp@2022-02-04.yang ../bin/ietf-srv6-mobile\@$(date +%Y-%m-%d).yang $name.xml`
-#    if [ $? -ne 0 ]; then
-#       printf "failed (error code: $?)\n"
-#       printf "$response\n\n"
-#       echo
-#       exit 1
-#    fi
-#done
+for i in yang/example-bgp-ls-oper.a.*.xml
+do
+    echo "Validating $i"
+    response=`yanglint \
+        -t data \
+        -e -i -i \
+        -p ../bin/iana/yang-parameters \
+        -p ../bin \
+        -p ../bin/submodules \
+        -p ../bin/dependent \
+        ../bin/ietf-bgp-ls@$(date +%Y-%m-%d).yang \
+        $i 2>&1`
+    if [ $? -ne 0 ]; then
+        printf "$i failed yanglint validation\n"
+        printf "$response\n\n"
+        echo
+        exit 1
+    fi
+done
