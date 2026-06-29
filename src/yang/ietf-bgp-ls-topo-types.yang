@@ -84,6 +84,16 @@
         description
           "Value of BGP-LS protocol BGP";
       }
+      enum rsvp-te {
+        value 8;
+        description
+          "Value of BGP-LS protocol RSVP-TE";
+      }
+      enum sr {
+        value 9;
+        description
+          "Value of BGP-LS protocol SR";
+      }
     }
     description
       "BGP-LS Protocol";
@@ -222,7 +232,24 @@
     reference
       "RFC 9552: Distribution of Link-State and Traffic Engineering
        Information Using BGP, Section 3.3.3.";
-}
+  }
+
+  typedef sid-format {
+    type enumeration {
+      enum label {
+        value 1;
+        description
+          "SID represented as an MPLS label value.";
+      }
+      enum index {
+        value 2;
+        description
+          "SID represented as an index value.";
+      }
+    }
+    description
+      "Format of a SID value (adjacency, prefix, or BGP peer).";
+  }
 
   identity bgp-ls-topo-attr-type {
     description
@@ -233,6 +260,15 @@
     description
       "Base identity for BGP-LS topology Flexible Algorithm
        Definition (FAD) attribute type.";
+  }
+
+  identity bgp-ls-topo-attr-link-local-remote-identifiers {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 258. Link local and remote identifiers";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+      Engineering Information Using BGP.";
   }
 
   identity bgp-ls-topo-attr-multi-topology-id {
@@ -248,6 +284,15 @@
     base "bgp-ls-topo-attr-type";
     description
       "BGP-LS TLV 266. Node Maximum SID Depth";
+    reference
+      "RFC 8814: Signaling Maximum SID Depth (MSD) Using the
+      Border Gateway Protocol - Link State";
+  }
+
+  identity bgp-ls-topo-attr-link-msd {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 267. Link Maximum SID Depth";
     reference
       "RFC 8814: Signaling Maximum SID Depth (MSD) Using the
       Border Gateway Protocol - Link State";
@@ -308,6 +353,24 @@
       Information Using BGP.";
   }
 
+  identity bgp-ls-topo-attr-remote-ipv4-routerid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1030. Remote Router-ID used by the IGP";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+      Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-remote-ipv6-routerid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1031. Remote Router-ID used by the IGP";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic Engineering
+      Information Using BGP.";
+  }
+
   identity bgp-ls-topo-attr-sr-capabilities {
     base "bgp-ls-topo-attr-type";
     description
@@ -335,6 +398,15 @@
     reference
       "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
        Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-srv6-cap-flags {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1038. SRv6 Capabilities Flags.";
+    reference
+      "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing over IPv6 (SRv6).";
   }
 
   identity bgp-ls-topo-attr-fad {
@@ -454,6 +526,391 @@
     reference
       "RFC TBD: BGP-LS extensions for Flexible Algorithms Reverse
        Affinity Constraint";
+  }
+
+  identity bgp-ls-topo-attr-extended-admin-group {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1173. Extended Administrative Group";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-maximum-link-bw {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1089. Maximum link bandwidth";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-maximum-reservable-link-bw {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1090. Maximum reservable link bandwidth";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-unreserved-bw {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1091. Unreserved bandwidth";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-te-default-metric {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1092. Traffic Engineering default metric";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-link-protection-type {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1093. Link protection type";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-mpls-protocol-mask {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1094. MPLS protocol mask";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-igp-metric {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1095. IGP metric";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-srlg {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1096. Shared Risk Link Group (SRLG)";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-opaque-link {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1097. Envelope that transparently carries optional
+       Link Attribute TLVs advertised by a router";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-link-name {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1098. Symbolic name of a link";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-adjacency-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1099. Adjacency Segment Identifier (SID)";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-lan-adjacency-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1100. LAN adjacency Segment Identifier (SID)";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-bgp-peer-node-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1101. BGP peer node Segment Identifier (SID)";
+    reference
+      "RFC 9086: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-bgp-peer-adj-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1102. BGP peer adjacency Segment Identifier
+       (SID)";
+    reference
+      "RFC 9086: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-bgp-peer-set-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1103. BGP peer set Segment Identifier (SID)";
+    reference
+      "RFC 9086: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-srv6-end-x-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1106. SRv6 End.X SID";
+    reference
+      "RFC 9514: SRv6 BGP-LS extensions.";
+  }
+
+  identity bgp-ls-topo-attr-srv6-isis-lan-end-x-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1107. SRv6 ISIS LAN End.X SID";
+    reference
+      "RFC 9514: SRv6 BGP-LS extensions.";
+  }
+
+  identity bgp-ls-topo-attr-srv6-ospf-lan-end-x-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1108. SRv6 OSPF LAN End.X SID";
+    reference
+      "RFC 9514: SRv6 BGP-LS extensions.";
+  }
+
+  identity bgp-ls-topo-attr-unidir-link-delay {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1114. Unidirectional link delay";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-min-max-unidir-link-delay {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1115. Min/max unidirectional link delay";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-unidir-delay-variation {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1116. Unidirectional delay variation";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-unidir-link-loss {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1117. Unidirectional link loss";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-unidir-residual-bw {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1118. Unidirectional residual bandwidth";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-unidir-available-bw {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1119. Unidirectional available bandwidth";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-unidir-utilized-bw {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1120. Unidirectional utilized bandwidth";
+    reference
+      "RFC 8571: Link State (BGP-LS) Advertisement of IGP Traffic
+       Engineering Performance Metric Extensions.";
+  }
+
+  identity bgp-ls-topo-attr-asla {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1122. Application-Specific Link Attributes";
+    reference
+      "RFC 9294: Application-Specific Link Attributes Advertisement
+       Using the Border Gateway Protocol - Link State (BGP-LS).";
+  }
+
+  identity bgp-ls-topo-attr-igp-flags {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1152. Flags and bits assigned to a prefix";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-igp-route-tag {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1153. Tags of a prefix";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-ext-igp-route-tag {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1154. Extended route tags of a prefix";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-prefix-metric {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1155. Metric of a prefix";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-ospf-forwarding-address {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1156. Forwarding address of a prefix";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-opaque-prefix {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1157. Envelope that transparently carries optional
+       Prefix Attribute TLVs advertised by a router";
+    reference
+      "RFC 9552: Distribution of Link-State and Traffic
+       Engineering Information Using BGP.";
+  }
+
+  identity bgp-ls-topo-attr-prefix-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1158. Prefix Segment Identifiers (SIDs)";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-prefix-range {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1159. Range of prefix-to-SID mapping";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-srv6-locator {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1162. SRv6 locator information associated with a
+       prefix";
+    reference
+      "RFC 9514: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing over IPv6 (SRv6)";
+  }
+
+  identity bgp-ls-topo-attr-prefix-attribute-flags {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1170. Prefix attribute flags";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-prefix-src-router-id {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1171. Source route identifier of a prefix";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-l2-bundle-member {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1172. L2 bundle member";
+    reference
+      "RFC 9085: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Segment Routing";
+  }
+
+  identity bgp-ls-topo-attr-fa-prefix-metric {
+    base "bgp-ls-topo-attr-type";
+    description
+      "BGP-LS TLV 1044. Flexible Algorithm prefix metric";
+    reference
+      "RFC 9351: Border Gateway Protocol - Link State (BGP-LS)
+       Extensions for Flexible Algorithm Advertisement";
+  }
+
+  identity bgp-ls-topo-attr-srv6-endpoint-behavior {
+    base "bgp-ls-topo-attr-type";
+    description
+      "SRv6 endpoint behavior";
+    reference
+      "RFC 9514: SRv6 BGP-LS extensions.";
+  }
+
+  identity bgp-ls-topo-attr-srv6-bgp-peer-node-sid {
+    base "bgp-ls-topo-attr-type";
+    description
+      "SRv6 BGP peer node SID";
+    reference
+      "RFC 9514: SRv6 BGP-LS extensions.";
+  }
+
+  identity bgp-ls-topo-attr-srv6-sid-structure {
+    base "bgp-ls-topo-attr-type";
+    description
+      "SRv6 SID structure";
+    reference
+      "RFC 9514: SRv6 BGP-LS extensions.";
   }
 
   identity bgp-ls-topo-attr-unknowns {
