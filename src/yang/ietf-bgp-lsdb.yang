@@ -49,7 +49,8 @@ module ietf-bgp-lsdb {
      WG List:  <lsvr@ietf.org>
 
      Authors: Mahesh Jethanandani (mjethanandani at gmail.com),
-              Keyur Patel (keyur at arrcus.com)";
+              Keyur Patel (keyur at arrcus.com),
+              Aravind Babu MahendraBabu (aramahen at cisco.com)";
 
   description
     "This module contains contains configuration and management

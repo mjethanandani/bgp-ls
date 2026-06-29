@@ -28,7 +28,7 @@
   <front>
     <title abbrev="BGP LS, LS-VPN, LS-SPF YANG Model">A YANG Model for BGP-LS, BGP-LS-VPN, and BGP-LS-SPF</title>
     <seriesInfo name="Internet-Draft" value="draft-ietf-lsvr-bgp-ls-yang-latest"/>
-   
+
     <author fullname="Mahesh Jethanandani" initials="M." role="editor" surname="Jethanandani">
       <organization>Arrcus, Inc</organization>
       <address>
@@ -38,9 +38,9 @@
           <region/>
           <code/>
           <country/>
-        </postal>        
+        </postal>
         <phone/>
-        <email>mjethanandani@gmail.com</email>  
+        <email>mjethanandani@gmail.com</email>
         <uri/>
       </address>
     </author>
@@ -53,13 +53,28 @@
           <region/>
           <code/>
           <country/>
-        </postal>        
+        </postal>
         <phone/>
         <email>keyur@arrcus.com</email>
         <uri/>
       </address>
     </author>
-   
+    <author fullname="Aravind Babu MahendraBabu" initials="A." surname="MahendraBabu">
+      <organization>Cisco, Inc</organization>
+      <address>
+        <postal>
+          <street/>
+          <city/>
+          <region/>
+          <code/>
+          <country>India</country>
+        </postal>
+        <phone/>
+        <email>aramahen@cisco.com</email>
+        <uri/>
+      </address>
+    </author>
+
     <date/>
     <area>Routing</area>
     <workgroup>LSVR</workgroup>
@@ -76,70 +91,103 @@
   </front>
 
   <middle>
-    
+
     <section>
       <name>Introduction</name>
-      <t><xref target="RFC9552">North-Bound Distribution of Link-State
-      (LS) and Traffic Engineering (TE) Information Using BGP</xref>
-      describes a mechanism by which LS and TE information can be
-      collected and shared with external components using BGP routing
-      protocol. That LS combined with Shortest Path First (SPF)
-      algorithm can be used by BGP for making routing
-      decisions. Additionally, <xref
-      target="RFC9815">BGP Link-State Shortest Path
-      First (SPF) Routing</xref> describes how it allows BGP to be
-      used efficiently as both the underlay and the overlay protocol
-      in Many Massively Scaled Data Centers (MSDC). This document
-      defines a <xref target="RFC7950">YANG 1.1 </xref> model that can
-      be used to configure a router of that capability. It also
-      defines a model for Link State DataBase (LSDB) that is used to
-      store Link State Advertisements (LSA).
-      </t>
+      <t><xref target="RFC9552"/> describes a mechanism by which
+      Link-State (LS) and Traffic Engineering (TE) topology information
+      can be collected from Interior Gateway Protocols (IGPs) and
+      distributed to external components using the Border Gateway
+      Protocol (BGP).  When combined with the Shortest Path First (SPF)
+      algorithm, this mechanism allows BGP to compute routes directly
+      from the distributed topology.  <xref target="RFC9815"/> describes
+      BGP Link-State Shortest Path First (BGP-LS-SPF) routing, a mode
+      that enables BGP to serve as both the underlay and overlay protocol
+      in Massively Scaled Data Centers (MSDCs).  This document defines a
+      <xref target="RFC7950">YANG 1.1</xref> data model for configuring
+      BGP-LS, BGP-LS-VPN, and BGP-LS-SPF on a router.  It also defines
+      a read-only model for the Link-State Database (LSDB), which stores
+      the Node, Link, Prefix, and SRv6 Segment Identifier (SID) Network
+      Layer Reachability Information (NLRI) received via BGP-LS.</t>
 
-      <t>The model conforms to the <xref target="RFC8342">NMDA</xref>
-      architecture.</t>
+      <t>The data model is organized across five YANG modules.  The
+      <tt>ietf-bgp-ls</tt> module augments the BGP configuration model
+      to add the three new address families: BGP-LS, BGP-LS-VPN, and
+      BGP-LS-SPF.  The <tt>ietf-bgp-lsdb</tt> module provides the
+      read-only Link-State Database, together with submodules that define
+      the Node, Link, Prefix, and SRv6 SID NLRI types and their
+      associated attributes.  The attribute definitions in those
+      submodules cover the IGP topology attributes from
+      <xref target="RFC9552"/>, the Segment Routing extensions from
+      <xref target="RFC9085"/>, the BGP Peering Segment extensions from
+      <xref target="RFC9086"/>, the Flexible Algorithm extensions from
+      <xref target="RFC9351"/>, and the SRv6 extensions from
+      <xref target="RFC9514"/>.</t>
 
       <section>
 	<name>Requirements Language</name>
 	<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
 	"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
-	RECOMMENDED", "MAY", and "OPTIONAL" in this document are to 
-	be interpreted as described in BCP 14 <xref 
-	target="RFC2119"/> <xref target="RFC8174"/> when, and 
+	RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+	be interpreted as described in BCP 14 <xref
+	target="RFC2119"/> <xref target="RFC8174"/> when, and
 	only when, they appear in all capitals, as shown here.</t>
       </section>
     </section>
 
     <section>
       <name>Terminology</name>
-      <t>
-	This document references terms defined in other documents.
-      </t>
+      <t>This section defines terms and acronyms used throughout this
+      document.  Terms imported from other specifications are listed
+      with their source.</t>
 
-      <ul>
-	<li>BGP SPF Routing Domain</li>
-	<li>BGP-LS-SPF NLRI</li>
-      </ul>
-	
+      <dl newline="true" spacing="normal">
+        <dt>BGP SPF Routing Domain:</dt>
+        <dd>A BGP routing domain operating in BGP-LS-SPF mode, as
+        defined in Section 2 of <xref target="RFC9815"/>.  All routers
+        in the domain exchange BGP-LS-SPF NLRIs and independently run
+        SPF to compute their routing tables.</dd>
+
+        <dt>BGP-LS-SPF NLRI:</dt>
+        <dd>A BGP-LS NLRI type used to carry Node, Link, and Prefix
+        reachability information in a BGP-LS-SPF routing domain, as
+        defined in <xref target="RFC9815"/>.</dd>
+      </dl>
+
       <section>
 	<name>Acronyms</name>
-	<t>This document uses a few acronyms. Some of them are defined
-	here for reference.</t>
+	<t>This document uses the following acronyms.</t>
 	<table>
 	  <name>Acronyms</name>
           <thead>
-            <!-- [REPLACE/DELETE] a table header is optional -->
             <tr><th>Acronym</th><th>Definition</th></tr>
           </thead>
           <tbody>
 	    <tr><td>AFI</td><td>Address Family Indicator</td></tr>
+	    <tr><td>BGP</td><td>Border Gateway Protocol</td></tr>
+	    <tr><td>BGP-LS</td><td>BGP Link-State</td></tr>
+	    <tr><td>BGP-LS-SPF</td><td>BGP Link-State Shortest Path First</td></tr>
+	    <tr><td>EPE</td><td>Egress Peer Engineering</td></tr>
+	    <tr><td>FAD</td><td>Flexible Algorithm Definition</td></tr>
+	    <tr><td>IS-IS</td><td>Intermediate System to Intermediate System</td></tr>
 	    <tr><td>LS</td><td>Link-State</td></tr>
-	    <tr><td>LSA</td><td>Link-State Advertisements</td></tr>
-	    <tr><td>LSDB</td><td>Link-State DataBase</td></tr>
-	    <tr><td>SAFI</td><td>Subsequent Address Family
-	    Indicator</td></tr>
-            <tr><td>SPF</td><td>Shortest Path First</td></tr>
-            <tr><td>TE</td><td>Traffic Engineering</td></tr>
+	    <tr><td>LSA</td><td>Link-State Advertisement</td></tr>
+	    <tr><td>LSDB</td><td>Link-State Database</td></tr>
+	    <tr><td>MSD</td><td>Maximum SID Depth</td></tr>
+	    <tr><td>MSDC</td><td>Massively Scaled Data Center</td></tr>
+	    <tr><td>NLRI</td><td>Network Layer Reachability Information</td></tr>
+	    <tr><td>OSPF</td><td>Open Shortest Path First</td></tr>
+	    <tr><td>SAFI</td><td>Subsequent Address Family Indicator</td></tr>
+	    <tr><td>SID</td><td>Segment Identifier</td></tr>
+	    <tr><td>SPF</td><td>Shortest Path First</td></tr>
+	    <tr><td>SR</td><td>Segment Routing</td></tr>
+	    <tr><td>SRGB</td><td>Segment Routing Global Block</td></tr>
+	    <tr><td>SRLB</td><td>Segment Routing Local Block</td></tr>
+	    <tr><td>SRLG</td><td>Shared Risk Link Group</td></tr>
+	    <tr><td>SRv6</td><td>Segment Routing over IPv6</td></tr>
+	    <tr><td>TE</td><td>Traffic Engineering</td></tr>
+	    <tr><td>TLV</td><td>Type-Length-Value</td></tr>
+	    <tr><td>VRF</td><td>Virtual Routing and Forwarding</td></tr>
           </tbody>
 	</table>
       </section>
@@ -147,9 +195,17 @@
 
     <section>
       <name>Tree Diagram</name>
-      <t>An abridged version of the tree diagram is shown here.
-      Annotations used in the diagram are defined in <xref
-      target="RFC8340">YANG Tree Diagrams </xref>.</t>
+      <t>The tree diagram below shows an abridged view of the
+      <tt>ietf-bgp-ls</tt> module and the top-level containers of the
+      <tt>ietf-bgp-lsdb</tt> module.  The <tt>bgp-ls-topology</tt>
+      container holds one or more instances, each identified by a VRF
+      name, protocol (IS-IS Level 1 or Level 2, OSPFv2, OSPFv3, or
+      BGP), and a 64-bit domain identifier.  Within each instance,
+      separate containers hold the Node, Link, Prefix, and SRv6 SID
+      NLRIs indexed by their protocol-specific key fields.  A complete
+      tree diagram is provided in <xref target="appendix-tree"/>.
+      Annotations used in the diagram are defined in
+      <xref target="RFC8340"/>.</t>
       <figure>
 	<name>Tree Diagram for BGP-LS, BGP-LS-SPF YANG Model</name>
         <artwork><![CDATA[
@@ -159,34 +215,30 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
       </figure>
 
     </section>
+
     <section>
       <name>YANG Models</name>
       <section>
 	<name>BGP Link-State YANG model</name>
-	<t>The YANG model augments the BGP model in <xref
-	target="I-D.ietf-idr-bgp-model"> BGP Model for Service
-	Provider Network</xref> to add extensions to BGP
-	configuration. These extensions include the addition of three
-	new Address Family Indicator (AFI) and Subsequent Address
-	Family Indicator (SAFI) - BGP-LS, BGP-LS-VPN, and BGP-LS-SPF.
-	</t>
+	<t>The <tt>ietf-bgp-ls</tt> module augments the BGP model
+	<xref target="I-D.ietf-idr-bgp-model"/> to add support for
+	three new Address Family Indicator (AFI) / Subsequent Address
+	Family Indicator (SAFI) combinations: BGP-LS, BGP-LS-VPN, and
+	BGP-LS-SPF.</t>
 
-	<t>The BGP model is augmented both at a global level, and at a
-	neighbor level to add support for the three new AFI/SAFI. In
-	addition, there is support for statistics both at a global and
-	at a neighbor level for the new address families. The
-	'feature' definition in <xref target="I-D.ietf-idr-bgp-model">
-	BGP Model for Service Provider Network</xref> for
-	'clear-statistics' is used in this model to determine whether
-	ability to clear statistics will be supported.
-	</t>
-      
-  <t>The model imports <xref target="RFC9911">Common YANG Data
-	Types </xref>, <xref target="RFC8349">A YANG Data Model for
-	Routing Management(NMDA Version)</xref>, and <xref
-	target="I-D.ietf-idr-bgp-model">BGP Model for Service
-	Provider Network</xref>.</t>
-      
+	<t>The BGP model is augmented both at a global level and at a
+	neighbor level to add support for the three new AFI/SAFI
+	combinations.  In addition, there is support for per-address-family
+	statistics both at a global and at a neighbor level.  The
+	<tt>clear-statistics</tt> feature defined in
+	<xref target="I-D.ietf-idr-bgp-model"/> is used in this model to
+	determine whether the ability to clear statistics is supported.</t>
+
+	<t>The module imports <tt>ietf-yang-types</tt> and
+	<tt>ietf-inet-types</tt> <xref target="RFC9911"/>,
+	<tt>ietf-routing</tt> <xref target="RFC8349"/>, and the BGP
+	module from <xref target="I-D.ietf-idr-bgp-model"/>.</t>
+
 	<figure>
           <name>YANG Model for BGP-LS, BGP-LS-VPN, BGP-LS-SPF</name>
           <artwork><![CDATA[
@@ -198,11 +250,71 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
         <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
 	</figure>
       </section>
+
       <section>
 	<name>BGP Link-State Database YANG model</name>
-  <t>The model imports <xref target="RFC9911">Common YANG Data
-	Types </xref>
-	</t>
+	<t>The <tt>ietf-bgp-lsdb</tt> module defines the read-only
+	Link-State Database (LSDB).  The top-level grouping
+	<tt>lsdb-top</tt> organizes entries into instances identified by
+	a VRF name, an originating protocol, and a 64-bit domain
+	identifier.  Within each instance, five containers group the NLRI
+	types:</t>
+
+	<t><tt>nodes</tt> contains protocol-specific lists for IS-IS
+	nodes (keyed by system-id, pseudo-node identifier, and AS number)
+	and OSPFv2/OSPFv3 nodes (keyed by the AS-scoped flag, area-id,
+	router-id, designated-router identifier, and AS number).  Each
+	node entry carries the node attributes defined in
+	<tt>ietf-bgp-ls-topo-attr</tt>.  BGP Egress Peer Engineering
+	(EPE) defines a BGP Node NLRI type for advertising BGP peer node
+	descriptors <xref target="RFC9086"/>; a corresponding list will
+	be added in a future revision of this model.</t>
+
+	<t><tt>links</tt> contains protocol-specific lists for IS-IS
+	links, OSPFv2 links, OSPFv3 links, and BGP Egress Peer
+	Engineering (EPE) links <xref target="RFC9086"/>.  IS-IS and OSPF
+	links are keyed by the local and remote node identifiers together
+	with the local and remote IPv4 and IPv6 interface addresses; a
+	sentinel value of 0.0.0.0 (for IPv4) or :: (for IPv6) MUST be
+	used when an address is absent, for example on unnumbered or
+	single-stack links.  BGP links carry additional key fields for the
+	local and remote AS numbers and BGP Router IDs.  Each link entry
+	carries the IGP link attributes defined in
+	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
+
+	<t><tt>prefixes</tt> contains protocol-specific lists for IS-IS,
+	OSPFv2, and OSPFv3 prefixes.  IS-IS prefix entries are keyed by
+	system-id, pseudo-node identifier, AS number, multi-topology-id,
+	and prefix value.  OSPFv2 and OSPFv3 prefix entries are keyed by
+	the AS-scoped flag, area-id, router-id, designated-router
+	identifier, AS number, multi-topology-id, route-type, and prefix
+	value.  Each prefix entry carries the prefix attributes defined in
+	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
+
+	<t><tt>srv6-sids</tt> contains protocol-specific lists for
+	OSPFv3, IS-IS, and BGP SRv6 SIDs.  OSPFv3 SRv6 SID entries are
+	keyed by the AS-scoped flag, area-id, router-id,
+	designated-router identifier, AS number, SID value, and
+	multi-topology-id.  IS-IS SRv6 SID entries are keyed by
+	system-id, pseudo-node identifier, AS number, SID value, and
+	multi-topology-id.  BGP SRv6 SID entries are keyed by router-id,
+	AS number, SID value, and multi-topology-id.  Each SRv6 SID
+	entry carries the SRv6 SID attributes defined in
+	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
+
+	<t><tt>unknowns</tt> provides a fallback container for NLRI types
+	not recognized by the model, stored as opaque hex-encoded NLRI
+	and attribute values.</t>
+
+	<t>The module includes the <tt>ietf-bgp-ls-topo-attr</tt>,
+	<tt>ietf-bgp-ls-topo-ospf</tt>, and
+	<tt>ietf-bgp-ls-topo-types</tt> submodules, and imports
+	<tt>ietf-yang-types</tt> and <tt>ietf-inet-types</tt>
+	<xref target="RFC9911"/>, <tt>ietf-routing-types</tt>
+	<xref target="RFC8294"/>, <tt>ietf-isis</tt>
+	<xref target="RFC9130"/>, and <tt>ietf-ospf</tt>
+	<xref target="RFC9129"/>.</t>
+
 	<figure>
           <name>YANG Model for Link-State Database</name>
           <artwork><![CDATA[
@@ -214,10 +326,41 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-lsdb@YYYY-MM-DD.yang)
         <!-- [CHECK] markers="true" means that the rendered file will have <CODE BEGINS> and <CODE ENDS> added -->
 	</figure>
       </section>
+
       <section>
 	<name>BGP Link-State Topology Types YANG model</name>
-	<t>This module defines the identity and typedef declarations
-	shared by the BGP-LS topology attribute submodules.</t>
+	<t>The <tt>ietf-bgp-ls-topo-types</tt> submodule defines the
+	identity hierarchy and typedefs shared across the other
+	topology attribute submodules.</t>
+
+	<t>The base identity <tt>bgp-ls-topo-attr-type</tt> is the root
+	for approximately fifty derived identities, one per BGP-LS TLV
+	type.  Examples include <tt>bgp-ls-topo-attr-node-name</tt> (TLV
+	1026), <tt>bgp-ls-topo-attr-sr-capabilities</tt> (TLV 1034),
+	<tt>bgp-ls-topo-attr-fad</tt> (TLV 1039),
+	<tt>bgp-ls-topo-attr-extended-admin-group</tt> (TLV 1173), and
+	<tt>bgp-ls-topo-attr-adjacency-sid</tt> (TLV 1099).  These
+	identities serve as the key type in the type-dispatched attribute
+	lists defined in <tt>ietf-bgp-ls-topo-attr</tt>, enabling new TLV
+	types to be added as derived identities without modifying the
+	existing schema structure.</t>
+
+	<t>The base identity <tt>bgp-ls-topo-attr-fad-type</tt>
+	enumerates the sub-TLV types that appear within a Flexible
+	Algorithm Definition (FAD) <xref target="RFC9351"/>, such as
+	include/exclude affinity constraints, SRLG exclusions, minimum
+	bandwidth, and maximum delay.</t>
+
+	<t>The <tt>sid-format</tt> typedef is an enumeration
+	distinguishing whether a SID value is an MPLS label (20-bit) or
+	an index into the SRGB (32-bit).  It is referenced by the
+	adjacency-SID, prefix-SID, and BGP peer SID attribute
+	containers.</t>
+
+	<t>The <tt>protocol</tt> typedef enumerates the IGP protocols
+	from which BGP-LS NLRIs can originate: IS-IS Level 1, IS-IS Level
+	2, OSPFv2, OSPFv3, BGP, and Direct.</t>
+
 	<figure>
           <name>YANG Model for BGP-LS Topology Types</name>
           <artwork><![CDATA[
@@ -228,10 +371,69 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls-topo-types@YYYY-MM-DD.yang)
 ]]></artwork>
 	</figure>
       </section>
+
       <section>
 	<name>BGP Link-State Topology Attributes YANG model</name>
-	<t>This submodule defines the node, link, and prefix attribute
-	containers used in the BGP-LS Link-State Database.</t>
+	<t>The <tt>ietf-bgp-ls-topo-attr</tt> submodule defines groupings
+	for the attributes associated with Node, Link, Prefix, and SRv6
+	SID NLRIs.  Each grouping uses a type-dispatched list pattern: a
+	list keyed by an <tt>identityref</tt> of base type
+	<tt>bgp-ls-topo-attr-type</tt>, where each list entry carries a
+	set of containers guarded by
+	<tt>derived-from-or-self()</tt> <tt>when</tt> expressions.  Only
+	the container whose identity matches the entry's key leaf is
+	active in any given entry.  This approach provides an extensible
+	schema that accommodates new TLV types by adding derived
+	identities without modifying the list structure.</t>
+
+	<t><strong>Node attributes</strong>
+	(<tt>bgp-ls-topo-node-attr</tt>): The node attribute list covers
+	the TLVs defined in <xref target="RFC9552"/> for router
+	identification (local IPv4/IPv6 Router-IDs, node name),
+	node properties (Multi-Topology IDs, node flag bits, IS-IS area
+	identifiers, opaque node attributes), Segment Routing capabilities
+	(SRGB ranges, SRLB ranges, SR algorithms, node Maximum SID Depth
+	(MSD) <xref target="RFC8814"/>), and Flexible Algorithm
+	Definitions (FADs).  Each FAD entry is identified by an algorithm
+	number in the range 128-255 and carries its metric type,
+	calculation type, priority, and a nested type-dispatched list of
+	affinity and SRLG constraint attributes as defined in
+	<xref target="RFC9351"/>.</t>
+
+	<t><strong>Link attributes</strong>
+	(<tt>bgp-ls-topo-igp-link-attr</tt>): The link attribute list
+	covers the TE and SR TLVs defined in <xref target="RFC9552"/> and
+	<xref target="RFC9085"/>.  Traffic engineering attributes include
+	maximum bandwidth, maximum reservable bandwidth, unreserved
+	bandwidth (eight priority levels), administrative group, extended
+	administrative group (TLV 1173), TE metric, link protection type,
+	and Shared Risk Link Group (SRLG) values.  Performance attributes
+	include unidirectional link delay (average, minimum, and maximum),
+	delay variation, link loss, residual bandwidth, available
+	bandwidth, and utilized bandwidth.  SR attributes include
+	adjacency-SIDs (TLV 1099) and LAN adjacency-SIDs (TLV 1100)
+	<xref target="RFC9085"/>, each carrying label or index values,
+	flags, and weights; link MSD; SRv6 End.X SIDs; and SRv6 LAN
+	End.X SIDs <xref target="RFC9514"/>.  Application-Specific Link
+	Attributes (ASLA) and L2 Bundle Member attributes are also
+	modeled.  For BGP EPE links <xref target="RFC9086"/>, the list
+	includes BGP peer SIDs (TLVs 1101-1103).</t>
+
+	<t><strong>Prefix attributes</strong>
+	(<tt>bgp-ls-topo-prefix-attr</tt>): The prefix attribute list
+	covers IGP flags, route tags, extended route tags, prefix metric,
+	OSPF forwarding address, opaque prefix attributes, prefix-SIDs
+	(TLV 1158) <xref target="RFC9085"/> with label or index values
+	and algorithm, and SRv6 Locator attributes
+	<xref target="RFC9514"/>.</t>
+
+	<t><strong>SRv6 SID attributes</strong>
+	(<tt>bgp-ls-topo-srv6-sid-attr</tt>): SRv6 SID entries carry the
+	SRv6 endpoint behavior (TLV 1250) and the SRv6 SID structure
+	sub-TLV (TLV 1252), which encodes the locator block length,
+	locator node length, function length, and argument length fields
+	<xref target="RFC9514"/>.</t>
+
 	<figure>
           <name>YANG Model for BGP-LS Topology Attributes</name>
           <artwork><![CDATA[
@@ -242,11 +444,31 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-attr@YYYY-MM-DD.yang)
 ]]></artwork>
 	</figure>
       </section>
+
       <section>
 	<name>BGP Link-State Topology OSPF YANG model</name>
-	<t>This submodule defines the OSPFv2 and OSPFv3 node, link,
-	and prefix NLRI groupings used in the BGP-LS Link-State
-	Database.</t>
+	<t>The <tt>ietf-bgp-ls-topo-ospf</tt> submodule defines three
+	groupings that capture the OSPF-specific NLRI descriptor fields
+	shared between OSPFv2 and OSPFv3:
+	<tt>bgp-ls-ospf-node-common</tt> (for node NLRIs),
+	<tt>bgp-ls-ospf-link-common</tt> (for link NLRIs), and
+	<tt>bgp-ls-ospf-prefix-common</tt> (for prefix NLRIs).  Each
+	grouping includes the <tt>is-as-scoped</tt> leaf and the
+	<tt>area-id</tt> leaf.  When <tt>is-as-scoped</tt> is true, the
+	NLRI is scoped to the entire AS and the <tt>area-id</tt> is not
+	applicable; when false, the <tt>area-id</tt> identifies the OSPF
+	area to which the NLRI belongs.  The <tt>route-type</tt> leaf in
+	<tt>bgp-ls-ospf-prefix-common</tt> distinguishes intra-area,
+	inter-area, external Type 1, external Type 2, NSSA Type 1, and
+	NSSA Type 2 routes, as defined in Section 5.2.3.2 of
+	<xref target="RFC9552"/>.</t>
+
+	<t>These groupings are used by the <tt>ietf-bgp-lsdb</tt> module
+	for all four OSPFv2/OSPFv3 list types (node, link, prefix, and
+	SRv6 SID), eliminating duplication and ensuring that the OSPF
+	descriptor fields are consistently defined across all NLRI
+	types.</t>
+
 	<figure>
           <name>YANG Model for BGP-LS Topology OSPF</name>
           <artwork><![CDATA[
@@ -258,14 +480,12 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
 	</figure>
       </section>
     </section>
-    
+
     <section anchor="IANA">
       <name>IANA Considerations</name>
 
       <t>This memo registers the following namespace URIs in the IETF
-      XML in the "IETF XML Registry" <xref target="RFC3688"
-      format="default" sectionFormat="of"
-      derivedContent="RFC3688"/>:</t>
+      XML Registry <xref target="RFC3688"/>:</t>
 
       <dl newline="false" spacing="compact" indent="3">
         <dt>URI:</dt>
@@ -283,11 +503,17 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
         <dt>XML:</dt>
         <dd>N/A; the requested URI is an XML namespace.</dd>
       </dl>
+      <dl newline="false" spacing="compact" indent="3">
+        <dt>URI:</dt>
+        <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-ls-topo-types</dd>
+        <dt>Registrant Contact:</dt>
+        <dd>The IESG.</dd>
+        <dt>XML:</dt>
+        <dd>N/A; the requested URI is an XML namespace.</dd>
+      </dl>
 
-      <t indent="0">This document registers the following YANG
-      modules in the "YANG Module Names" registry
-      <xref target="RFC6020" format="default" sectionFormat="of"
-      derivedContent="RFC6020"/>:</t>
+      <t>This document registers the following YANG modules in the
+      "YANG Module Names" registry <xref target="RFC6020"/>:</t>
 
       <dl newline="false" spacing="compact" indent="3">
         <dt>Name:</dt>
@@ -309,20 +535,30 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
         <dt>Reference:</dt>
         <dd>RFC XXXX</dd>
       </dl>
+      <dl newline="false" spacing="compact" indent="3">
+        <dt>Name:</dt>
+        <dd>ietf-bgp-ls-topo-types</dd>
+        <dt>Namespace:</dt>
+        <dd>urn:ietf:params:xml:ns:yang:ietf-bgp-ls-topo-types</dd>
+        <dt>Prefix:</dt>
+        <dd>bgp-ls-topo-t</dd>
+        <dt>Reference:</dt>
+        <dd>RFC XXXX</dd>
+      </dl>
     </section>
-    
+
     <section anchor="Security">
       <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
       <name>Security Considerations</name>
-      <t>The YANG module specified in this document defines a schema
-      for data that is designed to be accessed via network management
-      protocols such as <xref target="RFC6241">NETCONF</xref> or <xref
-      target="RFC8040">RESTCONF</xref>. The lowest NETCONF layer is
-      the secure transport layer, and the mandatory-to-implement
+      <t>The YANG modules specified in this document define schemas for
+      data that are designed to be accessed via network management
+      protocols such as <xref target="RFC6241">NETCONF</xref> or
+      <xref target="RFC8040">RESTCONF</xref>.  The lowest NETCONF layer
+      is the secure transport layer, and the mandatory-to-implement
       secure transport is <xref target="RFC6242">Secure Shell
-      (SSH)</xref>. The lowest RESTCONF layer is HTTPS, and the
-      mandatory-to-implement secure transport is <xref
-      target="RFC8446">TLS</xref>.</t>
+      (SSH)</xref>.  The lowest RESTCONF layer is HTTPS, and the
+      mandatory-to-implement secure transport is
+      <xref target="RFC8446">TLS</xref>.</t>
 
       <t>The <xref target="RFC8341">Network Configuration Access
       Control Model (NACM)</xref> provides the means to restrict
@@ -330,29 +566,35 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
       preconfigured subset of all available NETCONF or RESTCONF
       protocol operations and content.</t>
 
-      <t>There are a number of data nodes defined in this YANG module
-      that are writable/creatable/deletable (i.e., config true, which
-      is the default). These data nodes may be considered sensitive or
-      vulnerable in some network environments. Write operations (e.g.,
-      edit-config) to these data nodes without proper protection can
-      have a negative effect on network operations. These are the
-      subtrees and data nodes and their sensitivity/vulnerability:</t>
+      <t>The <tt>ietf-bgp-ls</tt> module augments the BGP configuration
+      model to add BGP-LS, BGP-LS-VPN, and BGP-LS-SPF address family
+      configuration.  These configuration nodes are writable and could
+      be used to redirect topology information to unauthorized
+      collectors if modified without proper authorization.  In
+      particular, unauthorized write access to the neighbor-level
+      BGP-LS configuration could cause the router to distribute its
+      LSDB contents to unintended recipients.  These data nodes MUST be
+      protected by NACM access control policies limiting write access
+      to authorized administrators.</t>
 
-      <t>Some of the readable data nodes in this YANG module may be
-      considered sensitive or vulnerable in some network
-      environments. It is thus important to control read access (e.g.,
-      via get, get-config, or notification) to these data nodes. These
-      are the subtrees and data nodes and their
-      sensitivity/vulnerability:</t>
+      <t>The <tt>ietf-bgp-lsdb</tt> module and its submodules contain
+      only <tt>config false</tt> (operational state) data nodes
+      representing the contents of the Link-State Database received from
+      the network.  These nodes are readable but not writable.  The
+      sensitive read-only data includes full network topology
+      information: node identifiers, link endpoints, prefix
+      advertisements, and SR/SRv6 label and SID assignments.  An
+      unauthorized party with read access to this data could reconstruct
+      the network topology and identify traffic engineering paths, which
+      could facilitate traffic interception or denial-of-service attacks.
+      Access to these nodes SHOULD be restricted using NACM
+      <xref target="RFC8341"/> rules to authorized management
+      stations.</t>
 
-      <t>Some of the RPC operations in this YANG module may be
-      considered sensitive or vulnerable in some network
-      environments. It is thus important to control access to these
-      operations. These are the operations and their
-      sensitivity/vulnerability:</t>
+      <t>No RPC or action operations are defined in this document.</t>
 
     </section>
-    
+
     <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
   </middle>
 
@@ -361,7 +603,7 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
       <name>References</name>
       <references>
         <name>Normative References</name>
-        
+
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3688.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6020.xml"/>
@@ -370,23 +612,30 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7950.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8040.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8294.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8340.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8341.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8342.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8814.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9085.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9086.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9129.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9130.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9351.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9514.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9552.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9815.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9911.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-idr-bgp-model.xml"/>
       </references>
- 
+
       <references>
         <name>Informative References</name>
       </references>
     </references>
-    
-    <section>
+
+    <section anchor="appendix-tree">
       <name>Complete Tree Diagram</name>
       <t>Here is a complete tree diagram for the configuration and
       operational part of the model.</t>
@@ -403,13 +652,13 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-tree.txt)
       <name>Acknowledgements</name>
       <t>TBA</t>
     </section>
-    
+
     <section anchor="Contributors" numbered="false">
       <!-- [REPLACE/DELETE] a Contributors section is optional -->
       <name>Contributors</name>
       <t>Thanks to all of the contributors.</t>
       <!-- [CHECK] it is optional to add a <contact> record for some or all contributors -->
     </section>
-    
+
  </back>
 </rfc>
