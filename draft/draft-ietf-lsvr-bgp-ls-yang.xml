@@ -265,7 +265,10 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
 	and OSPFv2/OSPFv3 nodes (keyed by the AS-scoped flag, area-id,
 	router-id, designated-router identifier, and AS number).  Each
 	node entry carries the node attributes defined in
-	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
+	<tt>ietf-bgp-ls-topo-attr</tt>.  BGP Egress Peer Engineering
+	(EPE) defines a BGP Node NLRI type for advertising BGP peer node
+	descriptors <xref target="RFC9086"/>; a corresponding list will
+	be added in a future revision of this model.</t>
 
 	<t><tt>links</tt> contains protocol-specific lists for IS-IS
 	links, OSPFv2 links, OSPFv3 links, and BGP Egress Peer
@@ -279,16 +282,24 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
 	carries the IGP link attributes defined in
 	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
 
-	<t><tt>prefixes</tt> contains lists for IS-IS, OSPFv2, and
-	OSPFv3 prefixes, each keyed by the AS-scoped flag, area-id, AS
-	number, route type, and prefix value.  Each prefix entry carries
-	the prefix attributes defined in
+	<t><tt>prefixes</tt> contains protocol-specific lists for IS-IS,
+	OSPFv2, and OSPFv3 prefixes.  IS-IS prefix entries are keyed by
+	system-id, pseudo-node identifier, AS number, multi-topology-id,
+	and prefix value.  OSPFv2 and OSPFv3 prefix entries are keyed by
+	the AS-scoped flag, area-id, router-id, designated-router
+	identifier, AS number, multi-topology-id, route-type, and prefix
+	value.  Each prefix entry carries the prefix attributes defined in
 	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
 
-	<t><tt>srv6-sids</tt> contains lists for IS-IS and OSPF SRv6
-	SIDs, each keyed by the AS-scoped flag, area-id, AS number, the
-	SRv6 SID value, and multi-topology-id.  Each SRv6 SID entry
-	carries the SRv6 SID attributes defined in
+	<t><tt>srv6-sids</tt> contains protocol-specific lists for
+	OSPFv3, IS-IS, and BGP SRv6 SIDs.  OSPFv3 SRv6 SID entries are
+	keyed by the AS-scoped flag, area-id, router-id,
+	designated-router identifier, AS number, SID value, and
+	multi-topology-id.  IS-IS SRv6 SID entries are keyed by
+	system-id, pseudo-node identifier, AS number, SID value, and
+	multi-topology-id.  BGP SRv6 SID entries are keyed by router-id,
+	AS number, SID value, and multi-topology-id.  Each SRv6 SID
+	entry carries the SRv6 SID attributes defined in
 	<tt>ietf-bgp-ls-topo-attr</tt>.</t>
 
 	<t><tt>unknowns</tt> provides a fallback container for NLRI types
