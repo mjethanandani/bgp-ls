@@ -648,9 +648,89 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-tree.txt)
       </figure>
     </section>
 
+    <section>
+      <name>Examples</name>
+      <t>The following examples illustrate the BGP-LS Link-State
+      Database (LSDB) populated with NLRIs from different source
+      protocols.  The data shown represents the
+      <tt>bgp-ls-topology</tt> container defined in
+      <tt>ietf-bgp-lsdb</tt>, which is augmented into the
+      <tt>link-state</tt> presence container by
+      <tt>ietf-bgp-ls</tt> at the path
+      <tt>/rt:routing/rt:control-plane-protocols/
+rt:control-plane-protocol/bgp:bgp/bgp:global/
+bgp:afi-safis/bgp:afi-safi/ietf-bgp-ls:link-state</tt>.
+      XML encoding follows <xref target="RFC7950"/>.</t>
+
+      <section>
+        <name>OSPFv2 Instance</name>
+        <t>An OSPFv2 instance with one node (router-id
+        192.0.2.1), one link (192.0.2.1 to 192.0.2.2),
+        and one prefix (203.0.113.0/24).  Node and link
+        attribute types are expressed as identityrefs
+        from <tt>ietf-bgp-ls-topo-types</tt>.</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+INSERT_TEXT_FROM_FILE(../src/yang/example-bgp-ls-oper.a.1.1.xml)
+]]></artwork>
+        </figure>
+      </section>
+
+      <section>
+        <name>OSPFv3 Instance</name>
+        <t>An OSPFv3 instance with one node advertising an
+        IPv6 router-id attribute, one link using
+        <tt>0.0.0.0</tt> as the sentinel value for
+        absent IPv4 link addresses (the link is
+        IPv6-only), and one IPv6 prefix.</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+INSERT_TEXT_FROM_FILE(../src/yang/example-bgp-ls-oper.a.1.2.xml)
+]]></artwork>
+        </figure>
+      </section>
+
+      <section>
+        <name>IS-IS Instance</name>
+        <t>An IS-IS Level-1 instance with one node
+        (system-id 0000.0000.0001), one link, and one
+        prefix (10.1.0.0/24).  IPv6 link addresses use
+        <tt>::</tt> as the sentinel value for absent
+        IPv6 addresses (the link is IPv4-only).</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+INSERT_TEXT_FROM_FILE(../src/yang/example-bgp-ls-oper.a.1.3.xml)
+]]></artwork>
+        </figure>
+      </section>
+
+      <section>
+        <name>BGP Instance</name>
+        <t>A BGP instance with one BGP-LS link (AS 65001
+        router-id 192.0.2.1 to AS 65002 router-id
+        192.0.2.2).  The link carries a BGP Peer
+        Adjacency SID attribute (<tt>bgp-peer-sids</tt>)
+        as defined in <tt>ietf-bgp-ls-topo-attr</tt>,
+        demonstrating the new topology attribute
+        submodule.  The BGP protocol does not define
+        node or prefix NLRIs in this model.</t>
+
+        <figure>
+          <artwork type="xml"><![CDATA[
+INSERT_TEXT_FROM_FILE(../src/yang/example-bgp-ls-oper.a.1.4.xml)
+]]></artwork>
+        </figure>
+      </section>
+    </section>
+
     <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
-      <t>TBA</t>
+      <t>The authors would like to thank Baalajee S and Thanigaivel
+      Manoharan for their review and comments on the model and the
+      document.</t>
     </section>
 
     <section anchor="Contributors" numbered="false">
