@@ -342,102 +342,6 @@ module ietf-bgp-ls {
     }
   }
 
-  grouping bgp-ls-loc-rib-attr-refs {
-    description
-      "References to the shared attribute sets in the BGP RIB for
-       routes in the Link-State Loc-RIB.
-
-       These mirror the definitions in the BGP model, with
-       explicitly prefixed paths so that they resolve when used
-       outside of the BGP module.";
-
-    leaf attr-index {
-      type leafref {
-        path "../../../../../../../bgp:attr-sets/bgp:attr-set/"
-           + "bgp:index";
-      }
-      description
-        "Reference to the common attribute group for the route.";
-    }
-
-    leaf community-index {
-      type leafref {
-        path "../../../../../../../bgp:communities/"
-           + "bgp:community/bgp:index";
-      }
-      description
-        "Reference to the community attribute for the route.";
-    }
-
-    leaf ext-community-index {
-      type leafref {
-        path "../../../../../../../bgp:ext-communities/"
-           + "bgp:ext-community/bgp:index";
-      }
-      description
-        "Reference to the extended community attribute for the
-         route.";
-    }
-
-    leaf large-community-index {
-      type leafref {
-        path "../../../../../../../bgp:large-communities/"
-           + "bgp:large-community/bgp:index";
-      }
-      description
-        "Reference to the large community attribute for the
-         route.";
-    }
-  }
-
-  grouping bgp-ls-adj-rib-attr-refs {
-    description
-      "References to the shared attribute sets in the BGP RIB for
-       routes in the Link-State Adj-RIB tables.
-
-       These mirror the definitions in the BGP model, with
-       explicitly prefixed paths so that they resolve when used
-       outside of the BGP module.";
-
-    leaf attr-index {
-      type leafref {
-        path "../../../../../../../../../bgp:attr-sets/"
-           + "bgp:attr-set/bgp:index";
-      }
-      description
-        "Reference to the common attribute group for the route.";
-    }
-
-    leaf community-index {
-      type leafref {
-        path "../../../../../../../../../bgp:communities/"
-           + "bgp:community/bgp:index";
-      }
-      description
-        "Reference to the community attribute for the route.";
-    }
-
-    leaf ext-community-index {
-      type leafref {
-        path "../../../../../../../../../bgp:ext-communities/"
-           + "bgp:ext-community/bgp:index";
-      }
-      description
-        "Reference to the extended community attribute for the
-         route.";
-    }
-
-    leaf large-community-index {
-      type leafref {
-        path "../../../../../../../../../bgp:large-communities/"
-           + "bgp:large-community/bgp:index";
-      }
-      description
-        "Reference to the large community attribute for the
-         route.";
-    }
-  }
-
   grouping bgp-ls-rib-node-descriptors {
     description
       "Decoded Node Descriptor sub-TLVs of a Link-State NLRI.
@@ -797,7 +701,7 @@ module ietf-bgp-ls {
 
         uses bgp-ls-rib-route-key;
         uses bgp:bgp-adj-rib-attr-state;
-        uses bgp-ls-adj-rib-attr-refs;
+        uses bgp:bgp-adj-rib-common-attr-refs;
         uses bgp-ls-rib-route-state;
       }
     }
@@ -862,7 +766,7 @@ module ietf-bgp-ls {
 
             uses bgp-ls-rib-route-key;
             uses bgp:bgp-loc-rib-common-keys;
-            uses bgp-ls-loc-rib-attr-refs;
+            uses bgp:bgp-loc-rib-common-attr-refs;
             uses bgp-ls-rib-route-state;
           }
         }
