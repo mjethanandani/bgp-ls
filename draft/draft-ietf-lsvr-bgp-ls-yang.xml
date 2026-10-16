@@ -548,51 +548,201 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
     </section>
 
     <section anchor="Security">
-      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
       <name>Security Considerations</name>
-      <t>The YANG modules specified in this document define schemas for
-      data that are designed to be accessed via network management
-      protocols such as <xref target="RFC6241">NETCONF</xref> or
-      <xref target="RFC8040">RESTCONF</xref>.  The lowest NETCONF layer
-      is the secure transport layer, and the mandatory-to-implement
-      secure transport is <xref target="RFC6242">Secure Shell
-      (SSH)</xref>.  The lowest RESTCONF layer is HTTPS, and the
-      mandatory-to-implement secure transport is
-      <xref target="RFC8446">TLS</xref>.</t>
+      <t>This section is modeled after the template described in
+      <xref target="RFC9907" section="3.7.1" sectionFormat="of"/>.</t>
 
-      <t>The <xref target="RFC8341">Network Configuration Access
-      Control Model (NACM)</xref> provides the means to restrict
-      access for particular NETCONF or RESTCONF users to a
-      preconfigured subset of all available NETCONF or RESTCONF
-      protocol operations and content.</t>
+      <section anchor="security-bgp-ls">
+        <name>The "ietf-bgp-ls" YANG Module</name>
+        <t>The "ietf-bgp-ls" YANG module defines a data model that is
+        designed to be accessed via YANG-based management protocols,
+        such as the Network Configuration Protocol (NETCONF)
+        <xref target="RFC6241"/> and RESTCONF <xref target="RFC8040"/>.
+        These YANG-based management protocols (1) have to use a secure
+        transport layer (e.g., SSH <xref target="RFC4253"/>, TLS
+        <xref target="RFC9846"/>, and QUIC <xref target="RFC9000"/>)
+        and (2) have to use mutual authentication (e.g., for SSH, the
+        SSH Authentication Protocol <xref target="RFC4252"/>).</t>
 
-      <t>The <tt>ietf-bgp-ls</tt> module augments the BGP configuration
-      model to add BGP-LS, BGP-LS-VPN, and BGP-LS-SPF address family
-      configuration.  These configuration nodes are writable and could
-      be used to redirect topology information to unauthorized
-      collectors if modified without proper authorization.  In
-      particular, unauthorized write access to the neighbor-level
-      BGP-LS configuration could cause the router to distribute its
-      LSDB contents to unintended recipients.  These data nodes MUST be
-      protected by NACM access control policies limiting write access
-      to authorized administrators.</t>
+        <t>The Network Configuration Access Control Model (NACM)
+        <xref target="RFC8341"/> provides the means to restrict access
+        for particular NETCONF or RESTCONF users to a preconfigured
+        subset of all available NETCONF or RESTCONF protocol operations
+        and content.</t>
 
-      <t>The <tt>ietf-bgp-lsdb</tt> module and its submodules contain
-      only <tt>config false</tt> (operational state) data nodes
-      representing the contents of the Link-State Database received from
-      the network.  These nodes are readable but not writable.  The
-      sensitive read-only data includes full network topology
-      information: node identifiers, link endpoints, prefix
-      advertisements, and SR/SRv6 label and SID assignments.  An
-      unauthorized party with read access to this data could reconstruct
-      the network topology and identify traffic engineering paths, which
-      could facilitate traffic interception or denial-of-service attacks.
-      Access to these nodes SHOULD be restricted using NACM
-      <xref target="RFC8341"/> rules to authorized management
-      stations.</t>
+        <t>There are a number of data nodes defined in this YANG module
+        that are writable/creatable/deletable (i.e., "config true",
+        which is the default).  All writable data nodes are likely to
+        be reasonably sensitive or vulnerable in some network
+        environments.  Write operations (e.g., edit-config) and delete
+        operations to these data nodes without proper protection or
+        authentication can have a negative effect on network
+        operations.  The following subtrees and data nodes have
+        particular sensitivities/vulnerabilities:</t>
 
-      <t>No RPC or action operations are defined in this document.</t>
+        <ul>
+          <li>
+            <t>The "link-state" container, under the global, neighbor,
+            and peer-group "afi-safi" lists.  Creating this container
+            enables BGP-LS or BGP-LS-VPN, and deleting it disables
+            them.  Enabling it for an unauthorized neighbor or peer
+            group causes the router to distribute its Link-State
+            information to unintended recipients.  Deleting it stops
+            the distribution of topology information to the consumers
+            that depend on it, such as path computation elements.</t>
+          </li>
+          <li>
+            <t>The "link-state-spf" container, under the global,
+            neighbor, and peer-group "afi-safi" lists.  BGP-LS-SPF
+            determines the routing in a BGP SPF routing domain
+            <xref target="RFC9815"/>, so creating or deleting this
+            container can disrupt routing throughout that domain.</t>
+          </li>
+          <li>
+            <t>The "prefix-limit" container, under the "link-state" and
+            "link-state-spf" containers.  Lowering "max-prefixes",
+            together with setting "teardown", can cause BGP sessions to
+            be torn down.  Raising it removes a protection against
+            resource exhaustion by a misbehaving or malicious
+            peer.</t>
+          </li>
+          <li>
+            <t>The "max-rate" and "max-number" leaves, under the
+            "link-state" container.  Setting them too high exposes the
+            router to resource exhaustion from a large number of, or
+            rapidly changing, Link-State NLRIs.  Setting them too low
+            delays or prevents the processing of legitimate topology
+            changes.</t>
+          </li>
+          <li>
+            <t>The "instance-identifier", "algorithm-type", and
+            "node-status" leaves, under the global "link-state-spf"
+            container.  Changing "instance-identifier" moves the
+            locally originated NLRIs to a different routing domain.
+            An "algorithm-type" that does not match the rest of the
+            domain can lead to inconsistent path computation.  Setting
+            "node-status" to mark the node as unreachable, or as not
+            supporting transit traffic, removes the node from the SPF
+            computation or from transit paths.  Each of these can cause traffic to be diverted or
+            dropped.</t>
+          </li>
+          <li>
+            <t>The "metric" and "status" leaves, under the neighbor and
+            peer-group "link-state-spf" containers.  Changing "metric"
+            alters path selection throughout the BGP SPF routing
+            domain, and could be used to attract traffic to a link for
+            interception.  Setting "status" to mark the link as
+            unreachable removes it from the SPF computation, diverting
+            the traffic that uses it.</t>
+          </li>
+        </ul>
 
+        <t>Some of the readable data nodes in this YANG module may be
+        considered sensitive or vulnerable in some network
+        environments.  It is thus important to control read access
+        (e.g., via get, get-config, or notification) to these data
+        nodes.  Specifically, the following subtrees and data nodes
+        have particular sensitivities/vulnerabilities:</t>
+
+        <ul>
+          <li>
+            <t>The "bgp-ls-topology" container, under the global
+            "link-state" and "link-state-spf" containers.  It contains
+            the Link-State Database, and with it a detailed view of the
+            network topology: node names and router identifiers,
+            interface and neighbor addresses, link metrics, bandwidth
+            and delay, Shared Risk Link Groups, and Segment Routing and
+            SRv6 SIDs.  This information can be used to identify
+            critical nodes, links, and shared risks for a targeted
+            attack, or to craft packets that steer traffic through the
+            network using its SIDs.</t>
+          </li>
+          <li>
+            <t>The "link-state" container, under the "afi-safi" list of
+            the BGP RIB.  Its Loc-RIB and per-neighbor Adj-RIB tables
+            hold every Link-State NLRI, with its descriptors and its
+            BGP-LS Attribute, and so expose the same topology
+            information as the "bgp-ls-topology" container.  In
+            addition, the per-neighbor tables reveal which neighbors
+            supply and receive that information, and the pre- and
+            post-policy tables reveal the effect of the local import
+            and export policies.</t>
+          </li>
+          <li>
+            <t>The "log" container, under the global "link-state-spf"
+            container.  The SPF events it records, and the NLRIs that
+            triggered them, reveal when and where topology changes
+            occurred in the BGP SPF routing domain.</t>
+          </li>
+        </ul>
+
+        <t>Some of the RPC or action operations in this YANG module may
+        be considered sensitive or vulnerable in some network
+        environments.  It is thus important to control access to these
+        operations.  Specifically, the following operations have
+        particular sensitivities/vulnerabilities:</t>
+
+        <ul>
+          <li>
+            <t>The "clear" action, under the per-neighbor "statistics"
+            container.  Clearing the BGP-LS and BGP-LS-SPF counters of
+            a neighbor erases the record of the updates, errors, and
+            SPF computations seen so far, which can hide evidence of an
+            attack or misconfiguration and disrupt monitoring.</t>
+          </li>
+          <li>
+            <t>The "clear" actions under the "adj-rib-in-pre" and
+            "adj-rib-in-post" containers of the per-neighbor Link-State
+            RIB.  Clearing these tables removes the Link-State routes
+            received from the neighbor, after which the router may
+            issue a route refresh or reset the BGP session.  Until the
+            routes are relearned, any topology information learned only
+            from that neighbor is missing from the Link-State Database,
+            and for BGP-LS-SPF, the SPF computation runs without it,
+            which can divert or drop traffic in the BGP SPF routing
+            domain.</t>
+          </li>
+          <li>
+            <t>The "clear" actions under the "adj-rib-out-pre" and
+            "adj-rib-out-post" containers of the per-neighbor
+            Link-State RIB.  Clearing these tables causes the router to
+            re-advertise its Link-State routes to the neighbor.  Used
+            repeatedly, this generates update churn that consumes
+            resources on the router, its neighbors, and the consumers
+            of the topology information.</t>
+          </li>
+        </ul>
+
+        <t>Each of these "clear" actions accepts a "clear-at" time, so
+        an operation can be scheduled to take effect later.  Scheduled
+        operations need the same access control as immediate ones.</t>
+
+        <t>This YANG module uses groupings from other YANG modules that
+        define nodes that may be considered sensitive or vulnerable in
+        network environments.  Refer to the Security Considerations of
+        <xref target="I-D.ietf-idr-bgp-model"/> for information as to
+        which nodes may be considered sensitive or vulnerable in
+        network environments.</t>
+      </section>
+
+      <section anchor="security-lsdb-types">
+        <name>Modules without Data Nodes</name>
+        <t>The "ietf-bgp-lsdb" and "ietf-bgp-ls-topo-types" YANG
+        modules, together with the "ietf-bgp-ls-topo-attr" and
+        "ietf-bgp-ls-topo-ospf" submodules of "ietf-bgp-lsdb", define a
+        set of identities, types, and groupings.  These nodes are
+        intended to be reused by other YANG modules.  The modules by
+        themselves do not expose any data nodes that are writable, data
+        nodes that contain read-only state, or RPCs.  As such, there
+        are no additional security issues related to these YANG
+        modules that need to be considered.</t>
+
+        <t>Modules that use the groupings that are defined in this
+        document should identify the corresponding security
+        considerations.  For example, reusing the "lsdb-top" grouping
+        will expose the network topology information described in
+        <xref target="security-bgp-ls"/> (e.g., "bgp-ls-topology").</t>
+      </section>
     </section>
 
     <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
@@ -607,16 +757,12 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3688.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6020.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6241.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6242.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7950.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8040.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8294.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8340.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8341.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8814.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9085.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9086.xml"/>
@@ -632,6 +778,14 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
 
       <references>
         <name>Informative References</name>
+
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4252.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4253.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6241.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8040.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9000.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9846.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9907.xml"/>
       </references>
     </references>
 
