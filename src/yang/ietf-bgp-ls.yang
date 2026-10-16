@@ -40,8 +40,14 @@ module ietf-bgp-ls {
       "I-D.ietf-idr-bgp-model: BGP YANG Model for Service Provider
                                Networks.";
   }
-  import iana-bgp-types {
-    prefix bt;
+  import iana-bgp-afi-safi-types {
+    prefix bast;
+    reference
+      "I-D.ietf-idr-bgp-model: BGP YANG Model for Service Provider
+                               Networks.";
+  }
+  import ietf-bgp-types {
+    prefix ibt;
     reference
       "I-D.ietf-idr-bgp-model: BGP YANG Model for Service Provider
                                Networks.";
@@ -102,7 +108,7 @@ module ietf-bgp-ls {
 
   // Identities.
   identity bgp-ls {
-    base bt:afi-safi-type;
+    base bast:afi-safi-type;
     description
       "BGP Link-State.";
     reference
@@ -111,7 +117,7 @@ module ietf-bgp-ls {
   }
 
   identity bgp-ls-vpn {
-    base bt:afi-safi-type;
+    base bast:afi-safi-type;
     description
       "BGP Link-State VPN.";
     reference
@@ -120,7 +126,7 @@ module ietf-bgp-ls {
   }
 
   identity bgp-ls-spf {
-    base bt:afi-safi-type;
+    base bast:afi-safi-type;
     description
       "BGP Link-State Shortest Path First (BGP-LS-SPF).";
     reference
@@ -670,10 +676,15 @@ module ietf-bgp-ls {
       type uint64;
       description
         "The sequence number carried in the BGP-LS-SPF Sequence
-         Number TLV. It is used in place of the BGP decision
-         process to select the most recent version of the NLRI.";
+         Number TLV. The TLV is mandatory for BGP-LS-SPF
+         NLRIs, and an NLRI received without it is treated as
+         withdrawn.  This leaf is therefore present for every
+         BGP-LS-SPF route, except one received without a BGP-LS
+         Attribute, which is preserved and propagated but not used
+         in the SPF calculation.";
       reference
-        "RFC 9815: BGP Link-State SPF Routing.";
+        "RFC 9815: BGP Link-State SPF Routing, Sections 5.2.4,
+         6.1, and 7.1.";
     }
 
     uses bgp:bgp-common-route-annotations-state;
@@ -1079,7 +1090,7 @@ module ietf-bgp-ls {
     }
 
     action clear {
-      if-feature "bt:clear-statistics";
+      if-feature "ibt:clear-statistics";
       description
         "Clear statistics action command.
 
@@ -1217,7 +1228,7 @@ module ietf-bgp-ls {
     }
 
     action clear {
-      if-feature "bt:clear-statistics";
+      if-feature "ibt:clear-statistics";
       description
         "Clear statistics action command.
 
