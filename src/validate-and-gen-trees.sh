@@ -1,17 +1,20 @@
 #!/bin/sh
 
 #
-# Does the user have all the IETF published models.
+# Does the user have all the IETF published models.  They are kept
+# outside bin, so that they are not pulled down from IANA every time
+# bin is removed, and bin/yang-parameters is a soft link to them.
 #
-if [ ! -d ../bin/iana/yang-parameters ]; then
-   rsync -avz --delete rsync.iana.org::assignments/yang-parameters ../bin/iana/
+if [ ! -d ../yang-parameters ]; then
+   rsync -avz --delete rsync.iana.org::assignments/yang-parameters ../
 fi
+ln -sfn ../yang-parameters ../bin/yang-parameters
 
 #
 # Download dependent modules.
 #
 if [ ! -d ../bin/dependent ]; then
-    python download-dependent-models.py
+    python download-dependent-models.py || exit 1
 fi
 
 for i in ../bin/ietf-*\@$(date +%Y-%m-%d).yang
@@ -19,9 +22,9 @@ do
     name=$(echo $i | cut -f 1-3 -d '.')
     echo "Validating $name.yang"
     if test "${name#^example}" = "$name"; then
-        response=`pyang --ietf --lint --strict --canonical -p ../bin/iana/yang-parameters -p ../bin -f tree --max-line-length=72 --tree-line-length=69 $name.yang > $name-tree.txt.tmp`
+        response=`pyang --ietf --lint --strict --canonical -p ../bin/yang-parameters -p ../bin -f tree --max-line-length=72 --tree-line-length=69 $name.yang > $name-tree.txt.tmp`
     else            
-        response=`pyang --ietf --strict --canonical -p ../bin/iana/yang-parameters -p ../bin -f tree --max-line-length=72 --tree-line-length=69 $name.yang > $name-tree.txt.tmp`
+        response=`pyang --ietf --strict --canonical -p ../bin/yang-parameters -p ../bin -f tree --max-line-length=72 --tree-line-length=69 $name.yang > $name-tree.txt.tmp`
     fi
     if [ $? -ne 0 ]; then
         printf "$name.yang failed pyang validation\n"
@@ -33,7 +36,7 @@ do
     fold -w 71 $name-tree.txt.tmp > $name-tree.txt
     sed -e 's/\[/(/g' -e 's/\]/)/g' $name-tree.txt > $name-tree.txt.tmp2
     mv $name-tree.txt.tmp2 $name-tree.txt
-    response=`yanglint -p ../bin/iana/yang-parameters -p ../bin $name.yang -i`
+    response=`yanglint -p ../bin/yang-parameters -p ../bin $name.yang -i`
     if [ $? -ne 0 ]; then
         printf "$name.yang failed yanglint validation\n"
         printf "$response\n\n"
@@ -50,9 +53,9 @@ do
     name=$(echo $i | cut -f 1-3 -d '.')
     echo "Generating abridged tree diagram for $name.yang"
     if test "${name#^example}" = "$name"; then
-       response=`pyang --lint --strict --canonical -p ../bin -p ../bin/iana/yang-parameters -f tree --tree-depth=3 --max-line-length=72 --tree-line-length=69 $name.yang > $name-sub-tree.txt.tmp`
+       response=`pyang --lint --strict --canonical -p ../bin -p ../bin/yang-parameters -f tree --tree-depth=3 --max-line-length=72 --tree-line-length=69 $name.yang > $name-sub-tree.txt.tmp`
     else            
-        response=`pyang --ietf --strict --canonical -p ../bin -p ../bin/iana/yang-parameters -f tree --tree-depth=3 --max-line-length=72 --tree-line-length=69 $name.yang > $name-sub-tree.txt.tmp`
+        response=`pyang --ietf --strict --canonical -p ../bin -p ../bin/yang-parameters -f tree --tree-depth=3 --max-line-length=72 --tree-line-length=69 $name.yang > $name-sub-tree.txt.tmp`
     fi
     if [ $? -ne 0 ]; then
         printf "$name.yang failed generation of sub-tree diagram\n"
@@ -75,7 +78,7 @@ do
     response=`yanglint \
         -t data \
         -e -i -i \
-        -p ../bin/iana/yang-parameters \
+        -p ../bin/yang-parameters \
         -p ../bin \
         -p ../bin/submodules \
         -p ../bin/dependent \

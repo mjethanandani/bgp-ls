@@ -1,4 +1,8 @@
 import os
+import shutil
+import subprocess
+import sys
+import tempfile
 
 list_of_ietf_models =\
 [ 
@@ -19,17 +23,38 @@ list_of_ietf_models =\
 list_of_ieee_models =\
     [ ["ieee802-dot1q-types", "www.ieee802.org/1/files/public/YANGs/"] ]
 
-def fetch_and_extract(draft, module, version):
-    print("Fetching file " + draft + " with version " + version)
+dependent_dir = os.path.abspath("../bin/dependent")
+
+def fetch_and_extract(draft, version, modules):
+    # Download the draft once, extract all of its modules into a
+    # scratch directory, and copy over the ones that are needed.
+    # A module name matches any extracted file that starts with it,
+    # e.g., 'ietf-bgp' also picks up the ietf-bgp-* submodules.
     draft_version = draft + "-" + version
-    print(draft_version)
-    os.system('curl -sO https://www.ietf.org/archive/id/%s.txt' %draft_version)
-    print("Extracting Module from " + draft_version)
-    os.system('xym %s.txt' %draft_version)
-    print("Moving module " + module + " to ../bin/dependent/")
-    os.system('mv %s* ../bin/dependent/' %module)
-    print("Cleaning up ...")
-    os.system('rm %s.txt' %draft_version)
+    print("Fetching " + draft_version)
+    workdir = tempfile.mkdtemp()
+    try:
+        subprocess.run(["curl", "-sfO",
+                        "https://www.ietf.org/archive/id/%s.txt"
+                        % draft_version],
+                       cwd=workdir, check=True)
+        print("Extracting modules from " + draft_version)
+        subprocess.run(["xym", draft_version + ".txt"],
+                       cwd=workdir, check=True,
+                       stdout=subprocess.DEVNULL)
+        extracted = [f for f in os.listdir(workdir) if f.endswith(".yang")]
+        needed = set()
+        for module in modules:
+            matches = [f for f in extracted if f.startswith(module)]
+            if not matches:
+                sys.exit("Module %s not found in %s"
+                         % (module, draft_version))
+            needed.update(matches)
+        for f in sorted(needed):
+            print("Copying " + f + " to ../bin/dependent/")
+            shutil.copy(os.path.join(workdir, f), dependent_dir)
+    finally:
+        shutil.rmtree(workdir)
 
 def fetch(module, path):
     file = path + module + ".yang.txt"
@@ -39,16 +64,18 @@ def fetch(module, path):
     print("Moving module " + model + " to ../bin/dependent/")
     os.system("mv '%s'.txt ../bin/dependent/'%s'" %(model, model))
 
-os.system("mkdir -p ../bin/dependent")
+os.makedirs(dependent_dir, exist_ok=True)
 
-for list in list_of_ietf_models:
-    module, draft, version = list
-    print(module)
-    fetch_and_extract(draft, module, version)
+# Group the modules by draft and version, so that each draft is
+# downloaded only once.
+drafts = {}
+for module, draft, version in list_of_ietf_models:
+    drafts.setdefault((draft, version), []).append(module)
+
+for (draft, version), modules in drafts.items():
+    fetch_and_extract(draft, version, modules)
 
 # for list in list_of_ieee_models:
 #    module, path = list
 #    print(module)
 #    fetch(module, path)
-
-os.system('rm *.yang')
