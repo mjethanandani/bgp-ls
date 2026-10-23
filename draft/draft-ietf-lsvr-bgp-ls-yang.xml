@@ -234,10 +234,47 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD-sub-tree.txt)
 	<xref target="I-D.ietf-idr-bgp-model"/> is used in this model to
 	determine whether the ability to clear statistics is supported.</t>
 
-	<t>The module imports <tt>ietf-yang-types</tt> and
-	<tt>ietf-inet-types</tt> <xref target="RFC9911"/>,
-	<tt>ietf-routing</tt> <xref target="RFC8349"/>, and the BGP
-	module from <xref target="I-D.ietf-idr-bgp-model"/>.</t>
+        <t>The <tt>ietf-bgp-ls</tt> module also augments the BGP RIB
+        defined in <xref target="I-D.ietf-idr-bgp-model"/> with a
+        <tt>link-state</tt> container that is present when the AFI/SAFI
+        is BGP-LS, BGP-LS-VPN, or BGP-LS-SPF.  Following the structure
+        used for the IPv4 and IPv6 unicast address families, it contains
+        a Loc-RIB and, for each neighbor, Adj-RIB-In and Adj-RIB-Out
+        tables, both pre- and post-policy.</t>
+
+        <t>Each route is keyed by its encoded Link-State NLRI, as defined
+        in <xref target="RFC9552" section="5.2" sectionFormat="of"/>,
+        together with the path identifier and, in the Loc-RIB, the route
+        origin.  The encoded NLRI is used as the key because most NLRI
+        descriptors are optional, and because
+        <xref target="RFC9552" section="5.2.1.4" sectionFormat="of"/>
+        identifies an NLRI by a binary comparison of its encoding,
+        including any sub-TLVs unknown to the implementation.  A key built
+        from decoded descriptors could therefore map two distinct NLRIs to
+        the same entry.  The decoded descriptors are instead reported as
+        non-key leaves of each route: the Route Distinguisher for
+        BGP-LS-VPN, the local and remote Node Descriptors (including the
+        BGP Router-ID and Member-ASN defined in <xref target="RFC9086"/>),
+        the Link Descriptors, and the Prefix Descriptors.</t>
+
+        <t>Routes reference the shared path attribute sets of the BGP RIB
+        and carry the BGP-LS Attribute in its encoded form; its decoded
+        contents are available in the LSDB.  For BGP-LS-SPF, each route
+        also reports the sequence number that <xref target="RFC9815"/>
+        uses in place of the BGP decision process to select among NLRIs.
+        The <tt>clear-routes</tt> feature defined in
+        <xref target="I-D.ietf-idr-bgp-model"/> determines whether routes
+        in the Adj-RIB tables can be cleared.</t>
+
+        <t>The module imports <tt>ietf-yang-types</tt> and
+        <tt>ietf-inet-types</tt> <xref target="RFC9911"/>,
+        <tt>ietf-routing</tt> <xref target="RFC8349"/>,
+        <tt>ietf-routing-types</tt> <xref target="RFC8294"/>,
+        <tt>ietf-isis</tt> <xref target="RFC9130"/>,
+        <tt>ietf-ospf</tt> <xref target="RFC9129"/>, the BGP module from
+        <xref target="I-D.ietf-idr-bgp-model"/>, and the
+        <tt>ietf-bgp-ls-topo-types</tt> and <tt>ietf-bgp-lsdb</tt>
+        modules defined in this document.</t>
 
 	<figure>
           <name>YANG Model for BGP-LS, BGP-LS-VPN, BGP-LS-SPF</name>
@@ -558,7 +595,7 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
       secure transport is <xref target="RFC6242">Secure Shell
       (SSH)</xref>.  The lowest RESTCONF layer is HTTPS, and the
       mandatory-to-implement secure transport is
-      <xref target="RFC8446">TLS</xref>.</t>
+      <xref target="RFC9846">TLS</xref>.</t>
 
       <t>The <xref target="RFC8341">Network Configuration Access
       Control Model (NACM)</xref> provides the means to restrict
@@ -616,7 +653,6 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8340.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8341.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8349.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8446.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8814.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9085.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9086.xml"/>
@@ -626,6 +662,7 @@ INSERT_TEXT_FROM_FILE(../bin/submodules/ietf-bgp-ls-topo-ospf@YYYY-MM-DD.yang)
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9514.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9552.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9815.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9846.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9911.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-idr-bgp-model.xml"/>
       </references>

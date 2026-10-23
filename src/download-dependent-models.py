@@ -5,14 +5,25 @@ list_of_ietf_models =\
   ["ietf-if-extensions", "draft-ietf-netmod-intf-ext-yang", "10"],
   ["ietf-if-vlan-encapsulation", "draft-ietf-netmod-sub-intf-vlan-model", "07"],
   ["ietf-if-flexible-encapsulation", "draft-ietf-netmod-sub-intf-vlan-model", "07"],
-    ["ietf-bgp-common", "draft-ietf-idr-bgp-model", "18"],
-    ["ietf-bgp-neighbor", "draft-ietf-idr-bgp-model", "18"],
-    ["iana-bgp-types", "draft-ietf-idr-bgp-model", "18"],
-    ["iana-bgp-notification", "draft-ietf-idr-bgp-model", "18"],
-    ["ietf-bgp-common-multiprotocol", "draft-ietf-idr-bgp-model", "18"],
-    ["iana-bgp-community-types", "draft-ietf-idr-bgp-model", "18"],
-    ["iana-bgp-rib-types", "draft-ietf-idr-bgp-model", "18"],
-    ["ietf-bgp", "draft-ietf-idr-bgp-model", "18"]
+  ["ietf-yang-semver", "draft-ietf-netmod-yang-semver", "29"],
+    ["iana-bgp-afi-safi-types", "draft-ietf-idr-bgp-model", "22"],
+    ["iana-bgp-capabilities", "draft-ietf-idr-bgp-model", "22"],
+    ["iana-bgp-community-types", "draft-ietf-idr-bgp-model", "22"],
+    ["iana-bgp-notification", "draft-ietf-idr-bgp-model", "22"],
+    ["iana-bgp-rib-types", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-capabilities", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-common", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-common-errors", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-common-multiprotocol", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-community-types", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-neighbor", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-policy", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-rib", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-rib-attributes", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-rib-tables", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-session-security", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp-types", "draft-ietf-idr-bgp-model", "22"],
+    ["ietf-bgp", "draft-ietf-idr-bgp-model", "22"]
 ]
 
 
