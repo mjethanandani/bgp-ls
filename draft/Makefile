@@ -51,10 +51,7 @@ endif
 ifeq (org,$(draft_type))
 	-rm -f $(draft).xml
 endif
-	-rm -f ../bin/*\@$(shell date +%Y)-*-*-tree.txt*
-	-rm -f ../bin/*\@$(shell date +%Y)-*-*.yang
-	-rm -f ../bin/submodules/*\@$(shell date +%Y)*.yang
-	-rm -f ../bin/submodules/*\@$(shell date +%Y)*-*-*.yang
+	-rm -rf ../bin
 
 $(next).xml: $(draft).xml ../src/yang/ietf-bgp-ls.yang ../src/yang/ietf-bgp-lsdb.yang ../src/yang/ietf-bgp-ls-topo-types.yang ../src/yang/ietf-bgp-ls-topo-attr.yang ../src/yang/ietf-bgp-ls-topo-ospf.yang 
 	-mkdir -p ../bin
@@ -66,7 +63,7 @@ $(next).xml: $(draft).xml ../src/yang/ietf-bgp-ls.yang ../src/yang/ietf-bgp-lsdb
 	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-ls-topo-ospf.yang > ../bin/submodules/ietf-bgp-ls-topo-ospf\@$(shell date +%Y-%m-%d).yang
 	sed -e"s/YYYY-MM-DD/$(shell date +%Y-%m-%d)/" ../src/yang/ietf-bgp-lsdb.yang > ../bin/ietf-bgp-lsdb\@$(shell date +%Y-%m-%d).yang
 
-	cd ../src; ./validate-and-gen-trees.sh; cd ..;
+	cd ../src && ./validate-and-gen-trees.sh
 	../src/insert-figures.sh $@ > tmp; mv tmp $@
 
 .INTERMEDIATE: $(draft).xml
