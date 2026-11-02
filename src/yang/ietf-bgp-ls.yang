@@ -250,7 +250,7 @@ module ietf-bgp-ls {
             description
               "The link is reachable in the current SPF topology.";
           }
-          enum uncreachable {
+          enum unreachable {
             description
               "The link is unreachable in the current SPF
                topology.";
@@ -901,7 +901,7 @@ module ietf-bgp-ls {
             "The local node is reachable in the current SPF
 	     topology.";
         }
-        enum unreacable {
+        enum unreachable {
           description
             "The local node is unreachable in the current SPF
 	     topology.";
