@@ -297,15 +297,23 @@ INSERT_TEXT_FROM_FILE(../bin/ietf-bgp-ls@YYYY-MM-DD.yang)
 	identifier.  Within each instance, five containers group the NLRI
 	types:</t>
 
-	<t><tt>nodes</tt> contains protocol-specific lists for IS-IS
-	nodes (keyed by system-id, pseudo-node identifier, and AS number)
-	and OSPFv2/OSPFv3 nodes (keyed by the AS-scoped flag, area-id,
-	router-id, designated-router identifier, and AS number).  Each
-	node entry carries the node attributes defined in
-	<tt>ietf-bgp-ls-topo-attr</tt>.  BGP Egress Peer Engineering
-	(EPE) defines a BGP Node NLRI type for advertising BGP peer node
-	descriptors <xref target="RFC9086"/>; a corresponding list will
-	be added in a future revision of this model.</t>
+        <t>
+          <tt>nodes</tt> contains protocol-specific lists for IS-IS
+          nodes (keyed by system-id, pseudo-node identifier, and AS
+          number), OSPFv2/OSPFv3 nodes (keyed by the AS-scoped flag,
+          area-id, router-id, designated-router identifier, and AS
+          number), and BGP nodes.  BGP nodes are advertised with
+          Protocol-ID BGP using the Node Descriptors defined for BGP
+          Egress Peer Engineering (EPE) <xref target="RFC9086"/>.  BGP
+          node entries are keyed by the AS number and BGP Router-ID, the
+          same descriptors used for the local and remote nodes of BGP
+          link entries, so a BGP link can be correlated with its
+          endpoint nodes.  When the BGP speaker is a member of a BGP
+          confederation, the AS number carries the Confederation
+          Identifier and the Member-ASN is reported as a non-key leaf.
+          Each node entry carries the node attributes defined in
+          <tt>ietf-bgp-ls-topo-attr</tt>.
+        </t>
 
 	<t><tt>links</tt> contains protocol-specific lists for IS-IS
 	links, OSPFv2 links, OSPFv3 links, and BGP Egress Peer
@@ -900,14 +908,17 @@ INSERT_TEXT_FROM_FILE(../src/yang/example-bgp-ls-oper.a.1.3.xml)
 
       <section>
         <name>BGP Instance</name>
-        <t>A BGP instance with one BGP-LS link (AS 65001
-        router-id 192.0.2.1 to AS 65002 router-id
-        192.0.2.2).  The link carries a BGP Peer
-        Adjacency SID attribute (<tt>bgp-peer-sids</tt>)
-        as defined in <tt>ietf-bgp-ls-topo-attr</tt>,
-        demonstrating the new topology attribute
-        submodule.  The BGP protocol does not define
-        node or prefix NLRIs in this model.</t>
+        <t>
+          A BGP instance with one BGP-LS node and one BGP-LS link (AS
+          65001 router-id 192.0.2.1 to AS 65002 router-id 192.0.2.2).
+          The node entry describes the local end of the link, using the
+          same AS number and BGP Router-ID as the link's local node
+          descriptors, and carries a Node Name attribute.  The link
+          carries a BGP Peer Adjacency SID attribute
+          (<tt>bgp-peer-sids</tt>) as defined in
+          <tt>ietf-bgp-ls-topo-attr</tt>.  The BGP protocol does not
+          define prefix NLRIs in this model.
+        </t>
 
         <figure>
           <artwork type="xml"><![CDATA[

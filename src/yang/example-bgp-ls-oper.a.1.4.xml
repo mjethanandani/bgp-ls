@@ -19,6 +19,21 @@
            <vrf-name>default</vrf-name>
            <protocol>bgp</protocol>
            <identifier>0</identifier>
+           <nodes>
+            <!-- matches the local node of the bgp-link below -->
+            <bgp-node>
+             <as>65001</as>
+             <router-id>192.0.2.1</router-id>
+             <node-attributes>
+              <node-attribute>
+               <type>t:bgp-ls-topo-attr-node-name</type>
+               <node-name>
+                <name>pe1</name>
+               </node-name>
+              </node-attribute>
+             </node-attributes>
+            </bgp-node>
+           </nodes>
            <links>
             <bgp-link>
              <local-as>65001</local-as>

@@ -194,6 +194,50 @@ module ietf-bgp-lsdb {
 
               uses bgp-ls-topo-node-attr;
             }
+
+            list bgp-node {
+              when "../../protocol = 'bgp'";
+              key "as router-id";
+              description
+                "List of BGP nodes advertised using the BGP-LS
+                 extensions for BGP Egress Peer Engineering.";
+              reference
+                "RFC 9086: BGP-LS Extensions for BGP Peering
+                 Segments.";
+
+              leaf as {
+                type inet:as-number;
+                description
+                  "Autonomous System (AS) number or AS
+                   Confederation Identifier.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2. TLV 512.";
+              }
+
+              leaf router-id {
+                type ietf-rt-t:router-id;
+                description
+                  "BGP Router ID.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2. TLV 516.";
+              }
+
+              leaf member-as {
+                type inet:as-number;
+                description
+                  "Member AS number of the BGP speaker within a BGP
+                   confederation.  Present only when the BGP speaker
+                   is a member of a confederation, in which case 'as'
+                   carries the Confederation Identifier.";
+                reference
+                  "RFC 9086: BGP-LS Extensions for BGP Peering
+                   Segments, Section 4.2. TLV 517.";
+              }
+
+              uses bgp-ls-topo-node-attr;
+            }
           }
 
           container links {
@@ -954,7 +998,7 @@ module ietf-bgp-lsdb {
                    Confederation Identifier.";
                 reference
                   "RFC 9086: BGP-LS Extensions for BGP Peering
-                   Segments, Section 4.2. TLV 517.";
+                   Segments, Section 4.2. TLV 512.";
               }
 
               leaf sid {
